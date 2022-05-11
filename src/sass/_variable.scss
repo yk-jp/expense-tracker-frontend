@@ -1,0 +1,24 @@
+$font-color: (
+  "black": #776e65,
+);
+$bg-color: (
+  "white": #faf8ef,
+);
+
+$font-weight: (
+  "regular": 500,
+  "bold": 700,
+);
+@function colorPicker($colorFor, $colorName) {
+  $targetColorPalette: "";
+  @if ($colorFor == "bg-color") {
+    $targetColorPalette: $bg-color;
+  } @else if ($colorFor == "font-color") {
+    $targetColorPalette: $font-color;
+  }
+  @return map-get($targetColorPalette, $colorName);
+}
+
+@function fontWeight($weight) {
+  @return map-get($font-weight, $weight);
+}
