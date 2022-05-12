@@ -1,9 +1,11 @@
 import React from "react";
 
+import Header from "./Header";
+
 function LandingPage(){
 	return(
-		<div>
-			<h1>test</h1>
+		<div className="landing-page">
+			<Header />
 		</div>
 	)
 }

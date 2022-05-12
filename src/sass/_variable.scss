@@ -2,22 +2,31 @@ $font-family-primary: "Open Sans", sans-serif;
 $font-family-accent: "Playfair Display", serif;
 
 $font-color: (
-  "black": #776e65,
-);
-$font-weight: (
-  "regular": 500,
-  "bold": 700,
-);
-$bg-color: (
+  "black": #171717,
   "white": #faf8ef,
 );
-
+$font-weight: (
+  "light": 300,
+  "regular": 400,
+  "bold": 600,
+);
+$bg-color: (
+  "black": #171717,
+  "white": #faf8ef,
+  "beige": #fef6ec,
+);
+$boarder-color: (
+  "black": #262626,
+  "gray": #979797,
+);
 @function colorPicker($colorFor, $colorName) {
   $targetColorPalette: "";
   @if ($colorFor == "bg-color") {
     $targetColorPalette: $bg-color;
   } @else if ($colorFor == "font-color") {
     $targetColorPalette: $font-color;
+  } @else if ($colorFor == "boarder-color") {
+    $targetColorPalette: $boarder-color;
   }
   @return map-get($targetColorPalette, $colorName);
 }

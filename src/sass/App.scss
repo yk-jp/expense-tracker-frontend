@@ -2,7 +2,4 @@
 @use "./config";
 @use "./variable";
 
-.test {
-  font-family: variable.$font-family-primary;
-  color: blue;
-}
+@use "./landingPage";
