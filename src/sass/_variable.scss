@@ -1,14 +1,17 @@
+$font-family-primary: "Open Sans", sans-serif;
+$font-family-accent: "Playfair Display", serif;
+
 $font-color: (
   "black": #776e65,
+);
+$font-weight: (
+  "regular": 500,
+  "bold": 700,
 );
 $bg-color: (
   "white": #faf8ef,
 );
 
-$font-weight: (
-  "regular": 500,
-  "bold": 700,
-);
 @function colorPicker($colorFor, $colorName) {
   $targetColorPalette: "";
   @if ($colorFor == "bg-color") {
