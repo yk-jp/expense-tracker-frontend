@@ -34,3 +34,16 @@ $boarder-color: (
 @function fontWeight($weight) {
   @return map-get($font-weight, $weight);
 }
+
+@mixin responsiveMiddle {
+  @media (max-width: 990px) {
+    @content;
+  }
+}
+@mixin responsiveSmall {
+  @media (max-width: 770px) {
+    @content;
+  }
+}
+
+$header_height: 55px;
