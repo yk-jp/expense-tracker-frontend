@@ -1,2 +1,5 @@
-@use "./reset.scss";
-@use "./config.scss";
+@use "./reset";
+@use "./config";
+@use "./variable";
+
+@use "./landingPage";

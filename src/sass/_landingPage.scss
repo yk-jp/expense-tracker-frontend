@@ -1,0 +1,15 @@
+@use "./variable";
+@use "./header";
+@use "./heroArea";
+
+.landing-page {
+  background-color: variable.colorPicker("bg-color", "beige");
+  color: variable.colorPicker("font-color", "black");
+  font-family: variable.$font-family-primary;
+}
+.outer {
+  width: 100%;
+  max-width: 1150px;
+  margin-inline: auto;
+  padding-inline: 40px;
+}
