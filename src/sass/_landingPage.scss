@@ -1,6 +1,7 @@
 @use "./variable";
 @use "./header";
 @use "./heroArea";
+@use "./slideShow";
 
 .landing-page {
   background-color: variable.colorPicker("bg-color", "beige");

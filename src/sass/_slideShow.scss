@@ -1,0 +1,43 @@
+@use "./variable" as *;
+
+$gap: 3.5vw;
+
+.slide-show {
+  display: flex;
+  width: 100vw;
+  height: calc((100vh - #{$header_height}) / 2);
+  gap: $gap;
+  overflow: hidden;
+  &_section {
+    width: 100vw;
+    display: flex;
+    gap: $gap;
+  }
+  &_primary {
+    animation: slide1 20s -10s linear infinite;
+  }
+  &_support {
+    animation: slide2 20s linear infinite;
+  }
+  &_pic {
+    height: calc((100vh - #{$header_height}) / 2);
+    border-radius: 20px;
+    object-fit: fill;
+  }
+}
+@keyframes slide1 {
+  0% {
+    transform: translateX(100vw + $gap);
+  }
+  100% {
+    transform: translateX(-100vw);
+  }
+}
+@keyframes slide2 {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-200vw - $gap);
+  }
+}

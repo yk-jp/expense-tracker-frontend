@@ -19,8 +19,9 @@
     font-size: 60px;
 
     @include responsiveMiddle {
-      font-size: 50px;
+      width: 75%;
       margin-bottom: 40px;
+      font-size: 50px;
     }
     @include responsiveSmall {
       font-size: 40px;
