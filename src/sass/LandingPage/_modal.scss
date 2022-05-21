@@ -92,9 +92,9 @@
       background-color: colorPicker("bg-color", "beige");
       transition: height 1.5s;
     }
-    .modal_form-area_item {
-    }
     &_reset-password {
+      margin-top: 30px;
+      font-size: 12px;
     }
   }
 }
