@@ -18,6 +18,7 @@
     margin-bottom: 20px;
     font-size: 28px;
     font-weight: fontWeight("bold");
+    transition: font-size 1.5s;
   }
   &_error {
     width: 40%;
@@ -63,6 +64,7 @@
       background-position: center center;
       z-index: 2;
       transition: height 1.5s;
+      overflow: hidden;
     }
     &-hide {
       width: 750px;
