@@ -1,4 +1,4 @@
-@use "./variable" as *;
+@use "../variable" as *;
 
 $gap: 3.5vw;
 
@@ -14,10 +14,10 @@ $gap: 3.5vw;
     gap: $gap;
   }
   &_primary {
-    animation: slide1 20s -10s linear infinite;
+    animation: slide1 30s -15s linear infinite;
   }
   &_support {
-    animation: slide2 20s linear infinite;
+    animation: slide2 30s linear infinite;
   }
   &_pic {
     height: calc((100vh - #{$header_height}) / 2);

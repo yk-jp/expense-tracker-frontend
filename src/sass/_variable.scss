@@ -4,6 +4,7 @@ $font-family-accent: "Playfair Display", serif;
 $font-color: (
   "black": #171717,
   "white": #faf8ef,
+  "warning": hsla(0, 100%, 70%, 1),
 );
 $font-weight: (
   "light": 300,
@@ -14,10 +15,13 @@ $bg-color: (
   "black": #171717,
   "white": #faf8ef,
   "beige": #fef6ec,
+  "submit": hsla(216, 100%, 58%, 1),
+  "submit-hover": hsla(216, 100%, 45%, 1),
 );
 $boarder-color: (
   "black": #262626,
   "gray": #979797,
+  "beige": rgb(162 164 172 / 50%),
 );
 @function colorPicker($colorFor, $colorName) {
   $targetColorPalette: "";

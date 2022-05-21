@@ -3,13 +3,16 @@ import React from "react";
 import Header from "./Header";
 import HeroArea from "./HeroArea";
 import SlideShow from "./SlideShow";
+import Modal from "./Modal";
+
 
 function LandingPage(){
 	return(
 		<div className="landing-page">
-			<Header />
+			{/* <Header />
 			<HeroArea />
-			<SlideShow />
+			<SlideShow /> */}
+			<Modal />
 		</div>
 	)
 }
