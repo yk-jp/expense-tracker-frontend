@@ -59,12 +59,11 @@
       width: 750px;
       height: 85%;
       padding-top: 30px;
+      padding-bottom: 20px;
       border-radius: 0px 0px 50% 50%;
       background-image: url(../../image/LP_modal.png);
       background-position: center center;
-      z-index: 2;
       transition: height 1.5s;
-      overflow: hidden;
     }
     &-hide {
       width: 750px;

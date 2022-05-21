@@ -19,7 +19,6 @@ function Modal(){
 		<div className="modal">
 			<div className= {isSignUp ? "modal_sign-up-show" : "modal_sign-up-hide"} onClick={toggleModalMode}>
 				<h2 className="modal_title" style={isSignUp ? {}: syleForHideSectionTitle}>Sign Up</h2>
-				{isSignUp &&
 					<div>
 						<p className="modal_error">Email has been registered already</p>
 						<form className="modal_form-area">
@@ -29,11 +28,9 @@ function Modal(){
 							<input className="modal_form-area_item" type="submit" value="Sign Up" />
 						</form>
 					</div>
-				}
 			</div>
 			<div className={isSignUp ? "modal_log-in-hide": "modal_log-in-show"} onClick={toggleModalMode}>
-				<h2 className="modal_title" style={isSignUp ? syleForHideSectionTitle : {}}>Log In</h2>
-				{!isSignUp &&	
+				<h2 className="modal_title" style={isSignUp ? syleForHideSectionTitle : {}}>Log In</h2>	
 					<div>
 						<p className="modal_error">Incorrect password</p>
 						<form className="modal_form-area">
@@ -43,7 +40,6 @@ function Modal(){
 						</form>
 						<p className="modal_log-in_reset-password">Forget your password?</p>
 					</div>
-				}
 			</div>
 		</div>
 	)
