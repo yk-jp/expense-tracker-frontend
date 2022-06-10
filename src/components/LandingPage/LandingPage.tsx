@@ -1,15 +1,13 @@
-import React from "react";
+import React from 'react';
 
-import Header from "./Header";
-import HeroArea from "./HeroArea";
+import Header from './Header';
+import HeroArea from './HeroArea';
 
-function LandingPage(){
-	return(
-		<div className="landing-page">
-			<Header />
-			<HeroArea />
-		</div>
-	)
-}
+const LandingPage = () => (
+  <div className="landing-page">
+    <Header />
+    <HeroArea />
+  </div>
+);
 
-export default LandingPage
+export default LandingPage;

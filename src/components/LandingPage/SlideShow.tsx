@@ -1,9 +1,7 @@
-import React from "react";
+import React from 'react';
 
-function SlideShow(){
-	return(
-		<div></div>
-	)
-}
+const SlideShow = () => (
+  <div />
+);
 
-export default SlideShow
+export default SlideShow;
