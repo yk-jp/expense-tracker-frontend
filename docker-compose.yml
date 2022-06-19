@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  expense-tracker-frontend:
+    build: .
+    image: expense-tracker-frontend
+    container_name: expense-tracker-frontend
+    ports:
+      - 3000:3000
+    volumes:
+      - ./src:/app/src
+    # env_file:
+    #   - ./.env
+    command: npm run start 
