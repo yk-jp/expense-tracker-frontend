@@ -1,12 +1,9 @@
 import React from 'react';
 
-import Header from './Header';
-import HeroArea from './HeroArea';
 
 const LandingPage = () => (
-  <div className="landing-page">
-    <Header />
-    <HeroArea />
+  <div className=" h-4 m-7 text-yellow-600 text-3xl">
+    test
   </div>
 );
 

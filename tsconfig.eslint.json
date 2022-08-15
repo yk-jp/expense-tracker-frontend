@@ -1,6 +1,13 @@
 {
-    "extends": "./tsconfig.json", "include": [
-        "src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"
+    "extends": "./tsconfig.json", 
+    "include": [
+        "src/**/*.js", 
+        "src/**/*.jsx", 
+        "src/**/*.ts", 
+        "src/**/*.tsx",
+        ".eslintrc.js",
+        "tailwind.config.js",
+        "postcss.config.js"
     ], 
     "exclude": [
         "node_modules"

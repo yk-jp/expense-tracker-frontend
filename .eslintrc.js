@@ -20,7 +20,7 @@ module.exports = {
       jsx: true,
     },
     ecmaVersion: 'latest',
-    project: './tsconfig.eslint.json',
+    project: 'tsconfig.eslint.json',
     sourceType: 'module',
     tsconfigRootDir: __dirname,
   },
@@ -75,5 +75,6 @@ module.exports = {
         paths: ['src'],
       },
     },
-  }
+  },
+  ignorePatterns: ['postcss.config.js']
 };
