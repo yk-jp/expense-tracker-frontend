@@ -1,9 +1,12 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React from 'react'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import { faUser } from '@fortawesome/free-solid-svg-icons'
+
 
 const Login = () => (
   <div className="">
-		<div><i className='fa-solid fa-user' /></div>
+		<div className='w-20 bg-slate-500'><FontAwesomeIcon icon={faUser} size='5x' style={{color: 'white'}} /></div>
 		<form>
 			<input type="email" placeholder='Email'/>
 			<input type="password" placeholder='Password' />
