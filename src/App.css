@@ -1,0 +1,14 @@
+body{
+	box-sizing: border-box;
+}
+
+input{
+	outline: none;
+}
+input[type=checkbox]{
+	transform: scale(1.5);
+	padding: 10px;
+	margin-left: 3px;
+	margin-right: 15px;
+}
+
