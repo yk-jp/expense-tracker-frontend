@@ -22,17 +22,15 @@ const Login = () => {
 			})
 			localStorage.setItem('expense-tracker-tokens', JSON.stringify(data.data))
 			const userToken: tokens = JSON.parse(localStorage.getItem('expense-tracker-tokens') || "") as tokens
-			console.log(userToken)
 		} catch(err) {
-			if (err instanceof Error)
-				setError(err.message)
+			setError("Invalid email and password combination")
 		}
 	}
 
 
 	return (
 		<div className="w-2/5 min-w-mobile mx-auto mt-20">
-			{error && <ErrorPop message={error} />}
+			{error && <ErrorPop message={error} setError={setError}/>}
 			<div className=' w-32 py-5 rounded-full mx-auto translate-y-16 text-center bg-zinc-700 z-10'>
 				<FontAwesomeIcon icon={faUser} size='5x' style={{color: 'white'}} />
 				</div>
