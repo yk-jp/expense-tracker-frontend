@@ -1,4 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React, {useState} from "react";
+import CalenderDay from './CalenderDay'
+import { getDays, getDayOfFirst, getMonthName, getDayName } from '../Utilities/date'
 
 interface transaction{
 	event: string,
@@ -48,12 +51,17 @@ const Calender = () => {
 	return(
 		<div className="w-168 mx-auto">
 			<h2 className="text-center text-2xl">
-				hello
+				{`${getMonthName(targetMonth.getMonth())} - ${targetMonth.getFullYear()}`}
 			</h2>
 			<div className="w-full flex">
-				days
+				{[...Array(7)].map((_, idx) => {
+					let className = "grow-1/7 text-center text-white py-1"
+					className += ` ${daysColorPallet[idx]}`
+					return (
+						<h3 key={getDayName(idx)} className={className}>{getDayName(idx)}</h3>
+					)
+				})}
 			</div>
-
 		</div>
 	)
 }
