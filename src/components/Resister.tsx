@@ -2,6 +2,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, {useState, useRef} from "react";
 import MiniCalendar from "./MiniCalendar";
+import Category from "./Category";
 
 
 const inputRowStyle = "flex mb-4"
@@ -51,7 +52,7 @@ const Resister = () => {
 					<label className={`${labelBasicStyle}`}>Category</label>
 					<input type="text" disabled required className={`${inputBasicStyle}`} />
 				</div>
-				<div>category selector will be here</div>
+				<Category />
 				<div className={inputRowStyle}>
 					<label className={`${labelBasicStyle}`}>Amount</label>
 					<input type="number" required className={`${inputBasicStyle}`} />

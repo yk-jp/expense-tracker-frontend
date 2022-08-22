@@ -46,7 +46,7 @@ const MiniCalendar = () => {
 					<button
 						type="button"
 						key={num}
-						className="w-1/7 h-10 p-2 text-center text-black hover:bg-teal-400 cursor-pointer"
+						className="w-1/7 h-10 p-2 text-center text-black hover:bg-teal-400 cursor-pointer rounded-full"
 					>
 						{num === 0 ? "": num}
 					</button>
