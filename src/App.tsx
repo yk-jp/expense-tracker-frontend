@@ -9,7 +9,7 @@ import LineGraph from './components/LineGraph';
 const App = () => (
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<LineGraph />} />
+      <Route path="/" element={<BarGraph />} />
       <Route path="/calendar" element={<Calender />} />
       <Route path="/login" element={<Login />} />
     </Routes>
