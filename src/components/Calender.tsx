@@ -109,7 +109,6 @@ const Calender = () => {
 			}
 		}
 		while (true){
-			console.log(temp.length)
 			if (temp.length % 7 === 0){
 				break
 			}
