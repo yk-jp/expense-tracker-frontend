@@ -3,13 +3,17 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Calender from './components/Calender';
 import Login from './components/Login';
+import BarGraph from './components/BarGraph';
+import LineGraph from './components/LineGraph';
 import Resister from './components/Resister';
-
 
 const App = () => (
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Resister />} />
+      <Route path="/" element={<BarGraph />} />
+      <Route path='/lineGraph' element={<LineGraph />} />
+      <Route path="/calendar" element={<Calender />} />
+      <Route path="/resister" element={<Resister />} />
       <Route path="/login" element={<Login />} />
       <Route path="/calendar" element={<Calender />} />
     </Routes>
@@ -17,3 +21,4 @@ const App = () => (
 );
 
 export default App;
+
