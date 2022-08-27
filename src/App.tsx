@@ -6,11 +6,13 @@ import Login from './components/Login';
 import BarGraph from './components/BarGraph';
 import LineGraph from './components/LineGraph';
 import Resister from './components/Resister';
+import MonthlyDetail from './components/MonthlyDetail';
 
 const App = () => (
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<BarGraph />} />
+      <Route path="/" element={<MonthlyDetail />} />
+      <Route path="/barGraph" element={<BarGraph />} />
       <Route path='/lineGraph' element={<LineGraph />} />
       <Route path="/calendar" element={<Calender />} />
       <Route path="/resister" element={<Resister />} />
