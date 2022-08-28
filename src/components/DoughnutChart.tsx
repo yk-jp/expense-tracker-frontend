@@ -5,7 +5,7 @@ import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables);
 
-interface doughnutChartDateasets{
+interface doughnutChartDatasets{
 	label: string,
 	data: number[],
 	backgroundColor: string[],
@@ -13,7 +13,7 @@ interface doughnutChartDateasets{
 
 interface doughnutChart{
 	labels: string[],
-	datasets: doughnutChartDateasets[]
+	datasets: doughnutChartDatasets[]
 }
 const sampleDatasets = [
 	{
@@ -40,20 +40,24 @@ const DoughnutChart = () => {
 	const options = {
 		plugins: {
 			legend: {
-			},
+        labels: {
+          padding: 10,
+          font: {
+            size: 14,
+          },
+        },
+			}
 		}
 	}
 
 	return (
-		<div className="flex flex-col items-center px-10 ">
+		<div className="flex flex-col items-center px-6 ">
 			<Doughnut
-				width={500}
-				height={500}
 				data={data}
 				options={options}
 				id='chart-key'
 			/>
-			<p className="text-center -mt-44 mb-44" >total income is $400</p>
+			<p className="text-center -mt-40 mb-36" >total Income is <br /><span className="font-bold">$400</span></p>
 
 		</div>
 	)

@@ -31,3 +31,27 @@ export const convertDayToString = (date: Date): string => {
 	const fullDate = date.toLocaleDateString().split("/")
 	return `${fullDate[2]}-${fullDate[0]}-${fullDate[1]}`
 } 
+
+export const getOnlyDateNum = (date: string): string => {
+	const full = date.split("/")
+	const day = full[2]
+	let suffix = ""
+	switch (day) {
+		case "1": {
+			suffix = "st"
+			break
+		}
+		case "2": {
+			suffix = "nd"
+			break
+		}
+		case "3":{
+			suffix = "rd"
+			break
+		}
+		default: {
+			suffix = "th"
+		}
+	}
+	return day + suffix
+}
