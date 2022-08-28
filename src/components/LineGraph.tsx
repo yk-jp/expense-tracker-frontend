@@ -3,20 +3,9 @@ import React from "react";
 import { Line } from 'react-chartjs-2'
 import { Chart, registerables } from 'chart.js';
 import { getShortMonthName } from "../Utilities/date"; 
+import { lineGraph, lineGraphDatasets } from '../Interface/LineGraph'
 
 Chart.register(...registerables);
-
-interface lineGraphDatasets{
-	label: string,
-	data: number[],
-	borderColor: string,
-	backgroundColor: string
-}
-
-interface lineGraph {
-	labels: string[],
-	datasets: lineGraphDatasets[]
-}
 
 const sampleDatasets: lineGraphDatasets[] = [
 	{

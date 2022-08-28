@@ -5,15 +5,7 @@
 import React, {useEffect, useState} from "react";
 import CalenderDay from './CalenderDay'
 import { getDays, getDayOfFirst, getMonthName, getDayName } from '../Utilities/date'
-
-interface transaction{
-	id: number,
-	category: string,
-	event: string,
-	amount: string,
-	memo: string,
-	date: string,
-}
+import transaction from "../Interface/Transaction";
 
 const sampleData: transaction[] = [
 	{

@@ -2,19 +2,10 @@
 import React from "react";
 import { Doughnut } from 'react-chartjs-2'
 import { Chart, registerables } from 'chart.js';
+import { doughnutChartDataSets, doughnutChart } from '../Interface/DoughnutChart'
 
 Chart.register(...registerables);
 
-interface doughnutChartDatasets{
-	label: string,
-	data: number[],
-	backgroundColor: string[],
-}
-
-interface doughnutChart{
-	labels: string[],
-	datasets: doughnutChartDatasets[]
-}
 const sampleDatasets = [
 	{
 		label: '# of Votes',

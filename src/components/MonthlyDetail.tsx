@@ -3,6 +3,8 @@ import Category from "./Category";
 import DoughnutChart from "./DoughnutChart";
 import { colorPicker } from "../Utilities/colorPallet";
 import { getOnlyDateNum } from "../Utilities/date";
+import transaction from "../Interface/Transaction";
+import categorizedTransaction from "../Interface/CategorizedTransactions";
 
 
 const activeButtonClassName = "w-1/2 pb-2 border-b-cyan-500 border-b-4 ease-in duration-100"
@@ -11,22 +13,7 @@ const inactiveButtonClassName = "w-1/2 pb-2 text-slate-400 border-b-4 ease-in du
 const shownCategoryClassName = " ml-4 py-1 px-2 flex border-b duration-500 items-end"
 const noShownCategoryClassName = "h-0 overflow-hidden"
 
-interface transaction{
-	id: number,
-	category: string,
-	event: string,
-	amount: string,
-	memo: string,
-	date: string,
-}
-
-interface category{
-	name: string,
-	totalAmount: number,
-	transactions: transaction[]
-}
-
-const sample: category[] = [{
+const sample: categorizedTransaction[] = [{
 	name: 'food',
 	totalAmount: 500,
 	transactions: [{
@@ -69,8 +56,6 @@ const sample: category[] = [{
 		]
 	},
 ]
-
-
 
 const MonthlyDetail = () => {
 	const [transTypeIncome, setTransTypeIncome] = useState(true)

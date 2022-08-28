@@ -1,10 +1,5 @@
 import React from 'react'
-
-interface category {
-	id: number,
-	name: string,
-	category_type: string,
-}
+import category from '../Interface/Category'
 
 
 const samples: category[] = [
