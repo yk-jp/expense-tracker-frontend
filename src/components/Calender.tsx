@@ -117,7 +117,7 @@ const Calender = () => {
 	
 
 	return(
-		<div className="w-168 mx-auto">
+		<div className="w-168">
 			<PickMonthHeader date={targetMonth} setDate={setTargetMonth} />
 			<div className="w-full flex mt-3">
 				{[...Array(7)].map((_, idx) => {

@@ -44,7 +44,7 @@ const LineGraph = () => {
 	}
 
 	return (
-		<div className="w-168 mx-auto">
+		<div className="w-168">
 			<Line
 				height={300}
 				width={680}

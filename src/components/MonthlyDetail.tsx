@@ -84,7 +84,7 @@ const MonthlyDetail = () => {
 	}
 
 	return (
-		<div className="border-4 w-96 mx-auto">
+		<div className="border-4 w-96 h-full" >
 			<PickMonthHeader date={targetMonth} setDate={setTargetMonth} />
 			<div className="p-4">
 				<button 
@@ -101,7 +101,7 @@ const MonthlyDetail = () => {
 				>Expense</button>
 			</div>
 			<DoughnutChart />
-			<div>
+			<div className=" overflow-scroll">
 				{sample.map((cate, idx) => (
 					<div className="px-10">
 						<div className="p-2 rounded-md" style={{backgroundColor: colorPicker(idx)}}>
