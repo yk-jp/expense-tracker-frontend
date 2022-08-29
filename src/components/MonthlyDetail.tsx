@@ -1,10 +1,10 @@
 import React, {useState} from "react";
-import Category from "./Category";
 import DoughnutChart from "./DoughnutChart";
 import { colorPicker } from "../Utilities/colorPallet";
 import { getOnlyDateNum } from "../Utilities/date";
 import transaction from "../Interface/Transaction";
 import categorizedTransaction from "../Interface/CategorizedTransactions";
+import PickMonthHeader from "./PickMonthHeader";
 
 
 const activeButtonClassName = "w-1/2 pb-2 border-b-cyan-500 border-b-4 ease-in duration-100"
@@ -60,6 +60,7 @@ const sample: categorizedTransaction[] = [{
 const MonthlyDetail = () => {
 	const [transTypeIncome, setTransTypeIncome] = useState(true)
 	const [detailedCate, setDetailedCate] = useState<string>("")
+	const [targetMonth, setTargetMonth] = useState(new Date())
 
 	const onClickChangeDetailedCate = (e: React.MouseEvent<HTMLButtonElement>) => {
 		const et = e.target as HTMLButtonElement
@@ -84,6 +85,7 @@ const MonthlyDetail = () => {
 
 	return (
 		<div className="border-4 w-96 mx-auto">
+			<PickMonthHeader date={targetMonth} setDate={setTargetMonth} />
 			<div className="p-4">
 				<button 
 					type="button" 
