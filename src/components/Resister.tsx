@@ -1,8 +1,14 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-to-interactive-role */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, {useState, useRef} from "react";
+import React, {useState, useRef, useContext} from "react";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import { faX } from '@fortawesome/free-solid-svg-icons'
 import MiniCalendar from "./MiniCalendar";
 import Category from "./Category";
+import { convertDayToString } from "../Utilities/date";
+import AppContext from "../Context/useContext";
+import { ActionType } from "../Redux/ActionTypes";
+
 
 
 const inputRowStyle = "flex mb-4"
@@ -14,8 +20,13 @@ const unSelectedButtonStyle = "w-2/5 text-center py-1 border-2 border-gray-300 t
 
 const Resister = () => {
 
+	const { dispatchDisplayStatus } = useContext(AppContext)
 	const [transactionType, setTransactionType] = useState("Expense")
 	const [transDay, setTransDay] = useState(new Date())
+	const [datePickerOpened, setDatePickerOpened] = useState(false)
+	const [transCate, setTransCate] = useState('')
+	const [catePickerOpened, setCatePickerOpened] = useState(false)
+
 
 	const onClickType = (e: React.MouseEvent<HTMLButtonElement>) => {
 		const {value} = e.target as HTMLButtonElement
@@ -24,7 +35,13 @@ const Resister = () => {
 
 	
 	return (
-		<section className="w-112 border-2 border-teal-600 rounded-2xl mx-auto">
+		<section className=" absolute w-112 border-2 border-teal-600 rounded-2xl mx-auto bg-white z-40 top-10">
+			<button 
+				type="button"
+				onClick={() => dispatchDisplayStatus({type: ActionType.HIDE_REGISTER})} 
+				className="absolute -right-6 -top-6">
+				<FontAwesomeIcon icon={faX} className='w-12 h-12 rounded-full bg-white p-2'/>
+			</button>
 			<h2 className="py-4 text-center rounded-t-xl text-white bg-teal-600">Resister New Transaction</h2>
 			<form className="p-4 px-10">
 				<div className="flex justify-between mb-4">
@@ -45,14 +62,25 @@ const Resister = () => {
 				</div>
 				<div className={inputRowStyle}>
 					<label className={`${labelBasicStyle}`}>Date</label>
-					<input type="text" disabled required className={`${inputBasicStyle}`} />
+					<input 
+						type="text"
+						value={convertDayToString(transDay)}
+						onClick={() => setDatePickerOpened(prev => !prev)}
+						required 
+						className={`${inputBasicStyle}`} 
+					/>
 				</div>
-				<MiniCalendar />
+				{datePickerOpened && <MiniCalendar date={transDay} setDate={setTransDay} setDatePickerOpened={setDatePickerOpened} />}
 				<div className={inputRowStyle}>
 					<label className={`${labelBasicStyle}`}>Category</label>
-					<input type="text" disabled required className={`${inputBasicStyle}`} />
+					<input 
+						type="text"
+						required 
+						value={transCate}
+						onClick={() => setCatePickerOpened(prev => !prev)}
+						className={`${inputBasicStyle}`} />
 				</div>
-				<Category />
+				{catePickerOpened && <Category setCategory={setTransCate} setCatePickerOpened={setCatePickerOpened} transType={transactionType}/> }
 				<div className={inputRowStyle}>
 					<label className={`${labelBasicStyle}`}>Amount</label>
 					<input type="number" required className={`${inputBasicStyle}`} />

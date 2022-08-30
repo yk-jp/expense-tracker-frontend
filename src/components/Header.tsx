@@ -7,7 +7,7 @@ const Header = () => {
 	const [status, setStatus] = useState(true)
 
 	return (
-		<div className=" fixed top-0 bg-current w-full px-10 z-50">
+		<div className=" fixed top-0 bg-current w-full px-10 z-40">
 			<header className=" w-full max-w-272 mx-auto py-3  ">
 				<div className="flex justify-between">
 					<p className="text-white font-fantasy text-3xl">Expense Tracker</p>

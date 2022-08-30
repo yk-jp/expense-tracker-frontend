@@ -53,6 +53,94 @@ const sample: categorizedTransaction[] = [{
 				memo: "BBQ",
 				date: '2020/3/4'
 			},
+			{
+				id: 2,
+				category: 'hang out',
+				event: 'expense',
+				amount: '200',
+				memo: "BBQ",
+				date: '2020/3/4'
+			},
+			{
+				id: 2,
+				category: 'hang out',
+				event: 'expense',
+				amount: '200',
+				memo: "BBQ",
+				date: '2020/3/4'
+			},
+			{
+				id: 2,
+				category: 'hang out',
+				event: 'expense',
+				amount: '200',
+				memo: "BBQ",
+				date: '2020/3/4'
+			},
+			{
+				id: 2,
+				category: 'hang out',
+				event: 'expense',
+				amount: '200',
+				memo: "BBQ",
+				date: '2020/3/4'
+			},
+			{
+				id: 2,
+				category: 'hang out',
+				event: 'expense',
+				amount: '200',
+				memo: "BBQ",
+				date: '2020/3/4'
+			},
+			{
+				id: 2,
+				category: 'hang out',
+				event: 'expense',
+				amount: '200',
+				memo: "BBQ",
+				date: '2020/3/4'
+			},
+			{
+				id: 2,
+				category: 'hang out',
+				event: 'expense',
+				amount: '200',
+				memo: "BBQ",
+				date: '2020/3/4'
+			},
+			{
+				id: 2,
+				category: 'hang out',
+				event: 'expense',
+				amount: '200',
+				memo: "BBQ",
+				date: '2020/3/4'
+			},
+			{
+				id: 2,
+				category: 'hang out',
+				event: 'expense',
+				amount: '200',
+				memo: "BBQ",
+				date: '2020/3/4'
+			},
+			{
+				id: 2,
+				category: 'hang out',
+				event: 'expense',
+				amount: '200',
+				memo: "BBQ",
+				date: '2020/3/4'
+			},
+			{
+				id: 2,
+				category: 'hang out',
+				event: 'expense',
+				amount: '200',
+				memo: "BBQ",
+				date: '2020/3/4'
+			},
 		]
 	},
 ]
@@ -84,7 +172,7 @@ const MonthlyDetail = () => {
 	}
 
 	return (
-		<div className="border-4 w-96 h-full" >
+		<section className="border-4 w-96 h-full overflow-scroll" >
 			<PickMonthHeader date={targetMonth} setDate={setTargetMonth} />
 			<div className="p-4">
 				<button 
@@ -101,7 +189,7 @@ const MonthlyDetail = () => {
 				>Expense</button>
 			</div>
 			<DoughnutChart />
-			<div className=" overflow-scroll">
+			<div className="">
 				{sample.map((cate, idx) => (
 					<div className="px-10">
 						<div className="p-2 rounded-md" style={{backgroundColor: colorPicker(idx)}}>
@@ -129,7 +217,7 @@ const MonthlyDetail = () => {
 					
 				))}
 			</div>
-		</div>
+		</section>
 	)
 }
 

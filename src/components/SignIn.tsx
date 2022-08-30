@@ -9,7 +9,7 @@ import appApi from '../Apis/appApi';
 import ErrorPop from './ErrorPop';
 import tokens from '../Interface/Token';
 
-const Login = () => {
+const SignIn = () => {
 	const [email, setEmail] = useState<string | null>(null)
 	const [password, setPassword] = useState<string | null>(null)
 	const [error, setError] = useState<string | null>(null)
@@ -24,11 +24,10 @@ const Login = () => {
 			localStorage.setItem('expense-tracker-tokens', JSON.stringify(data.data))
 			const userToken: tokens = JSON.parse(localStorage.getItem('expense-tracker-tokens') || "") as tokens
 		} catch(err) {
-			setError("Invalid email and password combination")
+			setError("Invalid email")
 		}
 	}
 
-	console.log(window.location.href)
 
 
 	return (
@@ -38,10 +37,10 @@ const Login = () => {
 				<FontAwesomeIcon icon={faUser} size='5x'className='text-white' />
 				</div>
 			<form 
-				className='px-20 pt-24 bg-teal-600 rounded-2xl'
+				className='px-20 pt-24 bg-sky-600 rounded-2xl'
 				onSubmit={(e) => {onSubmit(e)}}
 			>
-				<h2 className='text-white text-center mb-6 text-2xl'>Log in</h2>
+				<h2 className='text-white text-center mb-6 text-2xl'>Sign In</h2>
 				<div className='w-full flex align-middle mb-6'>
 					<FontAwesomeIcon icon={faEnvelope} size='lg' className='text-white bg-zinc-700 py-4' style={{ width: '50px'}} />
 					<input 
@@ -60,21 +59,14 @@ const Login = () => {
 						className='block flex-1 pl-6 bg-zinc-600 text-white focus:bg-white focus:text-zinc-900'
 				/>
 				</div>
-				<div className='flex justify-between'>
-					<label className='text-white'>
-						<input type="checkbox" />
-						Remember me?
-					</label>
-					<p className='text-white hover:cursor-pointer'>Forgot password?</p>
-				</div>
-				<Link to='/signIn' className='text-white text-right hover:cursor-pointer block'>Create new account?</Link>
+				<Link className='text-white text-right hover:cursor-pointer block' to="/login">Already have an account?</Link>
 				<button 
 					type='submit' 
 					className='block w-36 mt-10 mx-auto p-5 bg-zinc-700 text-white rounded-full translate-y-8 hover:bg-zinc-300 hover:text-zinc-900 duration-200 active:translate-y-10'
-				>Login
+				>Sign In
 				</button>
 			</form>
 		</section>
 )};
 
-export default Login;
+export default SignIn;

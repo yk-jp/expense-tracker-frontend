@@ -30,13 +30,13 @@ const LineGraph = () => {
 	}
 
 	const options = {
-		maintainAspectRatio: false,
 		plugins: {
 			legend: {
+				position:"bottom" as const,
 				labels: {
-					boxHeight: 20,
+					boxHeight: 16,
 					font: {
-						size: 20
+						size: 16
 					}
 				}
 			}
@@ -44,7 +44,8 @@ const LineGraph = () => {
 	}
 
 	return (
-		<div className="w-168">
+		<section className="w-168">
+			<h3 className="text-center mt-3 text-lg">[ Income / Expense Changes in Recent 1 Year ]</h3>
 			<Line
 				height={300}
 				width={680}
@@ -52,7 +53,7 @@ const LineGraph = () => {
 				options={options}
 				id='chart-key'
 			/>
-		</div>
+		</section>
 	)
 }
 
