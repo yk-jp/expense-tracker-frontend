@@ -1,26 +1,34 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
-import React, { createContext, useReducer } from 'react';
+import React, { useReducer } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header';
 import Main from './components/Main';
 import Login from './components/Login';
 import SignIn from './components/SignIn';
-import { displayState, DSRAction } from './Interface/Reducers';
+import { displayState, userState } from './Interface/Reducers';
 import displayStatusReducer from './Redux/DisplayStatusReducer';
 import AppContext from './Context/useContext';
+import userStatusReducer from './Redux/UserStatusReducer';
 
 const displayInitialState: displayState = {
   isRegisterShown: false,
   isMiniCalendarShown: false
 }
 
+const userInitialState: userState = {
+  loggedIn: false,
+  email: null,
+  tokens: null
+}
+
 const App = () => {
   const [displayStatus, dispatchDisplayStatus] = useReducer(displayStatusReducer, displayInitialState)
+  const [userStatus, dispatchUserState] = useReducer(userStatusReducer, userInitialState)
 
   return (
   <BrowserRouter>
-    <AppContext.Provider value={{displayStatus, dispatchDisplayStatus }} >
+    <AppContext.Provider value={{displayStatus, dispatchDisplayStatus, userStatus, dispatchUserState }} >
     <Header />
       <Routes>
         <Route path="/" element={<Main />} />

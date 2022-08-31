@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-to-interactive-role */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, {useState, useRef, useContext} from "react";
+import React, {useState, useContext} from "react";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faX } from '@fortawesome/free-solid-svg-icons'
 import MiniCalendar from "./MiniCalendar";
@@ -8,8 +8,6 @@ import Category from "./Category";
 import { convertDayToString } from "../Utilities/date";
 import AppContext from "../Context/useContext";
 import { ActionType } from "../Redux/ActionTypes";
-
-
 
 const inputRowStyle = "flex mb-4"
 const labelBasicStyle = " w-1/3 block "

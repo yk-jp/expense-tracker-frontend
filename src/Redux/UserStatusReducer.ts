@@ -1,20 +1,16 @@
-/* eslint-disable default-param-last */
-import { USRAction } from "../Interface/Reducers"
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { USRAction, userState } from "../Interface/Reducers"
 import { ActionType } from "./ActionTypes"
 
-interface userState {
-	loggedIn: boolean
-}
 
-export const initialState: userState = {
-	loggedIn: false
-}
-
-const userStatusReducer = (state: userState = initialState, action: USRAction) => {
+const userStatusReducer = (state: userState, action: USRAction) => {
 	switch(action.type){
 		case ActionType.LOGIN_USER:
 			return {
-				loggedIn: true
+				...state,
+				loggedIn: true,
+				tokens: {refresh: action.token!.refresh, access: action.token!.access},
+				email: action.email
 			}
 		default: 
 			return state
@@ -22,14 +18,3 @@ const userStatusReducer = (state: userState = initialState, action: USRAction) =
 }
 
 export default userStatusReducer
-
-// const reducer = (state, action) => {
-// 	switch (action.type) {
-// 		case 'deposit':
-// 			return state + action.payload
-// 		case 'withdraw':
-// 			return state + action.payload
-// 		default:
-// 			return state
-// 	}
-// }

@@ -1,3 +1,4 @@
+import tokens from "./Token"
 
 export interface DSRAction {
 	type: string,
@@ -5,7 +6,8 @@ export interface DSRAction {
 
 export interface USRAction {
 	type: string,
-	payload: number
+	token?: tokens | null,
+	email: string | null
 }
 
 export interface displayState{
@@ -14,5 +16,7 @@ export interface displayState{
 }
 
 export interface userState {
-	loggedIn: boolean
+	loggedIn: boolean,
+	tokens: tokens | null,
+	email: string | null
 }
