@@ -12,6 +12,13 @@ const userStatusReducer = (state: userState, action: USRAction) => {
 				tokens: {refresh: action.token!.refresh, access: action.token!.access},
 				email: action.email
 			}
+		case ActionType.LOGOUT_USER:
+			return {
+				...state,
+				loggedIn: false,
+				tokens: null,
+				email: null
+			}
 		default: 
 			return state
 	}

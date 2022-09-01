@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useContext, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faUser, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons'
 import appApi from '../Apis/appApi';
@@ -10,9 +12,11 @@ import ErrorPop from './ErrorPop';
 import tokens from '../Interface/Token';
 import AppContext from "../Context/useContext";
 import { ActionType } from "../Redux/ActionTypes";
+import { generateTokenFailed } from '../Interface/ApiReturns';
 
 
 const Login = () => {
+	const nav = useNavigate()
 	const { dispatchUserState } = useContext(AppContext)
 	const [email, setEmail] = useState<string | null>(null)
 	const [password, setPassword] = useState<string | null>(null)
@@ -28,8 +32,10 @@ const Login = () => {
 			localStorage.setItem('expense-tracker-tokens', JSON.stringify(data.data))
 			const userToken: tokens = JSON.parse(localStorage.getItem('expense-tracker-tokens') || "") as tokens
 			dispatchUserState({type: ActionType.LOGIN_USER, token: userToken, email})
+			nav('/')
 		} catch(err) {
-			setError("Invalid email and password combination")
+			const errRes = err as generateTokenFailed
+			setError(errRes.response.data.detail as string)
 		}
 	}
 
