@@ -32,7 +32,7 @@ const PickMonthHeader = ({ date, setDate }: Props) => {
 					className="text-black p-2 pb-0"
 				/>
 			</button>
-			<h2 className="text-xl py-2 pb-0 px-5 border-b-2 border-b-teal-500">{getMonthName(date.getMonth())}</h2>
+			<h2 className="text-xl py-2 pb-0 px-5 border-b-2 border-b-teal-500">{getMonthName(date.getMonth())}, {date.getFullYear()}</h2>
 			<button type="button" value="add" onClick={onClickChangeMonth}>
 				<FontAwesomeIcon 
 					icon={faCaretRight}
