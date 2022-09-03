@@ -10,16 +10,15 @@ import AppContext from "../Context/useContext";
 import { ActionType } from "../Redux/ActionTypes";
 
 const Main = () => {
-	const { displayStatus, dispatchDisplayStatus } = useContext(AppContext)
-	const [stats, setStatus] = useState(true)
+	const { displayStatus, dispatchDisplayStatus, userStatus } = useContext(AppContext)
 	const nav = useNavigate()
 
 
 	useEffect(()=>{
-		if (stats === false) {
+		if (userStatus.loggedIn === false) {
 			nav('/login')
 		}
-	}, [nav, stats])
+	}, [nav, userStatus.loggedIn])
 
 	return (
 		<main className="flex justify-center min-w-272" style={{marginTop: '60px'}}>

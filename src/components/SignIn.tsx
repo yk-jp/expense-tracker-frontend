@@ -1,15 +1,21 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import React, { useState, useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faUser, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons'
 import appApi from '../Apis/appApi';
 import ErrorPop from './ErrorPop';
+import AppContext from "../Context/useContext";
 import tokens from '../Interface/Token';
+import { registerAccountResult } from '../Interface/ApiReturns';
+import { ActionType } from '../Redux/ActionTypes';
 
 const SignIn = () => {
+	const nav = useNavigate()
+	const { dispatchUserState } = useContext(AppContext)
 	const [email, setEmail] = useState<string | null>(null)
 	const [password, setPassword] = useState<string | null>(null)
 	const [error, setError] = useState<string | null>(null)
@@ -17,17 +23,23 @@ const SignIn = () => {
 	const onSubmit = async (e: React.SyntheticEvent) => {
 		e.preventDefault()
 		try{
-			const data = await appApi.post('/auth/token/', {
-				email,
-				password
+			await appApi.post('/auth/register/', {email, password}).then(async() => {
+				const data = await appApi.post('/auth/token/', {
+					email,
+					password
+				})
+				localStorage.setItem('expense-tracker-tokens', JSON.stringify(data.data))
+				const newToken = data.data as tokens
+				dispatchUserState({type: ActionType.LOGIN_USER, token: newToken, email})
+				nav('/')
+	
 			})
-			localStorage.setItem('expense-tracker-tokens', JSON.stringify(data.data))
-			const userToken: tokens = JSON.parse(localStorage.getItem('expense-tracker-tokens') || "") as tokens
+
 		} catch(err) {
-			setError("Invalid email")
+			const errRes = err as registerAccountResult
+			setError(errRes.response.data.message as string)
 		}
 	}
-
 
 
 	return (

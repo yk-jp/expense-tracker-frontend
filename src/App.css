@@ -13,7 +13,8 @@ input[type=checkbox]{
 }
 
 .errorMessage{
-	animation: fadeInOut 4s forwards;
+	animation: fadeInOut 5s forwards;
+	z-index: 100;
 }
 @keyframes fadeInOut{
 	0%{
