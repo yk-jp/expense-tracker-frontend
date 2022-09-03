@@ -3,20 +3,9 @@ import React from "react";
 import { Line } from 'react-chartjs-2'
 import { Chart, registerables } from 'chart.js';
 import { getShortMonthName } from "../Utilities/date"; 
+import { lineGraph, lineGraphDatasets } from '../Interface/LineGraph'
 
 Chart.register(...registerables);
-
-interface lineGraphDatasets{
-	label: string,
-	data: number[],
-	borderColor: string,
-	backgroundColor: string
-}
-
-interface lineGraph {
-	labels: string[],
-	datasets: lineGraphDatasets[]
-}
 
 const sampleDatasets: lineGraphDatasets[] = [
 	{
@@ -41,13 +30,13 @@ const LineGraph = () => {
 	}
 
 	const options = {
-		maintainAspectRatio: false,
 		plugins: {
 			legend: {
+				position:"bottom" as const,
 				labels: {
-					boxHeight: 20,
+					boxHeight: 16,
 					font: {
-						size: 20
+						size: 16
 					}
 				}
 			}
@@ -55,7 +44,8 @@ const LineGraph = () => {
 	}
 
 	return (
-		<div className="w-168 mx-auto">
+		<section className="w-168">
+			<h3 className="text-center mt-3 text-lg">[ Income / Expense Changes in Recent 1 Year ]</h3>
 			<Line
 				height={300}
 				width={680}
@@ -63,7 +53,7 @@ const LineGraph = () => {
 				options={options}
 				id='chart-key'
 			/>
-		</div>
+		</section>
 	)
 }
 

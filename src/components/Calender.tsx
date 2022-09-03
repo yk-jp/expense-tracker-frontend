@@ -4,16 +4,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React, {useEffect, useState} from "react";
 import CalenderDay from './CalenderDay'
-import { getDays, getDayOfFirst, getMonthName, getDayName } from '../Utilities/date'
-
-interface transaction{
-	id: number,
-	category: string,
-	event: string,
-	amount: string,
-	memo: string,
-	date: string,
-}
+import { getDays, getDayOfFirst, getDayName } from '../Utilities/date'
+import transaction from "../Interface/Transaction";
+import PickMonthHeader from "./PickMonthHeader";
 
 const sampleData: transaction[] = [
 	{
@@ -124,11 +117,9 @@ const Calender = () => {
 	
 
 	return(
-		<div className="w-168 mx-auto">
-			<h2 className="text-center text-2xl">
-				{`${getMonthName(targetMonth.getMonth())} - ${targetMonth.getFullYear()}`}
-			</h2>
-			<div className="w-full flex">
+		<section className="w-168">
+			<PickMonthHeader date={targetMonth} setDate={setTargetMonth} />
+			<div className="w-full flex mt-3">
 				{[...Array(7)].map((_, idx) => {
 					let className = "w-24 text-center text-white py-1"
 					className += ` ${daysColorPallet[idx]}`
@@ -142,7 +133,7 @@ const Calender = () => {
 					<CalenderDay key={day.id} day={day.day} income={day.income} expense={day.expense} />
 				))}
 			</div>
-		</div>
+		</section>
 	)
 }
 

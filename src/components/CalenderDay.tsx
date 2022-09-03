@@ -8,7 +8,6 @@ type Props = {
 }
 
 const CalenderDay = ({day, income, expense}: Props) => {
-	const a = 0
 
 	if (day === 0) {
 		return (
