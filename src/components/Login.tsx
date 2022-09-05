@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable jsx-a11y/label-has-associated-control */
@@ -7,12 +6,12 @@ import React, { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faUser, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons'
-import appApi from '../Apis/appApi';
 import ErrorPop from './ErrorPop';
-import tokens from '../Interface/Token';
 import AppContext from "../Context/useContext";
+import { loginApi } from '../Apis/accountApi';
 import { ActionType } from "../Redux/ActionTypes";
 import { generateTokenFailed } from '../Interface/ApiReturns';
+import tokens from '../Interface/Token';
 
 
 const Login = () => {
@@ -24,18 +23,14 @@ const Login = () => {
 
 	const onSubmit = async (e: React.SyntheticEvent) => {
 		e.preventDefault()
-		try{
-			const data = await appApi.post('/auth/token/', {
-				email,
-				password
-			})
-			localStorage.setItem('expense-tracker-tokens', JSON.stringify(data.data))
-			const userToken: tokens = JSON.parse(localStorage.getItem('expense-tracker-tokens') || "") as tokens
-			dispatchUserState({type: ActionType.LOGIN_USER, token: userToken, email})
+		const res: tokens | generateTokenFailed = await loginApi(email, password)
+		if (Object.keys(res).length === 2) {
+			const success = res as tokens
+			dispatchUserState({type: ActionType.LOGIN_USER, token: success, email})
 			nav('/')
-		} catch(err) {
-			const errRes = err as generateTokenFailed
-			setError(errRes.response.data.detail as string)
+		} else {
+			const failed = res as generateTokenFailed
+			setError(failed.response.data.detail)
 		}
 	}
 

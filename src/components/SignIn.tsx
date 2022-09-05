@@ -6,12 +6,12 @@ import React, { useState, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faUser, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons'
-import appApi from '../Apis/appApi';
-import ErrorPop from './ErrorPop';
 import AppContext from "../Context/useContext";
-import tokens from '../Interface/Token';
-import { registerAccountResult } from '../Interface/ApiReturns';
+import ErrorPop from './ErrorPop';
+import { signInApi } from '../Apis/accountApi';
 import { ActionType } from '../Redux/ActionTypes';
+import { registerAccountFailed } from '../Interface/ApiReturns';
+import tokens from '../Interface/Token';
 
 const SignIn = () => {
 	const nav = useNavigate()
@@ -22,22 +22,14 @@ const SignIn = () => {
 
 	const onSubmit = async (e: React.SyntheticEvent) => {
 		e.preventDefault()
-		try{
-			await appApi.post('/auth/register/', {email, password}).then(async() => {
-				const data = await appApi.post('/auth/token/', {
-					email,
-					password
-				})
-				localStorage.setItem('expense-tracker-tokens', JSON.stringify(data.data))
-				const newToken = data.data as tokens
-				dispatchUserState({type: ActionType.LOGIN_USER, token: newToken, email})
-				nav('/')
-	
-			})
-
-		} catch(err) {
-			const errRes = err as registerAccountResult
-			setError(errRes.response.data.message as string)
+		const res: tokens | registerAccountFailed = await signInApi(email, password)
+		if (Object.keys(res).length === 2){
+			const success = res as tokens
+			dispatchUserState({type: ActionType.LOGIN_USER, token: success, email})
+			nav('/')
+		} else {
+			const failed = res as registerAccountFailed
+			setError(failed.response.data.message)
 		}
 	}
 

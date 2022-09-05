@@ -1,7 +1,7 @@
 import tokens from "./Token"
 
 
-export interface registerAccountResult {
+export interface registerAccountFailed {
 	response: {
 		data: {
 			message: string,

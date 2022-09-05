@@ -9,14 +9,31 @@ import Resister from "./Resister";
 import AppContext from "../Context/useContext";
 import { ActionType } from "../Redux/ActionTypes";
 
+// export const createAxiosHeader = (token: string) => {
+// 	let config = {
+// 		headers: {
+// 			'Authorization': 'Bearer' + token
+// 		}
+// 	}
+// 	return config
+// } 
+
 const Main = () => {
 	const { displayStatus, dispatchDisplayStatus, userStatus } = useContext(AppContext)
 	const nav = useNavigate()
 
 
 	useEffect(()=>{
+
+		// const fetchCategory = async () => {
+		// 	const header = createAxiosHeader(userStatus.tokens?.access)
+		// 	const data  = await 
+		// }
 		if (userStatus.loggedIn === false) {
 			nav('/login')
+		} else {
+			// fetch category
+
 		}
 	}, [nav, userStatus.loggedIn])
 

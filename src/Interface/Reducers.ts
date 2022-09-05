@@ -1,4 +1,5 @@
 import tokens from "./Token"
+import category from "./Category"
 
 export interface DSRAction {
 	type: string,
@@ -18,5 +19,6 @@ export interface displayState{
 export interface userState {
 	loggedIn: boolean,
 	tokens: tokens | null,
-	email: string | null
+	email: string | null,
+	category: category[]
 }
