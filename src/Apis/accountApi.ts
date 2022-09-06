@@ -3,7 +3,6 @@ import tokens from "../Interface/Token";
 import { loginFailed, registerAccountFailed, generateTokenFailed, generateTokenSuccess } from "../Interface/ApiReturns";
 
 const loginApi = async (email: string | null, password: string | null): Promise<tokens | loginFailed> => {
-
 	try{
 		const data = await appApi.post('/auth/token/', {
 			email, password
@@ -15,7 +14,6 @@ const loginApi = async (email: string | null, password: string | null): Promise<
 		const errRes = err as loginFailed
 		return errRes
 	}
-
 }
 
 const signInApi = async (email: string | null, password: string | null): Promise<tokens | registerAccountFailed> => {

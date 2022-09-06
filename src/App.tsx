@@ -20,7 +20,7 @@ const userInitialState: userState = {
   loggedIn: false,
   email: null,
   tokens: null,
-  category: []
+  category: {expense: [], income: []}
 }
 
 const App = () => {

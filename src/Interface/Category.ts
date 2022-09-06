@@ -3,3 +3,8 @@ export default interface category {
 	name: string,
 	category_type: string,
 }
+
+export interface categoryAll {
+	income: category[],
+	expense: category[]
+}

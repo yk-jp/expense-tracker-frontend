@@ -1,5 +1,5 @@
 import tokens from "./Token"
-
+import category from "./Category"
 
 export interface registerAccountFailed {
 	response: {
@@ -29,4 +29,11 @@ export interface generateTokenFailed {
 
 export interface generateTokenSuccess {
 	access: string
+}
+
+export interface categoryFetchSuccess {
+	is_success: boolean,
+	result: {
+		category_all: category[]
+	}
 }

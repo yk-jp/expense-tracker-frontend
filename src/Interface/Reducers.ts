@@ -1,5 +1,5 @@
 import tokens from "./Token"
-import category from "./Category"
+import category, {categoryAll} from "./Category"
 
 export interface DSRAction {
 	type: string,
@@ -8,7 +8,12 @@ export interface DSRAction {
 export interface USRAction {
 	type: string,
 	token?: tokens | null,
-	email: string | null
+	email: string | null,
+}
+
+export interface USCategoryAction {
+	type: string,
+	newCategory: category[]
 }
 
 export interface displayState{
@@ -20,5 +25,5 @@ export interface userState {
 	loggedIn: boolean,
 	tokens: tokens | null,
 	email: string | null,
-	category: category[]
+	category: categoryAll
 }

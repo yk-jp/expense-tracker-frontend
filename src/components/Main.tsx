@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
@@ -8,23 +9,23 @@ import MonthlyDetail from "./MonthlyDetail";
 import Resister from "./Resister";
 import AppContext from "../Context/useContext";
 import { ActionType } from "../Redux/ActionTypes";
-import { generateNewToken } from "../Apis/accountApi";
+import { fetchCategory } from "../Apis/categoryApi";
 
 const Main = () => {
 	const { displayStatus, dispatchDisplayStatus, userStatus } = useContext(AppContext)
 	const nav = useNavigate()
 
-
 	useEffect(()=>{
 
-		const fetchCategory = async () => {
-			const data = await generateNewToken(userStatus.tokens!.refresh!)
+		const getCategory = async () => {
+
+			const data = await fetchCategory(userStatus.tokens!)
 
 		}
 		if (userStatus.loggedIn === false) {
 			nav('/login')
 		} else {
-			fetchCategory().catch(console.error)
+			getCategory().catch(console.error)
 
 		}
 	}, [nav, userStatus.loggedIn, userStatus.tokens])
