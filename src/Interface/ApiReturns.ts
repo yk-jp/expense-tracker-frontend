@@ -10,10 +10,23 @@ export interface registerAccountFailed {
 	}
 }
 
-export interface generateTokenFailed {
+export interface loginFailed {
 	response: {
 		data: {
 			detail: string
 		}
 	}
+}
+
+export interface generateTokenFailed {
+	response: {
+		data: {
+			detail: string,
+			code: string
+		}
+	}
+}
+
+export interface generateTokenSuccess {
+	access: string
 }

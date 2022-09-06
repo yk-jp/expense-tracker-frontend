@@ -1,10 +1,8 @@
-
-
 import appApi from "./appApi";
 import tokens from "../Interface/Token";
-import { generateTokenFailed, registerAccountFailed } from "../Interface/ApiReturns";
+import { loginFailed, registerAccountFailed, generateTokenFailed, generateTokenSuccess } from "../Interface/ApiReturns";
 
-const loginApi = async (email: string | null, password: string | null): Promise<tokens | generateTokenFailed> => {
+const loginApi = async (email: string | null, password: string | null): Promise<tokens | loginFailed> => {
 
 	try{
 		const data = await appApi.post('/auth/token/', {
@@ -14,7 +12,7 @@ const loginApi = async (email: string | null, password: string | null): Promise<
 		const userToken: tokens = JSON.parse(localStorage.getItem('expense-tracker-tokens') || "") as tokens
 		return userToken
 	} catch (err) {
-		const errRes = err as generateTokenFailed
+		const errRes = err as loginFailed
 		return errRes
 	}
 
@@ -26,7 +24,7 @@ const signInApi = async (email: string | null, password: string | null): Promise
 			email, password
 		})
 		.then(async() => {
-			const loginData: tokens | generateTokenFailed = await loginApi(email, password)
+			const loginData: tokens | loginFailed = await loginApi(email, password)
 			return loginData as tokens
 		})
 		return data
@@ -36,4 +34,17 @@ const signInApi = async (email: string | null, password: string | null): Promise
 	}
 }
 
-export { loginApi, signInApi }
+const generateNewToken = async (refreshToken: string): Promise<tokens | generateTokenFailed> => {
+	try {
+		const data = await appApi.post('/auth/token/refresh/', {
+			"refresh": refreshToken
+		})
+		const accessToken = data.data as generateTokenSuccess
+		return {refresh: refreshToken, access: accessToken.access}
+	} catch (err) {
+		const errRes = err as generateTokenFailed
+		return errRes
+	}
+}
+
+export { loginApi, signInApi, generateNewToken }

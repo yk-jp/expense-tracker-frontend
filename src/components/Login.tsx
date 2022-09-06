@@ -10,7 +10,7 @@ import ErrorPop from './ErrorPop';
 import AppContext from "../Context/useContext";
 import { loginApi } from '../Apis/accountApi';
 import { ActionType } from "../Redux/ActionTypes";
-import { generateTokenFailed } from '../Interface/ApiReturns';
+import { loginFailed } from '../Interface/ApiReturns';
 import tokens from '../Interface/Token';
 
 
@@ -23,13 +23,13 @@ const Login = () => {
 
 	const onSubmit = async (e: React.SyntheticEvent) => {
 		e.preventDefault()
-		const res: tokens | generateTokenFailed = await loginApi(email, password)
+		const res: tokens | loginFailed = await loginApi(email, password)
 		if (Object.keys(res).length === 2) {
 			const success = res as tokens
 			dispatchUserState({type: ActionType.LOGIN_USER, token: success, email})
 			nav('/')
 		} else {
-			const failed = res as generateTokenFailed
+			const failed = res as loginFailed
 			setError(failed.response.data.detail)
 		}
 	}

@@ -1,22 +1,14 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import { useNavigate } from "react-router-dom";
 import Calender from "./Calender";
 import LineGraph from "./LineGraph";
 import MonthlyDetail from "./MonthlyDetail";
 import Resister from "./Resister";
 import AppContext from "../Context/useContext";
 import { ActionType } from "../Redux/ActionTypes";
-
-// export const createAxiosHeader = (token: string) => {
-// 	let config = {
-// 		headers: {
-// 			'Authorization': 'Bearer' + token
-// 		}
-// 	}
-// 	return config
-// } 
+import { generateNewToken } from "../Apis/accountApi";
 
 const Main = () => {
 	const { displayStatus, dispatchDisplayStatus, userStatus } = useContext(AppContext)
@@ -25,17 +17,17 @@ const Main = () => {
 
 	useEffect(()=>{
 
-		// const fetchCategory = async () => {
-		// 	const header = createAxiosHeader(userStatus.tokens?.access)
-		// 	const data  = await 
-		// }
+		const fetchCategory = async () => {
+			const data = await generateNewToken(userStatus.tokens!.refresh!)
+
+		}
 		if (userStatus.loggedIn === false) {
 			nav('/login')
 		} else {
-			// fetch category
+			fetchCategory().catch(console.error)
 
 		}
-	}, [nav, userStatus.loggedIn])
+	}, [nav, userStatus.loggedIn, userStatus.tokens])
 
 	return (
 		<main className="flex justify-center min-w-272" style={{marginTop: '60px'}}>
