@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-prototype-builtins */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
@@ -10,25 +12,34 @@ import Resister from "./Resister";
 import AppContext from "../Context/useContext";
 import { ActionType } from "../Redux/ActionTypes";
 import { fetchCategory } from "../Apis/categoryApi";
+import { categoryAll } from "../Interface/Category";
+import tokens from "../Interface/Token";
 
 const Main = () => {
-	const { displayStatus, dispatchDisplayStatus, userStatus } = useContext(AppContext)
+	const { displayStatus, dispatchDisplayStatus, dispatchUserState, userStatus } = useContext(AppContext)
 	const nav = useNavigate()
 
 	useEffect(()=>{
-
 		const getCategory = async () => {
-
 			const data = await fetchCategory(userStatus.tokens!)
-
+			if (Object.prototype.hasOwnProperty.call(data, 'income')) {
+				const allCate = data as categoryAll
+				console.log(allCate)
+				// TODO: dispatch doesn't work
+				dispatchUserState({type: ActionType.ADD_INCOME_CATEGORY, newCategory: allCate.income})
+				dispatchUserState({type: ActionType.ADD_EXPENSE_CATEGORY, newCategory: allCate.expense})
+			} else if (Object.prototype.hasOwnProperty.call(data, 'refresh')){
+				const token = data as tokens
+				dispatchUserState({type: ActionType.LOGIN_USER, token, email: userStatus.email})
+			}
 		}
+
 		if (userStatus.loggedIn === false) {
 			nav('/login')
 		} else {
 			getCategory().catch(console.error)
-
 		}
-	}, [nav, userStatus.loggedIn, userStatus.tokens])
+	}, [])
 
 	return (
 		<main className="flex justify-center min-w-272" style={{marginTop: '60px'}}>

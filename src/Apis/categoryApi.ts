@@ -3,8 +3,9 @@ import appApi from "./appApi";
 import { generateNewToken } from "./accountApi";
 import tokens from "../Interface/Token";
 import { categoryFetchSuccess } from "../Interface/ApiReturns";
+import { categoryAll} from '../Interface/Category'
 
-const fetchCategory = async (token: tokens) => {
+const fetchCategory = async (token: tokens): Promise<categoryAll | tokens> => {
 	try{
 		const dataIncome = await appApi.get('/category/Income', {
 			headers: {"Authorization": `Bearer ${token.access!}`}
@@ -14,8 +15,12 @@ const fetchCategory = async (token: tokens) => {
 			headers: {"Authorization": `Bearer ${token.access!}`}
 		})
 		const categoryExpense = dataExpense.data as categoryFetchSuccess
+		return {income: categoryIncome.result.category_all, expense: categoryExpense.result.category_all}
+
 	} catch (err) {
-		console.error(err)
+		const res = await generateNewToken(token.refresh!)
+		const newToken = res as tokens
+		return newToken
 	}
 
 }
