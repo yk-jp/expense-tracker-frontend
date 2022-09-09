@@ -1,19 +1,16 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
+/* eslint-disable dot-notation */
 import tokens from "../Interface/Token";
-import { transactionForPost } from "../Interface/Transaction";
 import appApi from "./appApi";
 
-const postTransaction = async(token: tokens, content: transactionForPost) => {
-	console.log(token.access)
+const postTransaction = async(token: tokens, event: string, amount: number, date: string, memo: string, category: number) => {
+	appApi.defaults.headers.common['Authorization'] = `Bearer ${token.access!}`
 
-	// TODO: it's alway fail because of token error
 	try{
 		const data = await appApi.post('/transaction/save', {
-			headers: {"Authorization": `Bearer ${token.access!}`},
-			content
+			event, amount, date, memo, category
 		}
 		)
+		// TODO: handle token expire pattern 
 		console.log(data.data)
 	} catch(err) {
 		console.log(err)

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable jsx-a11y/no-noninteractive-element-to-interactive-role */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable @typescript-eslint/no-floating-promises */
@@ -7,11 +8,11 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faX } from '@fortawesome/free-solid-svg-icons'
 import MiniCalendar from "./MiniCalendar";
 import Category from "./Category";
-import { convertDayToString } from "../Utilities/date";
 import AppContext from "../Context/useContext";
+import category from "../Interface/Category";
 import { ActionType } from "../Redux/ActionTypes";
 import postTransaction from "../Apis/registerTransactionApi";
-import { transactionForPost } from "../Interface/Transaction";
+import { convertDayToString } from "../Utilities/date";
 
 const inputRowStyle = "flex mb-4"
 const labelBasicStyle = " w-1/3 block "
@@ -37,23 +38,27 @@ const Resister = () => {
 
 	const onSubmit = async (e: React.SyntheticEvent) => {
 		e.preventDefault()
-		// const content: transactionForPost = {
-		// 	event: transactionType,
-		// 	amount: amountInputRef.current!.value,
-		// 	date: "2022-8-20",
-		// 	memo: memoTextAreaRef.current!.value,
-		// 	category: 2
-		// }
-		const testContent: transactionForPost ={
-			event: "Income",
-			amount: 40,
-			date: "2022-8-21",
-			memo: "",
-			category: 2
+		const amount = parseFloat(amountInputRef.current!.value)
+		const date = convertDayToString(transDay)
+		let cate: category | undefined
+		if (transactionType === "Expense") {
+			cate = userStatus.category.expense.find(obj => obj.name === transCate)
+		} else {
+			cate = userStatus.category.income.find(obj => obj.name === transCate)
 		}
-		// TODO: need to fix post request this doesn't work at all
-		const res = await postTransaction(userStatus.tokens!, testContent)
+		if (cate === undefined) {
+			// TODO: create category request
+		}
 
+		// TODO: handle expire of token and errors
+		const res = await postTransaction(
+				userStatus.tokens!, 
+				transactionType, 
+				amount, 
+				date, 
+				memoTextAreaRef.current!.value, 
+				cate!.id
+			)
 	}
 	
 	return (

@@ -2,7 +2,7 @@
 import React, { useEffect, useContext, useState } from 'react'
 import PropTypes from 'prop-types'
 import AppContext from '../Context/useContext'
-import category, { categoryAll } from '../Interface/Category'
+import category from '../Interface/Category'
 
 
 type Props = {
