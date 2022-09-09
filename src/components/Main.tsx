@@ -24,8 +24,6 @@ const Main = () => {
 			const data = await fetchCategory(userStatus.tokens!)
 			if (Object.prototype.hasOwnProperty.call(data, 'income')) {
 				const allCate = data as categoryAll
-				console.log(allCate)
-				// TODO: dispatch doesn't work
 				dispatchUserState({type: ActionType.ADD_INCOME_CATEGORY, newCategory: allCate.income})
 				dispatchUserState({type: ActionType.ADD_EXPENSE_CATEGORY, newCategory: allCate.expense})
 			} else if (Object.prototype.hasOwnProperty.call(data, 'refresh')){

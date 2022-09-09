@@ -47,8 +47,7 @@ const userStatusReducer = (state: userState, action: USRAction | USCategoryActio
 						income: [...state.category.income, cate]
 					}
 				}
-			} 
-				
+			}
 			return {...state}
 		}
 		

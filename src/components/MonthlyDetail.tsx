@@ -6,8 +6,6 @@ import transaction from "../Interface/Transaction";
 import categorizedTransaction from "../Interface/CategorizedTransactions";
 import PickMonthHeader from "./PickMonthHeader";
 
-// TODO: display category not a sample
-
 const activeButtonClassName = "w-1/2 pb-2 border-b-cyan-500 border-b-4 ease-in duration-100"
 const inactiveButtonClassName = "w-1/2 pb-2 text-slate-400 border-b-4 ease-in duration-100 "
 
