@@ -51,6 +51,7 @@ const Resister = () => {
 			memo: "",
 			category: 2
 		}
+		// TODO: need to fix post request this doesn't work at all
 		const res = await postTransaction(userStatus.tokens!, testContent)
 
 	}

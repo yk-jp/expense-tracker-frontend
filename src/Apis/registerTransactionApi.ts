@@ -6,6 +6,8 @@ import appApi from "./appApi";
 
 const postTransaction = async(token: tokens, content: transactionForPost) => {
 	console.log(token.access)
+
+	// TODO: it's alway fail because of token error
 	try{
 		const data = await appApi.post('/transaction/save', {
 			headers: {"Authorization": `Bearer ${token.access!}`},
