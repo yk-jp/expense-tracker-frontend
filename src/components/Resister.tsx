@@ -13,6 +13,7 @@ import category from "../Interface/Category";
 import { ActionType } from "../Redux/ActionTypes";
 import postTransaction from "../Apis/registerTransactionApi";
 import { convertDayToString } from "../Utilities/date";
+import { createCategory } from "../Apis/categoryApi";
 
 const inputRowStyle = "flex mb-4"
 const labelBasicStyle = " w-1/3 block "
@@ -22,6 +23,7 @@ const unSelectedButtonStyle = "w-2/5 text-center py-1 border-2 border-gray-300 t
 
 
 const Resister = () => {
+	const categoryInputRef = useRef<HTMLInputElement>(null)
 	const amountInputRef = useRef<HTMLInputElement>(null)
 	const memoTextAreaRef = useRef<HTMLTextAreaElement>(null)
 	const { dispatchDisplayStatus, userStatus } = useContext(AppContext)
@@ -36,6 +38,10 @@ const Resister = () => {
 		setTransactionType(value)
 	}
 
+	const onChangeCategoryInput = (e: React.FormEvent<HTMLInputElement>) => {
+		setTransCate(e.currentTarget.value)
+	}
+
 	const onSubmit = async (e: React.SyntheticEvent) => {
 		e.preventDefault()
 		const amount = parseFloat(amountInputRef.current!.value)
@@ -48,17 +54,19 @@ const Resister = () => {
 		}
 		if (cate === undefined) {
 			// TODO: create category request
+			await createCategory(userStatus.tokens!, transCate, transactionType)
 		}
 
 		// TODO: handle expire of token and errors
-		const res = await postTransaction(
-				userStatus.tokens!, 
-				transactionType, 
-				amount, 
-				date, 
-				memoTextAreaRef.current!.value, 
-				cate!.id
-			)
+		// const res = await postTransaction(
+		// 		userStatus.tokens!, 
+		// 		transactionType, 
+		// 		amount, 
+		// 		date, 
+		// 		memoTextAreaRef.current!.value, 
+		// 		cate!.id
+		// 	)
+		// TODO: when register is ok, add the transaction to other graph
 	}
 	
 	return (
@@ -103,6 +111,7 @@ const Resister = () => {
 					<input 
 						type="text"
 						required 
+						onChange={(e) => {onChangeCategoryInput(e)}}
 						value={transCate}
 						onClick={() => setCatePickerOpened(prev => !prev)}
 						className={`${inputBasicStyle}`} />

@@ -8,7 +8,7 @@ import category from '../Interface/Category'
 type Props = {
 	transType: string,
 	setCategory: React.Dispatch<React.SetStateAction<string>>,
-	setCatePickerOpened: React.Dispatch<React.SetStateAction<boolean>>
+	setCatePickerOpened: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
 const Category = ({setCategory, setCatePickerOpened, transType}: Props) => {

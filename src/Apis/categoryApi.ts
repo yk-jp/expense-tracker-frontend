@@ -23,8 +23,16 @@ const fetchCategory = async (token: tokens): Promise<categoryAll | tokens> => {
 
 }
 
-const createCategory = (token: tokens, name: string, type: string) => {
-	const a = 0
+const createCategory = async (token: tokens, name: string, type: string) => {
+	appApi.defaults.headers.common['Authorization'] = `Bearer ${token.access!}`
+	try{
+		const data = await appApi.post('/category/save', {
+			name, category_type: type
+		})
+		console.log(data)
+	} catch (err) {
+		console.log(err)
+	}
 }
 
 export {fetchCategory, createCategory}
