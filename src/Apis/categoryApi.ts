@@ -31,7 +31,7 @@ const createCategory = async (token: tokens, name: string, type: string): Promis
 		}).then(async (res) => {
 			if (res.status === 200) {
 				const r = await appApi.get(`/category/${type}`)
-				const newGroup = res.data as categoryFetchSuccess
+				const newGroup = r.data as categoryFetchSuccess
 				const createdCate = newGroup.result.category_all.filter(cate => cate.name === name)
 				return createdCate
 			}

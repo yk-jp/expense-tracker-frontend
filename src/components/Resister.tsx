@@ -14,6 +14,8 @@ import { ActionType } from "../Redux/ActionTypes";
 import postTransaction from "../Apis/registerTransactionApi";
 import { convertDayToString } from "../Utilities/date";
 import { createCategory } from "../Apis/categoryApi";
+import { generateNewToken } from "../Apis/accountApi";
+import tokens from "../Interface/Token";
 
 const inputRowStyle = "flex mb-4"
 const labelBasicStyle = " w-1/3 block "
@@ -21,9 +23,7 @@ const inputBasicStyle = "grow block text-right bg-white border-b-2 border-b-gray
 const selectedButtonStyle = "w-2/5 text-center py-1 border-2 border-orange-500 text-orange-500 rounded-md"
 const unSelectedButtonStyle = "w-2/5 text-center py-1 border-2 border-gray-300 text-gray-400 rounded-md hover:text-gray-600 hover:border-gray-500"
 
-
 const Resister = () => {
-	const categoryInputRef = useRef<HTMLInputElement>(null)
 	const amountInputRef = useRef<HTMLInputElement>(null)
 	const memoTextAreaRef = useRef<HTMLTextAreaElement>(null)
 	const { dispatchDisplayStatus, userStatus, dispatchUserState } = useContext(AppContext)
@@ -54,15 +54,22 @@ const Resister = () => {
 		// create new category
 		cateForResister = await createCategory(userStatus.tokens!, transCate, transactionType)
 		if (cateForResister === undefined ){
-			console.log("something wrong when create new category")
-			return null
+			const res = await generateNewToken(userStatus.tokens!.refresh!)
+			if (Object.prototype.hasOwnProperty.call(res, 'refresh')){
+				const newToken = res as tokens
+				cateForResister = await createCategory(newToken, transCate, transactionType)
+				dispatchUserState({type: ActionType.LOGIN_USER, token: newToken, email: userStatus.email})
+			} else {
+				console.log("something wrong when create new category")
+				return null
+			}
 		}
-		if(cateForResister.category_type === "Expense"){
-			dispatchUserState({type: ActionType.ADD_EXPENSE_CATEGORY, newCategory: [cateForResister]})
+		if(cateForResister!.category_type === "Expense"){
+			dispatchUserState({type: ActionType.ADD_EXPENSE_CATEGORY, newCategory: [cateForResister!]})
 		} else {
-			dispatchUserState({type: ActionType.ADD_INCOME_CATEGORY, newCategory: [cateForResister]})
+			dispatchUserState({type: ActionType.ADD_INCOME_CATEGORY, newCategory: [cateForResister!]})
 		}
-		return cateForResister
+		return cateForResister!
 	}
 
 	const onSubmit = async (e: React.SyntheticEvent) => {
@@ -72,7 +79,6 @@ const Resister = () => {
 		const cate: category | null = await isCategoryExist()
 		if (cate === null) {return}
 
-		// TODO: handle expire of token and errors
 		const res = await postTransaction(
 			userStatus.tokens!,
 			transactionType,
