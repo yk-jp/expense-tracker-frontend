@@ -26,7 +26,7 @@ const Resister = () => {
 	const categoryInputRef = useRef<HTMLInputElement>(null)
 	const amountInputRef = useRef<HTMLInputElement>(null)
 	const memoTextAreaRef = useRef<HTMLTextAreaElement>(null)
-	const { dispatchDisplayStatus, userStatus } = useContext(AppContext)
+	const { dispatchDisplayStatus, userStatus, dispatchUserState } = useContext(AppContext)
 	const [transactionType, setTransactionType] = useState("Expense")
 	const [transDay, setTransDay] = useState(new Date())
 	const [datePickerOpened, setDatePickerOpened] = useState(false)
@@ -42,30 +42,46 @@ const Resister = () => {
 		setTransCate(e.currentTarget.value)
 	}
 
+	const isCategoryExist = async (): Promise<category| null> =>{
+		let cateForResister: category | undefined
+		if (transactionType === "Expense") {
+			cateForResister = userStatus.category.expense.find(obj => obj.name === transCate)
+		} else {
+			cateForResister = userStatus.category.income.find(obj => obj.name === transCate)
+		}
+		if (cateForResister !== undefined ) {return cateForResister}
+
+		// create new category
+		cateForResister = await createCategory(userStatus.tokens!, transCate, transactionType)
+		if (cateForResister === undefined ){
+			console.log("something wrong when create new category")
+			return null
+		}
+		if(cateForResister.category_type === "Expense"){
+			dispatchUserState({type: ActionType.ADD_EXPENSE_CATEGORY, newCategory: [cateForResister]})
+		} else {
+			dispatchUserState({type: ActionType.ADD_INCOME_CATEGORY, newCategory: [cateForResister]})
+		}
+		return cateForResister
+	}
+
 	const onSubmit = async (e: React.SyntheticEvent) => {
 		e.preventDefault()
 		const amount = parseFloat(amountInputRef.current!.value)
 		const date = convertDayToString(transDay)
-		let cate: category | undefined
-		if (transactionType === "Expense") {
-			cate = userStatus.category.expense.find(obj => obj.name === transCate)
-		} else {
-			cate = userStatus.category.income.find(obj => obj.name === transCate)
-		}
-		if (cate === undefined) {
-			// TODO: create category request
-			await createCategory(userStatus.tokens!, transCate, transactionType)
-		}
+		const cate: category | null = await isCategoryExist()
+		if (cate === null) {return}
 
 		// TODO: handle expire of token and errors
-		// const res = await postTransaction(
-		// 		userStatus.tokens!, 
-		// 		transactionType, 
-		// 		amount, 
-		// 		date, 
-		// 		memoTextAreaRef.current!.value, 
-		// 		cate!.id
-		// 	)
+		const res = await postTransaction(
+			userStatus.tokens!,
+			transactionType,
+			amount,
+			date,
+			memoTextAreaRef.current!.value,
+			cate.id
+		)
+	
 		// TODO: when register is ok, add the transaction to other graph
 	}
 	
