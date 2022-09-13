@@ -19,7 +19,8 @@ const displayInitialState: displayState = {
 const userInitialState: userState = {
   loggedIn: false,
   email: null,
-  tokens: null
+  tokens: null,
+  category: {expense: [], income: []}
 }
 
 const App = () => {

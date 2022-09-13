@@ -1,13 +1,7 @@
 /* eslint-disable default-param-last */
-import { DSRAction, } from "../Interface/Reducers"
+import { DSRAction, displayState } from "../Interface/Reducers"
 import { ActionType } from "./ActionTypes"
 
-
-
-interface displayState{
-	isRegisterShown: boolean,
-	isMiniCalendarShown: boolean
-}
 export const initialState: displayState = {
 	isRegisterShown: false,
 	isMiniCalendarShown: false
