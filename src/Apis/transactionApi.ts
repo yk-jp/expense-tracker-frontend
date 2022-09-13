@@ -6,11 +6,22 @@ const postTransaction = async(token: tokens, event: string, amount: number, date
 	appApi.defaults.headers.common['Authorization'] = `Bearer ${token.access!}`
 
 	try{
-		const data = await appApi.post('/transaction/save', {
+		await appApi.post('/transaction/save', {
 			event, amount, date, memo, category
 		}
 		)
-		// TODO: handle token expire pattern 
+	} catch(err) {
+		console.log(err)
+	}
+}
+
+export const fetchTransaction = async (token: tokens, year: string, month: string) => {
+	appApi.defaults.headers.common['Authorization'] = `Bearer ${token.access!}`
+
+	try{
+		const data = await appApi.post('/transaction/', {
+			year, month
+		})
 		console.log(data.data)
 	} catch(err) {
 		console.log(err)

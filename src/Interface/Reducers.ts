@@ -1,4 +1,5 @@
 import tokens from "./Token"
+import transactionForFetch, {transactionsStats} from './Transaction'
 import category, {categoryAll} from "./Category"
 
 export interface DSRAction {
@@ -11,6 +12,13 @@ export interface USRAction {
 	email: string | null,
 }
 
+// TODO: adjust property
+export interface TransSRAction {
+	type: string,
+	token: tokens,
+	newTrans: transactionForFetch[]
+}
+// TODO: adjust property
 export interface USCategoryAction {
 	type: string,
 	newCategory: category[]
@@ -26,4 +34,10 @@ export interface userState {
 	tokens: tokens | null,
 	email: string | null,
 	category: categoryAll
+}
+
+// TODO: adjust interface for transaction
+export interface transactionState {
+	monthly: transactionForFetch[],
+	yearly: transactionsStats[]
 }

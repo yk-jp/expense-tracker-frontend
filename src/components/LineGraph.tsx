@@ -2,7 +2,7 @@
 import React from "react";
 import { Line } from 'react-chartjs-2'
 import { Chart, registerables } from 'chart.js';
-import { getShortMonthName } from "../Utilities/date"; 
+import { getShortMonthNameForYear } from "../Utilities/date"; 
 import { lineGraph, lineGraphDatasets } from '../Interface/LineGraph'
 
 Chart.register(...registerables);
@@ -23,7 +23,9 @@ const sampleDatasets: lineGraphDatasets[] = [
 ]
 
 const LineGraph = () => {
-	const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+	const recentMonth = new Date().getMonth()
+
+	const labels = getShortMonthNameForYear(recentMonth)
 	const graphData: lineGraph = {
 		labels,
 		datasets: sampleDatasets

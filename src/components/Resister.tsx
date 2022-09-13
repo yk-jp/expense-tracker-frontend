@@ -11,7 +11,7 @@ import Category from "./Category";
 import AppContext from "../Context/useContext";
 import category from "../Interface/Category";
 import { ActionType } from "../Redux/ActionTypes";
-import postTransaction from "../Apis/registerTransactionApi";
+import postTransaction from "../Apis/transactionApi";
 import { convertDayToString } from "../Utilities/date";
 import { createCategory } from "../Apis/categoryApi";
 import { generateNewToken } from "../Apis/accountApi";

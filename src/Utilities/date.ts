@@ -26,6 +26,17 @@ export const getShortMonthName = (index: number): string => (
 	monthsShort[index]
 )
 
+// return array beginning most recent month name to year ago
+export const getShortMonthNameForYear = (recentMonth: number): string[] => {
+	let index = recentMonth
+	const array: string[] = []
+	while (array.length < 12){
+		index = index === 11 ? 0 : index + 1
+		array.push(monthsShort[index])
+	}
+	return array
+}
+
 // return formatted date string. yyyy-mm-dd
 export const convertDayToString = (date: Date): string => {
 	const fullDate = date.toLocaleDateString().split("/")
