@@ -6,10 +6,11 @@ import Header from './components/Header';
 import Main from './components/Main';
 import Login from './components/Login';
 import SignIn from './components/SignIn';
-import { displayState, userState } from './Interface/Reducers';
-import displayStatusReducer from './Redux/DisplayStatusReducer';
+import { displayState, userState, transactionState } from './Interface/Reducers';
 import AppContext from './Context/useContext';
 import userStatusReducer from './Redux/UserStatusReducer';
+import displayStatusReducer from './Redux/DisplayStatusReducer';
+import transactionStateReducer from './Redux/TransactionReducer';
 
 const displayInitialState: displayState = {
   isRegisterShown: false,
@@ -23,13 +24,19 @@ const userInitialState: userState = {
   category: {expense: [], income: []}
 }
 
+const transactionInitialState: transactionState = {
+  monthly: [], yearly: {Income: [], Expense: []}
+}
+
+
 const App = () => {
   const [displayStatus, dispatchDisplayStatus] = useReducer(displayStatusReducer, displayInitialState)
   const [userStatus, dispatchUserState] = useReducer(userStatusReducer, userInitialState)
+  const [transactionStatus, dispatchTransactionStatus] = useReducer(transactionStateReducer, transactionInitialState)
 
   return (
   <BrowserRouter>
-    <AppContext.Provider value={{displayStatus, dispatchDisplayStatus, userStatus, dispatchUserState }} >
+    <AppContext.Provider value={{displayStatus, dispatchDisplayStatus, userStatus, dispatchUserState, transactionStatus, dispatchTransactionStatus }} >
     <Header />
       <Routes>
         <Route path="/" element={<Main />} />

@@ -37,3 +37,13 @@ export interface categoryFetchSuccess {
 		category_all: category[]
 	}
 }
+
+export interface statusInMonthSuccess {
+	is_success: boolean,
+	result: {
+		Income: number,
+		Expense: number
+	}
+}
+
+// TODO: create interface for fetch transaction 

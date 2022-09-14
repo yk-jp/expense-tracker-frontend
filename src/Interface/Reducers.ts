@@ -1,5 +1,5 @@
 import tokens from "./Token"
-import transactionForFetch, {transactionsStats} from './Transaction'
+import transactionForFetch, { transactionStatsYear } from './Transaction'
 import category, {categoryAll} from "./Category"
 
 export interface DSRAction {
@@ -39,5 +39,5 @@ export interface userState {
 // TODO: adjust interface for transaction
 export interface transactionState {
 	monthly: transactionForFetch[],
-	yearly: transactionsStats[]
+	yearly: transactionStatsYear
 }

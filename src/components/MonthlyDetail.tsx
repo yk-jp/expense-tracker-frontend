@@ -2,8 +2,7 @@ import React, {useState} from "react";
 import DoughnutChart from "./DoughnutChart";
 import { colorPicker } from "../Utilities/colorPallet";
 import { getOnlyDateNum } from "../Utilities/date";
-import transaction from "../Interface/Transaction";
-import categorizedTransaction from "../Interface/CategorizedTransactions";
+import transaction, {categorizedTransaction} from "../Interface/Transaction";
 import PickMonthHeader from "./PickMonthHeader";
 
 const activeButtonClassName = "w-1/2 pb-2 border-b-cyan-500 border-b-4 ease-in duration-100"
