@@ -38,6 +38,19 @@ export interface userState {
 
 // TODO: adjust interface for transaction
 export interface transactionState {
-	monthly: transactionForFetch[],
+	monthlyForCalendar: {
+		target: {
+			year: number,
+			month: number
+		},
+		transactions: transactionForFetch[]
+	},
+	monthlyForDetail: {
+		target: {
+			year: number,
+			month: number
+		},
+		transactions: transactionForFetch[]
+	},
 	yearly: transactionStatsYear
 }

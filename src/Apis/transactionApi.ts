@@ -1,5 +1,6 @@
 /* eslint-disable dot-notation */
 import tokens from "../Interface/Token";
+import {allTransactionsMonthSuccess} from '../Interface/ApiReturns'
 import appApi from "./appApi";
 
 const postTransaction = async(token: tokens, event: string, amount: number, date: string, memo: string, category: number) => {
@@ -15,16 +16,19 @@ const postTransaction = async(token: tokens, event: string, amount: number, date
 	}
 }
 
-export const fetchTransaction = async (token: tokens, year: string, month: string) => {
+export const fetchTransaction = async (token: tokens, year: string, month: string): Promise<allTransactionsMonthSuccess | null> => {
 	appApi.defaults.headers.common['Authorization'] = `Bearer ${token.access!}`
 
 	try{
 		const data = await appApi.post('/transaction/', {
 			year, month
 		})
-		console.log(data.data)
+		return data.data as allTransactionsMonthSuccess
+	
 	} catch(err) {
+		// TODO: token expire pattern
 		console.log(err)
+		return null
 	}
 }
 
