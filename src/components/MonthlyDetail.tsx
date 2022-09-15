@@ -1,4 +1,6 @@
-import React, {useState, useContext} from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-plusplus */
+import React, {useState, useContext, useEffect} from "react";
 import DoughnutChart from "./DoughnutChart";
 import PickMonthHeader from "./PickMonthHeader";
 import AppContext from "../Context/useContext";
@@ -146,6 +148,7 @@ const sample: categorizedTransaction[] = [{
 
 const MonthlyDetail = () => {
 	const { transactionStatus } = useContext(AppContext)
+	const [categorizedTransactions, setCategorizedTransactions] = useState<categorizedTransaction[]>([])
 	const [transTypeIncome, setTransTypeIncome] = useState(true)
 	const [detailedCate, setDetailedCate] = useState<string>("")
 	const [targetMonth, setTargetMonth] = useState(new Date())
@@ -159,7 +162,6 @@ const MonthlyDetail = () => {
 		}
 	}
 
-
 	const onClickChangeTransType = (e: React.MouseEvent<HTMLButtonElement>) => {
 		const et = e.target as HTMLButtonElement
 		if (et.value === "Income") {
@@ -170,6 +172,38 @@ const MonthlyDetail = () => {
 			console.log("error")
 		}
 	}
+
+	// TODO: check below function works correctly
+	const organizeTransactionsByCategory = () => {
+		const categorized: categorizedTransaction[] = []
+		const aimEvent = transTypeIncome ? "Income" : "Expense"
+		transactionStatus.monthlyForDetail.transactions.forEach(trans => {
+			if (trans.event === aimEvent) {
+				if (categorized.length === 0){
+					categorized.push({name: trans.category, totalAmount: parseInt(trans.amount, 10), transactions: [trans]})
+				} else {
+					let foundCategory = false
+					for (let i=0; i<categorized.length; i++){
+						if (categorized[i].name === trans.category) {
+							categorized[i].totalAmount +=  parseInt(trans.amount, 10)
+							categorized[i].transactions.push(trans)
+							foundCategory = true
+							break
+						}
+					}
+					if (!foundCategory) {
+						categorized.push({name: trans.category, totalAmount: parseInt(trans.amount, 10), transactions: [trans]})
+					}
+				}
+			}
+		})
+		setCategorizedTransactions(categorized)
+	}
+
+	useEffect(()=> {
+		organizeTransactionsByCategory()
+
+	}, [targetMonth, transactionStatus.monthlyForDetail, transTypeIncome])
 
 	return (
 		<section className="border-4 w-96 h-full overflow-scroll" >
@@ -188,10 +222,10 @@ const MonthlyDetail = () => {
 					onClick={onClickChangeTransType}
 				>Expense</button>
 			</div>
-			{/* <DoughnutChart data={transTypeIncome ? 
-				[{name: "test", totalAmount: 500}]:
-				[{name: "test", totalAmount: 500}]}
-			/> */}
+			<DoughnutChart 
+				data={categorizedTransactions}
+				transType={transTypeIncome ? "Income" : "Expense"}
+			/>
 			<div className="">
 				{sample.map((cate, idx) => (
 					<div className="px-10">

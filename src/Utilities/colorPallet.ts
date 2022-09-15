@@ -13,7 +13,7 @@ const COLORS = [
 export const colorsPicker = (resultArrayLength: number): string[] => {
 	const  colors: string[] = []
 	let idx = 0;
-	for(let i = 0; i<resultArrayLength - 1; i++){
+	for(let i = 0; i<resultArrayLength ; i++){
 		colors.push(COLORS[idx])
 		idx = idx === COLORS.length - 1 ? 0 : idx + 1
 	}

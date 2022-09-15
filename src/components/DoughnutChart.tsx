@@ -4,21 +4,33 @@ import { Doughnut } from 'react-chartjs-2'
 import { Chart, registerables } from 'chart.js';
 import PropTypes from 'prop-types'
 import {colorsPicker} from '../Utilities/colorPallet'
-import { doughnutChartDataSets, doughnutChart } from '../Interface/DoughnutChart'
+import { doughnutChart } from '../Interface/DoughnutChart'
 
 Chart.register(...registerables);
 
-type Props = {
-	data: {name: string, totalAmount: number}[]
+const emptyDatasets: doughnutChart = {
+	labels: ['N/A'],
+	datasets: [{
+		label: 'Monthly transaction rate',
+		data: [100],
+		backgroundColor: ['rgba(0,0,0,1)']
+	}]
 }
-const DoughnutChart = ({data}: Props) => {
+
+type Props = {
+	data: {name: string, totalAmount: number}[],
+	transType: string
+}
+const DoughnutChart = ({data, transType}: Props) => {
 
 	const labels: string[] = []
 	const amounts: number[] = []
+	let total = 0
 
 	data.forEach(cate => {
 		labels.push(cate.name)
 		amounts.push(cate.totalAmount)
+		total += cate.totalAmount
 	})
 	const backgroundColor: string[] = colorsPicker(amounts.length)
 
@@ -47,11 +59,14 @@ const DoughnutChart = ({data}: Props) => {
 	return (
 		<div className="flex flex-col items-center px-6 ">
 			<Doughnut
-				data={chartInfo}
+				data={data.length === 0 ? emptyDatasets : chartInfo}
 				options={options}
 				id='chart-key'
 			/>
-			<p className="text-center -mt-40 mb-36" >total Income is <br /><span className="font-bold">$400</span></p>
+			<p className="text-center -mt-40 mb-36" >{`Total ${transType} is`}
+				<br />
+				<span className="font-bold">${total}</span>
+			</p>
 
 		</div>
 	)
@@ -61,7 +76,8 @@ DoughnutChart.propTypes = {
 	data: PropTypes.arrayOf(PropTypes.shape({
 		name: PropTypes.string,
 		totalAmount: PropTypes.number
-	})).isRequired
+	})).isRequired,
+	transType: PropTypes.string.isRequired
 }
 
 export default DoughnutChart
