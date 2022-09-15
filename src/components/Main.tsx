@@ -17,7 +17,7 @@ import { categoryAll } from "../Interface/Category";
 import tokens from "../Interface/Token";
 
 const Main = () => {
-	const { displayStatus, dispatchDisplayStatus, dispatchUserState, userStatus } = useContext(AppContext)
+	const { displayStatus, dispatchDisplayStatus, dispatchUserState, userStatus, dispatchTransactionStatus } = useContext(AppContext)
 	const nav = useNavigate()
 
 	useEffect(()=>{
@@ -38,6 +38,15 @@ const Main = () => {
 			const year = new Date().getFullYear().toString()
 			const month = (new Date().getMonth() + 1).toString()
 			const data = await fetchTransaction(userStatus.tokens!, year, month)
+			if(data !== null){
+				dispatchTransactionStatus({
+					type: ActionType.ADD_TRANSACTION_MONTH_FOR_INIT,
+					token: userStatus.tokens!,
+					newTrans: data.result.all_transactions,
+					month,
+					year
+				})
+			}
 		}
 
 		if (userStatus.loggedIn === false) {

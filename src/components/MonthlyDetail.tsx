@@ -1,9 +1,10 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
 import DoughnutChart from "./DoughnutChart";
+import PickMonthHeader from "./PickMonthHeader";
+import AppContext from "../Context/useContext";
 import { colorPicker } from "../Utilities/colorPallet";
 import { getOnlyDateNum } from "../Utilities/date";
 import transaction, {categorizedTransaction} from "../Interface/Transaction";
-import PickMonthHeader from "./PickMonthHeader";
 
 const activeButtonClassName = "w-1/2 pb-2 border-b-cyan-500 border-b-4 ease-in duration-100"
 const inactiveButtonClassName = "w-1/2 pb-2 text-slate-400 border-b-4 ease-in duration-100 "
@@ -144,6 +145,7 @@ const sample: categorizedTransaction[] = [{
 ]
 
 const MonthlyDetail = () => {
+	const { transactionStatus } = useContext(AppContext)
 	const [transTypeIncome, setTransTypeIncome] = useState(true)
 	const [detailedCate, setDetailedCate] = useState<string>("")
 	const [targetMonth, setTargetMonth] = useState(new Date())
@@ -186,20 +188,23 @@ const MonthlyDetail = () => {
 					onClick={onClickChangeTransType}
 				>Expense</button>
 			</div>
-			<DoughnutChart />
+			<DoughnutChart data={transTypeIncome ? 
+				[{name: "test", totalAmount: 500}]:
+				[{name: "test", totalAmount: 500}]}
+			/>
 			<div className="">
 				{sample.map((cate, idx) => (
 					<div className="px-10">
 						<div className="p-2 rounded-md" style={{backgroundColor: colorPicker(idx)}}>
 							<button 
 								type="button" 
-								className="w-1/2 text-left font-bold text-gray-700"
+								className="w-1/2 text-left font-bold text-white"
 								onClick={onClickChangeDetailedCate} 
 								value={cate.name}
 							>{cate.name}</button>
 							<button 
 								type="button"
-								className="w-1/2 text-right font-bold text-gray-700" 
+								className="w-1/2 text-right font-bold text-white" 
 								onClick={onClickChangeDetailedCate} 
 								value={cate.name}
 							>${cate.totalAmount}</button>

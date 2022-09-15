@@ -16,7 +16,9 @@ export interface USRAction {
 export interface TransSRAction {
 	type: string,
 	token: tokens,
-	newTrans: transactionForFetch[]
+	newTrans: transactionForFetch[],
+	month: string,
+	year: string
 }
 // TODO: adjust property
 export interface USCategoryAction {
@@ -43,14 +45,20 @@ export interface transactionState {
 			year: number,
 			month: number
 		},
-		transactions: transactionForFetch[]
+		transactions: {
+			income: transactionForFetch[],
+			expense: transactionForFetch[]
+		}
 	},
 	monthlyForDetail: {
 		target: {
 			year: number,
 			month: number
 		},
-		transactions: transactionForFetch[]
+		transactions: {
+			income: transactionForFetch[],
+			expense: transactionForFetch[]
+		}
 	},
 	yearly: transactionStatsYear
 }
