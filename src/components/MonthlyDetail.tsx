@@ -188,10 +188,10 @@ const MonthlyDetail = () => {
 					onClick={onClickChangeTransType}
 				>Expense</button>
 			</div>
-			<DoughnutChart data={transTypeIncome ? 
+			{/* <DoughnutChart data={transTypeIncome ? 
 				[{name: "test", totalAmount: 500}]:
 				[{name: "test", totalAmount: 500}]}
-			/>
+			/> */}
 			<div className="">
 				{sample.map((cate, idx) => (
 					<div className="px-10">

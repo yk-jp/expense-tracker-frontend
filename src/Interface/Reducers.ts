@@ -45,20 +45,14 @@ export interface transactionState {
 			year: number,
 			month: number
 		},
-		transactions: {
-			income: transactionForFetch[],
-			expense: transactionForFetch[]
-		}
+		transactions: transactionForFetch[]
 	},
 	monthlyForDetail: {
 		target: {
 			year: number,
 			month: number
 		},
-		transactions: {
-			income: transactionForFetch[],
-			expense: transactionForFetch[]
-		}
+		transactions: transactionForFetch[]
 	},
 	yearly: transactionStatsYear
 }

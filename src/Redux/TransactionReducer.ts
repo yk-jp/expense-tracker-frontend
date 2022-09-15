@@ -5,24 +5,15 @@ import { ActionType } from "./ActionTypes";
 const transactionStateReducer = (state: transactionState, action: TransSRAction): transactionState => {
 	switch (action.type) {
 		case ActionType.ADD_TRANSACTION_MONTH_FOR_INIT: {
-			const income: transactionFroFetch[] = []
-			const expense: transactionFroFetch[]= []
-			action.newTrans.forEach(trans => {
-				if(trans.event === "Expense"){
-					income.push(trans)
-				} else if (trans.event === "Income"){
-					expense.push(trans)
-				}
-			})
 			return {
 				...state,
 				monthlyForCalendar: {
 					target: {year: parseInt(action.year, 10), month: parseInt(action.month, 10)},
-					transactions: {income, expense}
+					transactions: action.newTrans
 				},
 				monthlyForDetail: {
 					target: {year: parseInt(action.year, 10), month: parseInt(action.month, 10)},
-					transactions: {income, expense}
+					transactions: action.newTrans
 				}
 			}
 		}

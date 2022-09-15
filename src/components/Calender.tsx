@@ -44,7 +44,7 @@ const Calender = () => {
 
 	const createTable = () => {
 		const prefixSpace = getDayOfFirst(targetMonth.getFullYear(), targetMonth.getMonth())
-		const reducedTransaction = reduceTransactionsByEachDay([...transactionStatus.monthlyForCalendar.transactions.expense, ...transactionStatus.monthlyForCalendar.transactions.income])
+		const reducedTransaction = reduceTransactionsByEachDay(transactionStatus.monthlyForCalendar.transactions)
 		const temp: dayDetail[] = []
 		let idK = 0
 		for(let i=0; i<prefixSpace; i++){
