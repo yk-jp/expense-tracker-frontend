@@ -2,38 +2,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useContext} from "react";
+import AppContext from "../Context/useContext";
 import CalenderDay from './CalenderDay'
-import { getDays, getDayOfFirst, getDayName } from '../Utilities/date'
-import transaction from "../Interface/Transaction";
 import PickMonthHeader from "./PickMonthHeader";
-
-const sampleData: transaction[] = [
-	{
-		"id": 1,
-		"category": "some",
-		"event": "Expense",
-		"amount": "100.00",
-		"memo": "test111222",
-		"date": "2022-08-10",
-},
-{
-		"id": 2,
-		"category": "some",
-		"event": "Expense",
-		"amount": "100.00",
-		"memo": "",
-		"date": "2022-08-10",
-},
-{
-		"id": 6,
-		"category": "tip",
-		"event": "Income",
-		"amount": "200.00",
-		"memo": "",
-		"date": "2022-08-20",
-}
-]
+import transactionForFetch from "../Interface/Transaction";
+import { getDays, getDayOfFirst, getDayName } from '../Utilities/date'
+import { fetchTransaction } from "../Apis/transactionApi";
+import { ActionType } from "../Redux/ActionTypes";
 
 interface dayDetail{
 	id: number,
@@ -45,16 +21,12 @@ interface dayDetail{
 const Calender = () => {
 
 	const daysColorPallet = ["bg-red-500", "bg-orange-500", "bg-amber-500", "bg-lime-500", "bg-emerald-500", "bg-cyan-500", "bg-blue-500"]
-
+	const { transactionStatus, userStatus, dispatchTransactionStatus } = useContext(AppContext)
 	const [targetMonth, setTargetMonth] = useState<Date>(new Date())
 	const [dailyTransactions, setDailyTransactions] = useState<dayDetail[]>([])
 
-	const fetchAllTransactions = () => {
-		// do request to /transaction return {"result": {"all_transactions": {}, "stats": {}}}
-	}
-
-	const reduceTransactionsByEachDay = (transactions: transaction[]): Map<number, transaction[]> => {
-		const map = new Map<number, transaction[]>()
+	const reduceTransactionsByEachDay = (transactions: transactionForFetch[]): Map<number, transactionForFetch[]> => {
+		const map = new Map<number, transactionForFetch[]>()
 
 		for (const t of transactions) {
 			const fd = t.date.split("-")
@@ -73,7 +45,7 @@ const Calender = () => {
 
 	const createTable = () => {
 		const prefixSpace = getDayOfFirst(targetMonth.getFullYear(), targetMonth.getMonth())
-		const reducedTransaction = reduceTransactionsByEachDay(sampleData)
+		const reducedTransaction = reduceTransactionsByEachDay(transactionStatus.monthlyForCalendar.transactions)
 		const temp: dayDetail[] = []
 		let idK = 0
 		for(let i=0; i<prefixSpace; i++){
@@ -111,10 +83,30 @@ const Calender = () => {
 		setDailyTransactions(temp)
 	}
 
+	// TODO: handle token expire
 	useEffect(()=> {
+		if(userStatus.tokens === null) { return }
+		const fetchData = async() => {
+			const year = targetMonth.getFullYear().toString()
+			const month = (targetMonth.getMonth() + 1).toString()
+			const data = await fetchTransaction(userStatus.tokens!, year, month)
+			if(data !== null){
+				dispatchTransactionStatus({
+					type: ActionType.ADD_TRANSACTION_MONTH_FOR_CALENDAR,
+					newTrans: data.result.all_transactions,
+					month, year
+				})
+			}
+		}
+
+		fetchData().catch(console.error)
 		createTable()
-	}, [targetMonth])
-	
+
+	}, [targetMonth, userStatus.tokens])
+
+	useEffect(() => {
+		createTable()
+	}, [transactionStatus.monthlyForCalendar])
 
 	return(
 		<section className="w-168">

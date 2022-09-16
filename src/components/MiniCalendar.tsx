@@ -38,6 +38,8 @@ const MiniCalendar = ({date, setDate, setDatePickerOpened}: Props) => {
 		if (day === 0) { return }
 
 		setDate(prev => new Date(prev.getFullYear(), prev.getMonth(), day))
+
+		// TODO: convert this with reducer
 		setDatePickerOpened(false)
 	}
 

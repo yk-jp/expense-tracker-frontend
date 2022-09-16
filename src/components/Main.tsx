@@ -16,10 +16,11 @@ import { categoryAll } from "../Interface/Category";
 import tokens from "../Interface/Token";
 
 const Main = () => {
-	const { displayStatus, dispatchDisplayStatus, dispatchUserState, userStatus } = useContext(AppContext)
+	const { displayStatus, dispatchDisplayStatus, dispatchUserState, userStatus, dispatchTransactionStatus } = useContext(AppContext)
 	const nav = useNavigate()
 
 	useEffect(()=>{
+		// TODO: exclude token expire pattern because it's right after login
 		const getCategory = async () => {
 			const data = await fetchCategory(userStatus.tokens!)
 			if (Object.prototype.hasOwnProperty.call(data, 'income')) {

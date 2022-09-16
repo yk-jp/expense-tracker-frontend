@@ -15,6 +15,17 @@ export interface transactionForPost{
 	date: string,
 }
 
+export interface transactionsStatsMonth {
+	Income: number,
+	Expense: number,
+	Balance: number
+}
+
+export interface transactionStatsYear {
+	Income: number[],
+	Expense: number[]
+}
+
 export interface categorizedTransaction {
 	name: string,
 	totalAmount: number,

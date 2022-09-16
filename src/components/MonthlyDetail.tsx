@@ -1,150 +1,19 @@
-import React, {useState} from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-plusplus */
+import React, {useState, useContext, useEffect} from "react";
 import DoughnutChart from "./DoughnutChart";
+import PickMonthHeader from "./PickMonthHeader";
+import AppContext from "../Context/useContext";
 import { colorPicker } from "../Utilities/colorPallet";
 import { getOnlyDateNum } from "../Utilities/date";
-import transaction from "../Interface/Transaction";
-import categorizedTransaction from "../Interface/CategorizedTransactions";
-import PickMonthHeader from "./PickMonthHeader";
-
-const activeButtonClassName = "w-1/2 pb-2 border-b-cyan-500 border-b-4 ease-in duration-100"
-const inactiveButtonClassName = "w-1/2 pb-2 text-slate-400 border-b-4 ease-in duration-100 "
-
-const shownCategoryClassName = " ml-4 py-1 px-2 flex border-b duration-500 items-end"
-const noShownCategoryClassName = "h-0 overflow-hidden"
-
-const sample: categorizedTransaction[] = [{
-	name: 'food',
-	totalAmount: 500,
-	transactions: [{
-			id: 1,
-			category: 'food',
-			event: 'expense',
-			amount: '200',
-			memo: "ice cream",
-			date: '2020/3/4'
-		},
-		{
-			id: 2,
-			category: 'food',
-			event: 'expense',
-			amount: '300',
-			memo: "T & T",
-			date: '2020/3/4'
-		}
-	]
-	},
-	{
-		name: 'hang out',
-		totalAmount: 300,
-		transactions: [{
-				id: 1,
-				category: 'hang out',
-				event: 'expense',
-				amount: '100',
-				memo: "with A",
-				date: '2020/3/4'
-			},
-			{
-				id: 2,
-				category: 'hang out',
-				event: 'expense',
-				amount: '200',
-				memo: "BBQ",
-				date: '2020/3/4'
-			},
-			{
-				id: 2,
-				category: 'hang out',
-				event: 'expense',
-				amount: '200',
-				memo: "BBQ",
-				date: '2020/3/4'
-			},
-			{
-				id: 2,
-				category: 'hang out',
-				event: 'expense',
-				amount: '200',
-				memo: "BBQ",
-				date: '2020/3/4'
-			},
-			{
-				id: 2,
-				category: 'hang out',
-				event: 'expense',
-				amount: '200',
-				memo: "BBQ",
-				date: '2020/3/4'
-			},
-			{
-				id: 2,
-				category: 'hang out',
-				event: 'expense',
-				amount: '200',
-				memo: "BBQ",
-				date: '2020/3/4'
-			},
-			{
-				id: 2,
-				category: 'hang out',
-				event: 'expense',
-				amount: '200',
-				memo: "BBQ",
-				date: '2020/3/4'
-			},
-			{
-				id: 2,
-				category: 'hang out',
-				event: 'expense',
-				amount: '200',
-				memo: "BBQ",
-				date: '2020/3/4'
-			},
-			{
-				id: 2,
-				category: 'hang out',
-				event: 'expense',
-				amount: '200',
-				memo: "BBQ",
-				date: '2020/3/4'
-			},
-			{
-				id: 2,
-				category: 'hang out',
-				event: 'expense',
-				amount: '200',
-				memo: "BBQ",
-				date: '2020/3/4'
-			},
-			{
-				id: 2,
-				category: 'hang out',
-				event: 'expense',
-				amount: '200',
-				memo: "BBQ",
-				date: '2020/3/4'
-			},
-			{
-				id: 2,
-				category: 'hang out',
-				event: 'expense',
-				amount: '200',
-				memo: "BBQ",
-				date: '2020/3/4'
-			},
-			{
-				id: 2,
-				category: 'hang out',
-				event: 'expense',
-				amount: '200',
-				memo: "BBQ",
-				date: '2020/3/4'
-			},
-		]
-	},
-]
+import transaction, {categorizedTransaction} from "../Interface/Transaction";
+import { fetchTransaction } from "../Apis/transactionApi";
+import { ActionType } from "../Redux/ActionTypes";
+import { activeButtonClassName, inactiveButtonClassName, shownCategoryClassName, noShownCategoryClassName} from "../Utilities/specialStyledClassName"
 
 const MonthlyDetail = () => {
+	const { transactionStatus, userStatus, dispatchTransactionStatus } = useContext(AppContext)
+	const [categorizedTransactions, setCategorizedTransactions] = useState<categorizedTransaction[]>([])
 	const [transTypeIncome, setTransTypeIncome] = useState(true)
 	const [detailedCate, setDetailedCate] = useState<string>("")
 	const [targetMonth, setTargetMonth] = useState(new Date())
@@ -158,7 +27,6 @@ const MonthlyDetail = () => {
 		}
 	}
 
-
 	const onClickChangeTransType = (e: React.MouseEvent<HTMLButtonElement>) => {
 		const et = e.target as HTMLButtonElement
 		if (et.value === "Income") {
@@ -169,6 +37,59 @@ const MonthlyDetail = () => {
 			console.log("error")
 		}
 	}
+
+	const organizeTransactionsByCategory = () => {
+		const categorized: categorizedTransaction[] = []
+		const aimEvent = transTypeIncome ? "Income" : "Expense"
+		transactionStatus.monthlyForDetail.transactions.forEach(trans => {
+			if (trans.event === aimEvent) {
+				if (categorized.length === 0){
+					categorized.push({name: trans.category, totalAmount: parseInt(trans.amount, 10), transactions: [trans]})
+				} else {
+					let foundCategory = false
+					for (let i=0; i<categorized.length; i++){
+						if (categorized[i].name === trans.category) {
+							categorized[i].totalAmount +=  parseInt(trans.amount, 10)
+							categorized[i].transactions.push(trans)
+							foundCategory = true
+							break
+						}
+					}
+					if (!foundCategory) {
+						categorized.push({name: trans.category, totalAmount: parseInt(trans.amount, 10), transactions: [trans]})
+					}
+				}
+			}
+		})
+		setCategorizedTransactions(categorized)
+	}
+
+	useEffect(()=> {
+		if(userStatus.tokens === null) { return }
+		// TODO: handle token expire pattern
+		const fetchData = async() => {
+			const year = targetMonth.getFullYear().toString()
+			const month = (targetMonth.getMonth() + 1).toString()
+			const data = await fetchTransaction(userStatus.tokens!, year, month)
+			if(data !== null){
+				dispatchTransactionStatus({
+					type: ActionType.ADD_TRANSACTION_MONTH_FOR_DETAIL,
+					newTrans: data.result.all_transactions,
+					month,
+					year
+				})
+			}
+		}
+
+		fetchData().then(()=>{
+			organizeTransactionsByCategory()
+		}).catch(console.error)
+
+	}, [targetMonth, userStatus.tokens])
+
+	useEffect(() => {
+		organizeTransactionsByCategory()
+	}, [transTypeIncome, transactionStatus.monthlyForDetail])
 
 	return (
 		<section className="border-4 w-96 h-full overflow-scroll" >
@@ -187,20 +108,23 @@ const MonthlyDetail = () => {
 					onClick={onClickChangeTransType}
 				>Expense</button>
 			</div>
-			<DoughnutChart />
+			<DoughnutChart 
+				data={categorizedTransactions}
+				transType={transTypeIncome ? "Income" : "Expense"}
+			/>
 			<div className="">
-				{sample.map((cate, idx) => (
+				{categorizedTransactions.map((cate, idx) => (
 					<div className="px-10">
 						<div className="p-2 rounded-md" style={{backgroundColor: colorPicker(idx)}}>
 							<button 
 								type="button" 
-								className="w-1/2 text-left font-bold text-gray-700"
+								className="w-1/2 text-left font-bold text-white"
 								onClick={onClickChangeDetailedCate} 
 								value={cate.name}
 							>{cate.name}</button>
 							<button 
 								type="button"
-								className="w-1/2 text-right font-bold text-gray-700" 
+								className="w-1/2 text-right font-bold text-white" 
 								onClick={onClickChangeDetailedCate} 
 								value={cate.name}
 							>${cate.totalAmount}</button>

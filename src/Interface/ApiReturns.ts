@@ -1,4 +1,5 @@
 import tokens from "./Token"
+import transactionForFetch, {transactionsStatsMonth} from "./Transaction"
 import category from "./Category"
 
 export interface registerAccountFailed {
@@ -35,5 +36,20 @@ export interface categoryFetchSuccess {
 	is_success: boolean,
 	result: {
 		category_all: category[]
+	}
+}
+
+export interface statusInMonthSuccess {
+	is_success: boolean,
+	result: {
+		Income: number,
+		Expense: number
+	}
+}
+
+export interface allTransactionsMonthSuccess {
+	result: {
+		all_transactions: transactionForFetch[],
+		stats: transactionsStatsMonth
 	}
 }

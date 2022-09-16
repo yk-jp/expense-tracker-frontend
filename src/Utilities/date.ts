@@ -26,6 +26,17 @@ export const getShortMonthName = (index: number): string => (
 	monthsShort[index]
 )
 
+// return array beginning most recent month name to year ago
+export const getShortMonthNameForYear = (recentMonth: number): string[] => {
+	let index = recentMonth
+	const array: string[] = []
+	while (array.length < 12){
+		index = index === 11 ? 0 : index + 1
+		array.push(monthsShort[index])
+	}
+	return array
+}
+
 // return formatted date string. yyyy-mm-dd
 export const convertDayToString = (date: Date): string => {
 	const fullDate = date.toLocaleDateString().split("/")
@@ -33,7 +44,7 @@ export const convertDayToString = (date: Date): string => {
 } 
 
 export const getOnlyDateNum = (date: string): string => {
-	const full = date.split("/")
+	const full = date.split("-")
 	const day = full[2]
 	let suffix = ""
 	switch (day) {
@@ -54,4 +65,10 @@ export const getOnlyDateNum = (date: string): string => {
 		}
 	}
 	return day + suffix
+}
+
+export const checkTargetDateIsSame = (month: number, year: number, comparedDate: Date): boolean => {
+	if (comparedDate.getFullYear() !== year) {return false}
+	if(comparedDate.getMonth() + 1 !== month) {return false}
+	return true
 }

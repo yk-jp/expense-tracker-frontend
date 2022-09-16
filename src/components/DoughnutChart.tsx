@@ -2,31 +2,46 @@
 import React from "react";
 import { Doughnut } from 'react-chartjs-2'
 import { Chart, registerables } from 'chart.js';
-import { doughnutChartDataSets, doughnutChart } from '../Interface/DoughnutChart'
+import PropTypes from 'prop-types'
+import {colorsPicker} from '../Utilities/colorPallet'
+import { doughnutChart } from '../Interface/DoughnutChart'
 
 Chart.register(...registerables);
 
-const sampleDatasets = [
-	{
-		label: '# of Votes',
-		data: [12, 19, 3, 5, 2, 3],
-		backgroundColor: [
-			'rgba(255, 99, 132, 0.2)',
-			'rgba(54, 162, 235, 0.2)',
-			'rgba(255, 206, 86, 0.2)',
-			'rgba(75, 192, 192, 0.2)',
-			'rgba(153, 102, 255, 0.2)',
-			'rgba(255, 159, 64, 0.2)',
-		]
-	},
-]
-const sampleData: doughnutChart = {
-	labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-	datasets: sampleDatasets
+const emptyDatasets: doughnutChart = {
+	labels: ['N/A'],
+	datasets: [{
+		label: 'Monthly transaction rate',
+		data: [100],
+		backgroundColor: ['rgba(0,0,0,1)']
+	}]
 }
 
-const DoughnutChart = () => {
-	const data: doughnutChart = sampleData
+type Props = {
+	data: {name: string, totalAmount: number}[],
+	transType: string
+}
+const DoughnutChart = ({data, transType}: Props) => {
+
+	const labels: string[] = []
+	const amounts: number[] = []
+	let total = 0
+
+	data.forEach(cate => {
+		labels.push(cate.name)
+		amounts.push(cate.totalAmount)
+		total += cate.totalAmount
+	})
+	const backgroundColor: string[] = colorsPicker(amounts.length)
+
+	const datasets = [{
+		label: 'Monthly transaction rate',
+		data: amounts,
+		backgroundColor
+	}]
+
+
+	const chartInfo: doughnutChart = {labels, datasets}
 
 	const options = {
 		plugins: {
@@ -44,14 +59,25 @@ const DoughnutChart = () => {
 	return (
 		<div className="flex flex-col items-center px-6 ">
 			<Doughnut
-				data={data}
+				data={data.length === 0 ? emptyDatasets : chartInfo}
 				options={options}
 				id='chart-key'
 			/>
-			<p className="text-center -mt-40 mb-36" >total Income is <br /><span className="font-bold">$400</span></p>
+			<p className="text-center -mt-40 mb-36" >{`Total ${transType} is`}
+				<br />
+				<span className="font-bold">${total}</span>
+			</p>
 
 		</div>
 	)
+}
+
+DoughnutChart.propTypes = {
+	data: PropTypes.arrayOf(PropTypes.shape({
+		name: PropTypes.string,
+		totalAmount: PropTypes.number
+	})).isRequired,
+	transType: PropTypes.string.isRequired
 }
 
 export default DoughnutChart

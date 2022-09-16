@@ -23,6 +23,7 @@ const userStatusReducer = (state: userState, action: USRAction | USCategoryActio
 				tokens: null,
 				email: null
 			}
+
 		case ActionType.ADD_INCOME_CATEGORY: {
 			const currentAction = action as USCategoryAction
 			if (currentAction.newCategory.length > 1){
