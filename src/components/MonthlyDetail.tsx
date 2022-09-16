@@ -67,7 +67,6 @@ const MonthlyDetail = () => {
 	useEffect(()=> {
 		if(userStatus.tokens === null) { return }
 		// TODO: handle token expire pattern
-		// TODO: add dependent for transaction registered
 		const fetchData = async() => {
 			const year = targetMonth.getFullYear().toString()
 			const month = (targetMonth.getMonth() + 1).toString()
@@ -89,7 +88,6 @@ const MonthlyDetail = () => {
 	}, [targetMonth, userStatus.tokens])
 
 	useEffect(() => {
-		// TODO: handle token expire pattern
 		organizeTransactionsByCategory()
 	}, [transTypeIncome, transactionStatus.monthlyForDetail])
 

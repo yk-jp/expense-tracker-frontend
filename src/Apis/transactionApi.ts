@@ -1,20 +1,34 @@
 /* eslint-disable dot-notation */
+import appApi from "./appApi";
+import {generateNewToken} from './accountApi'
 import tokens from "../Interface/Token";
 import {allTransactionsMonthSuccess} from '../Interface/ApiReturns'
-import appApi from "./appApi";
+import transactionForFetch from '../Interface/Transaction'
 
-const postTransaction = async(token: tokens, event: string, amount: number, date: string, memo: string, category: number): Promise<boolean> => {
+const postTransaction = async(token: tokens, event: string, amount: number, date: string, memo: string, category: number, categoryName: string): Promise<transactionForFetch | tokens> => {
 	appApi.defaults.headers.common['Authorization'] = `Bearer ${token.access!}`
 
 	try{
 		await appApi.post('/transaction/save', {
 			event, amount, date, memo, category
 		})
-		return true
+		const stringAmount = amount.toString()
+		return {
+			id: 0,
+			category: categoryName,
+			event,
+			amount: stringAmount,
+			memo,
+			date
+		}
 	} catch(err) {
-		console.log(err)
-		// TODO: return new token if token expired
-		return false
+		if (token.refresh !== null){
+			const res = await generateNewToken(token.refresh)
+			const newToken = res as tokens
+			return newToken
+		}
+		return {access: null, refresh: null}
+
 	}
 }
 

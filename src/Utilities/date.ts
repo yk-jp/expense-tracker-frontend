@@ -66,3 +66,9 @@ export const getOnlyDateNum = (date: string): string => {
 	}
 	return day + suffix
 }
+
+export const checkTargetDateIsSame = (month: number, year: number, comparedDate: Date): boolean => {
+	if (comparedDate.getFullYear() !== year) {return false}
+	if(comparedDate.getMonth() + 1 !== month) {return false}
+	return true
+}

@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable jsx-a11y/no-noninteractive-element-to-interactive-role */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable @typescript-eslint/no-floating-promises */
 
 import React, {useState, useContext, useRef} from "react";
+import { useNavigate } from "react-router-dom";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faX } from '@fortawesome/free-solid-svg-icons'
 import MiniCalendar from "./MiniCalendar";
@@ -17,13 +17,15 @@ import AppContext from "../Context/useContext";
 import { ActionType } from "../Redux/ActionTypes";
 import tokens from "../Interface/Token";
 import category from "../Interface/Category";
-import { convertDayToString } from "../Utilities/date";
+import { convertDayToString, checkTargetDateIsSame } from "../Utilities/date";
 import {inputRowStyle, labelBasicStyle, inputBasicStyle, selectedButtonStyle, unSelectedButtonStyle} from "../Utilities/specialStyledClassName"
+import transactionForFetch from "../Interface/Transaction";
 
 const Resister = () => {
+	const nav = useNavigate()
 	const amountInputRef = useRef<HTMLInputElement>(null)
 	const memoTextAreaRef = useRef<HTMLTextAreaElement>(null)
-	const { dispatchDisplayStatus, userStatus, dispatchUserState } = useContext(AppContext)
+	const { dispatchDisplayStatus, userStatus, dispatchUserState, dispatchTransactionStatus, transactionStatus } = useContext(AppContext)
 	const [transactionType, setTransactionType] = useState("Expense")
 	const [transDay, setTransDay] = useState(new Date())
 	const [datePickerOpened, setDatePickerOpened] = useState(false)
@@ -69,21 +71,56 @@ const Resister = () => {
 		return cateForResister!
 	}
 
-	const onSubmit = async (e: React.SyntheticEvent) => {
-		e.preventDefault()
+	const tryResister = async (token: tokens) => {
 		const amount = parseFloat(amountInputRef.current!.value)
 		const date = convertDayToString(transDay)
 		const cate: category | null = await isCategoryExist()
 		if (cate === null) {return}
 
 		const res = await postTransaction(
-			userStatus.tokens!,
+			token,
 			transactionType,
 			amount,
 			date,
 			memoTextAreaRef.current!.value,
-			cate.id
+			cate.id,
+			cate.name
 		)
+		if (Object.prototype.hasOwnProperty.call(res, 'refresh')) {
+			const newToken = res as tokens
+			if (newToken.access === null) {
+				// TODO: popup error message need to log in again
+				nav('/login')
+			} else {
+				await tryResister(newToken)
+				return
+			}
+		}
+		const newTrans = res as transactionForFetch
+		const updateDetail = checkTargetDateIsSame(transactionStatus.monthlyForDetail.target.month, transactionStatus.monthlyForDetail.target.year, transDay)
+		const updateCalendar = checkTargetDateIsSame(transactionStatus.monthlyForCalendar.target.month, transactionStatus.monthlyForCalendar.target.year, transDay)
+		if (updateDetail){
+			dispatchTransactionStatus({
+				type: ActionType.ADD_TRANSACTION_MONTH_FOR_DETAIL,
+				newTrans: [newTrans],
+				month: (transDay.getMonth() + 1).toString(),
+				year: transDay.getFullYear().toString()
+			})
+		}
+		if(updateCalendar){
+			dispatchTransactionStatus({
+				type: ActionType.ADD_TRANSACTION_MONTH_FOR_CALENDAR,
+				newTrans: [newTrans],
+				month: (transDay.getMonth() + 1).toString(),
+				year: transDay.getFullYear().toString()
+
+			})
+		}
+	}
+
+	const onSubmit = (e: React.SyntheticEvent) => {
+		e.preventDefault()
+		const res = tryResister(userStatus.tokens!)
 	
 		// TODO: when register is ok, add the transaction to other graph
 	}
