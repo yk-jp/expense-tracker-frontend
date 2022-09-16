@@ -8,20 +8,17 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faX } from '@fortawesome/free-solid-svg-icons'
 import MiniCalendar from "./MiniCalendar";
 import Category from "./Category";
-import AppContext from "../Context/useContext";
-import category from "../Interface/Category";
-import { ActionType } from "../Redux/ActionTypes";
+
 import postTransaction from "../Apis/transactionApi";
-import { convertDayToString } from "../Utilities/date";
 import { createCategory } from "../Apis/categoryApi";
 import { generateNewToken } from "../Apis/accountApi";
-import tokens from "../Interface/Token";
 
-const inputRowStyle = "flex mb-4"
-const labelBasicStyle = " w-1/3 block "
-const inputBasicStyle = "grow block text-right bg-white border-b-2 border-b-gray-300 hover:border-b-gray-500 focus:border-b-gray-500"
-const selectedButtonStyle = "w-2/5 text-center py-1 border-2 border-orange-500 text-orange-500 rounded-md"
-const unSelectedButtonStyle = "w-2/5 text-center py-1 border-2 border-gray-300 text-gray-400 rounded-md hover:text-gray-600 hover:border-gray-500"
+import AppContext from "../Context/useContext";
+import { ActionType } from "../Redux/ActionTypes";
+import tokens from "../Interface/Token";
+import category from "../Interface/Category";
+import { convertDayToString } from "../Utilities/date";
+import {inputRowStyle, labelBasicStyle, inputBasicStyle, selectedButtonStyle, unSelectedButtonStyle} from "../Utilities/specialStyledClassName"
 
 const Resister = () => {
 	const amountInputRef = useRef<HTMLInputElement>(null)

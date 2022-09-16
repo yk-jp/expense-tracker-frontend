@@ -4,31 +4,23 @@ import { ActionType } from "./ActionTypes";
 
 const transactionStateReducer = (state: transactionState, action: TransSRAction): transactionState => {
 	switch (action.type) {
-		case ActionType.ADD_TRANSACTION_MONTH_FOR_INIT: {
+		case ActionType.ADD_TRANSACTION_MONTH_FOR_CALENDAR: {
 			return {
 				...state,
 				monthlyForCalendar: {
-					target: {year: parseInt(action.year, 10), month: parseInt(action.month, 10)},
-					transactions: action.newTrans
-				},
-				monthlyForDetail: {
 					target: {year: parseInt(action.year, 10), month: parseInt(action.month, 10)},
 					transactions: action.newTrans
 				}
 			}
 		}
 
-		// TODO: need to develop for different month
-		case ActionType.ADD_TRANSACTION_MONTH_FOR_CALENDAR: {
-			const income: transactionFroFetch[] = []
+		case ActionType.ADD_TRANSACTION_MONTH_FOR_DETAIL: {
 			return {
 				...state,
-			}
-		}
-		case ActionType.ADD_TRANSACTION_MONTH_FOR_DETAIL: {
-			const i = 0
-			return {
-				...state
+				monthlyForDetail: {
+					target: {year: parseInt(action.year, 10), month: parseInt(action.month, 10)},
+					transactions: action.newTrans
+				}
 			}
 		}
 		case ActionType.ADD_TRANSACTION_YEAR: {

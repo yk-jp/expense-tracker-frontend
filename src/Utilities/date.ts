@@ -44,7 +44,7 @@ export const convertDayToString = (date: Date): string => {
 } 
 
 export const getOnlyDateNum = (date: string): string => {
-	const full = date.split("/")
+	const full = date.split("-")
 	const day = full[2]
 	let suffix = ""
 	switch (day) {

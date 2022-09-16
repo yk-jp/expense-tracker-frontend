@@ -7,147 +7,12 @@ import AppContext from "../Context/useContext";
 import { colorPicker } from "../Utilities/colorPallet";
 import { getOnlyDateNum } from "../Utilities/date";
 import transaction, {categorizedTransaction} from "../Interface/Transaction";
-
-const activeButtonClassName = "w-1/2 pb-2 border-b-cyan-500 border-b-4 ease-in duration-100"
-const inactiveButtonClassName = "w-1/2 pb-2 text-slate-400 border-b-4 ease-in duration-100 "
-
-const shownCategoryClassName = " ml-4 py-1 px-2 flex border-b duration-500 items-end"
-const noShownCategoryClassName = "h-0 overflow-hidden"
-
-const sample: categorizedTransaction[] = [{
-	name: 'food',
-	totalAmount: 500,
-	transactions: [{
-			id: 1,
-			category: 'food',
-			event: 'expense',
-			amount: '200',
-			memo: "ice cream",
-			date: '2020/3/4'
-		},
-		{
-			id: 2,
-			category: 'food',
-			event: 'expense',
-			amount: '300',
-			memo: "T & T",
-			date: '2020/3/4'
-		}
-	]
-	},
-	{
-		name: 'hang out',
-		totalAmount: 300,
-		transactions: [{
-				id: 1,
-				category: 'hang out',
-				event: 'expense',
-				amount: '100',
-				memo: "with A",
-				date: '2020/3/4'
-			},
-			{
-				id: 2,
-				category: 'hang out',
-				event: 'expense',
-				amount: '200',
-				memo: "BBQ",
-				date: '2020/3/4'
-			},
-			{
-				id: 2,
-				category: 'hang out',
-				event: 'expense',
-				amount: '200',
-				memo: "BBQ",
-				date: '2020/3/4'
-			},
-			{
-				id: 2,
-				category: 'hang out',
-				event: 'expense',
-				amount: '200',
-				memo: "BBQ",
-				date: '2020/3/4'
-			},
-			{
-				id: 2,
-				category: 'hang out',
-				event: 'expense',
-				amount: '200',
-				memo: "BBQ",
-				date: '2020/3/4'
-			},
-			{
-				id: 2,
-				category: 'hang out',
-				event: 'expense',
-				amount: '200',
-				memo: "BBQ",
-				date: '2020/3/4'
-			},
-			{
-				id: 2,
-				category: 'hang out',
-				event: 'expense',
-				amount: '200',
-				memo: "BBQ",
-				date: '2020/3/4'
-			},
-			{
-				id: 2,
-				category: 'hang out',
-				event: 'expense',
-				amount: '200',
-				memo: "BBQ",
-				date: '2020/3/4'
-			},
-			{
-				id: 2,
-				category: 'hang out',
-				event: 'expense',
-				amount: '200',
-				memo: "BBQ",
-				date: '2020/3/4'
-			},
-			{
-				id: 2,
-				category: 'hang out',
-				event: 'expense',
-				amount: '200',
-				memo: "BBQ",
-				date: '2020/3/4'
-			},
-			{
-				id: 2,
-				category: 'hang out',
-				event: 'expense',
-				amount: '200',
-				memo: "BBQ",
-				date: '2020/3/4'
-			},
-			{
-				id: 2,
-				category: 'hang out',
-				event: 'expense',
-				amount: '200',
-				memo: "BBQ",
-				date: '2020/3/4'
-			},
-			{
-				id: 2,
-				category: 'hang out',
-				event: 'expense',
-				amount: '200',
-				memo: "BBQ",
-				date: '2020/3/4'
-			},
-		]
-	},
-]
+import { fetchTransaction } from "../Apis/transactionApi";
+import { ActionType } from "../Redux/ActionTypes";
+import { activeButtonClassName, inactiveButtonClassName, shownCategoryClassName, noShownCategoryClassName} from "../Utilities/specialStyledClassName"
 
 const MonthlyDetail = () => {
-	const { transactionStatus } = useContext(AppContext)
+	const { transactionStatus, userStatus, dispatchTransactionStatus } = useContext(AppContext)
 	const [categorizedTransactions, setCategorizedTransactions] = useState<categorizedTransaction[]>([])
 	const [transTypeIncome, setTransTypeIncome] = useState(true)
 	const [detailedCate, setDetailedCate] = useState<string>("")
@@ -173,7 +38,6 @@ const MonthlyDetail = () => {
 		}
 	}
 
-	// TODO: check below function works correctly
 	const organizeTransactionsByCategory = () => {
 		const categorized: categorizedTransaction[] = []
 		const aimEvent = transTypeIncome ? "Income" : "Expense"
@@ -201,9 +65,33 @@ const MonthlyDetail = () => {
 	}
 
 	useEffect(()=> {
-		organizeTransactionsByCategory()
+		if(userStatus.tokens === null) { return }
+		// TODO: handle token expire pattern
+		// TODO: add dependent for transaction registered
+		const fetchData = async() => {
+			const year = targetMonth.getFullYear().toString()
+			const month = (targetMonth.getMonth() + 1).toString()
+			const data = await fetchTransaction(userStatus.tokens!, year, month)
+			if(data !== null){
+				dispatchTransactionStatus({
+					type: ActionType.ADD_TRANSACTION_MONTH_FOR_DETAIL,
+					newTrans: data.result.all_transactions,
+					month,
+					year
+				})
+			}
+		}
 
-	}, [targetMonth, transactionStatus.monthlyForDetail, transTypeIncome])
+		fetchData().then(()=>{
+			organizeTransactionsByCategory()
+		}).catch(console.error)
+
+	}, [targetMonth, userStatus.tokens])
+
+	useEffect(() => {
+		// TODO: handle token expire pattern
+		organizeTransactionsByCategory()
+	}, [transTypeIncome, transactionStatus.monthlyForDetail])
 
 	return (
 		<section className="border-4 w-96 h-full overflow-scroll" >
@@ -227,7 +115,7 @@ const MonthlyDetail = () => {
 				transType={transTypeIncome ? "Income" : "Expense"}
 			/>
 			<div className="">
-				{sample.map((cate, idx) => (
+				{categorizedTransactions.map((cate, idx) => (
 					<div className="px-10">
 						<div className="p-2 rounded-md" style={{backgroundColor: colorPicker(idx)}}>
 							<button 

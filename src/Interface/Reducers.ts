@@ -15,7 +15,6 @@ export interface USRAction {
 // TODO: adjust property
 export interface TransSRAction {
 	type: string,
-	token: tokens,
 	newTrans: transactionForFetch[],
 	month: string,
 	year: string

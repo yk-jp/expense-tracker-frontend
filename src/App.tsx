@@ -25,8 +25,8 @@ const userInitialState: userState = {
 }
 
 const transactionInitialState: transactionState = {
-  monthlyForCalendar: {target: {year: new Date().getFullYear(), month: new Date().getMonth()}, transactions: []}, 
-  monthlyForDetail: {target: {year: new Date().getFullYear(), month: new Date().getMonth()}, transactions: []},
+  monthlyForCalendar: {target: {year: new Date().getFullYear(), month: new Date().getMonth() + 1}, transactions: []}, 
+  monthlyForDetail: {target: {year: new Date().getFullYear(), month: new Date().getMonth() + 1}, transactions: []},
   yearly: {Income: [], Expense: []}
 }
 

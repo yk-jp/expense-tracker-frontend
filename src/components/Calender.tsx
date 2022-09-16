@@ -8,6 +8,8 @@ import CalenderDay from './CalenderDay'
 import PickMonthHeader from "./PickMonthHeader";
 import transactionForFetch from "../Interface/Transaction";
 import { getDays, getDayOfFirst, getDayName } from '../Utilities/date'
+import { fetchTransaction } from "../Apis/transactionApi";
+import { ActionType } from "../Redux/ActionTypes";
 
 interface dayDetail{
 	id: number,
@@ -19,8 +21,7 @@ interface dayDetail{
 const Calender = () => {
 
 	const daysColorPallet = ["bg-red-500", "bg-orange-500", "bg-amber-500", "bg-lime-500", "bg-emerald-500", "bg-cyan-500", "bg-blue-500"]
-	const { transactionStatus } = useContext(AppContext)
-
+	const { transactionStatus, userStatus, dispatchTransactionStatus } = useContext(AppContext)
 	const [targetMonth, setTargetMonth] = useState<Date>(new Date())
 	const [dailyTransactions, setDailyTransactions] = useState<dayDetail[]>([])
 
@@ -82,10 +83,30 @@ const Calender = () => {
 		setDailyTransactions(temp)
 	}
 
-	// TODO: develop when user change target month
+	// TODO: handle token expire
 	useEffect(()=> {
+		if(userStatus.tokens === null) { return }
+		const fetchData = async() => {
+			const year = targetMonth.getFullYear().toString()
+			const month = (targetMonth.getMonth() + 1).toString()
+			const data = await fetchTransaction(userStatus.tokens!, year, month)
+			if(data !== null){
+				dispatchTransactionStatus({
+					type: ActionType.ADD_TRANSACTION_MONTH_FOR_CALENDAR,
+					newTrans: data.result.all_transactions,
+					month, year
+				})
+			}
+		}
+
+		fetchData().catch(console.error)
 		createTable()
-	}, [targetMonth, transactionStatus.monthlyForCalendar])
+
+	}, [targetMonth, userStatus.tokens])
+
+	useEffect(() => {
+		createTable()
+	}, [transactionStatus.monthlyForCalendar])
 
 	return(
 		<section className="w-168">
