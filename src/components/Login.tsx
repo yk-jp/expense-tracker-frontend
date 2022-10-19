@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-floating-promises */
@@ -24,11 +23,12 @@ const Login = () => {
 
 	const onSubmit = async (e: React.SyntheticEvent) => {
 		e.preventDefault()
+		if(!email || !password) return
+
 		const res: Tokens | LoginFailed = await loginApi(email, password)
 		if (Object.keys(res).length === 2) {
 			const success = res as Tokens
 			dispatchUserState({type: ActionType.LOGIN_USER, token: success, email})
-			localStorage.setItem('userToken', JSON.stringify(success))
 			nav('/')
 		} else {
 			const failed = res as LoginFailed
@@ -66,13 +66,7 @@ const Login = () => {
 						className='block flex-1 pl-6 bg-zinc-600 text-white focus:bg-white focus:text-zinc-900'
 				/>
 				</div>
-				<div className='flex justify-between'>
-					<label className='text-white'>
-						<input type="checkbox" />
-						Remember me?
-					</label>
-					<p className='text-white hover:cursor-pointer'>Forgot password?</p>
-				</div>
+				<p className='text-white text-right hover:cursor-pointer'>Forgot password?</p>
 				<Link to='/signIn' className='text-white text-right hover:cursor-pointer block'>Create new account?</Link>
 				<button 
 					type='submit' 

@@ -1,6 +1,7 @@
 /* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { USRAction, USCategoryAction, UserState } from "../Interface/Reducers"
+import { UserInfo } from "../Interface/UserInfo"
 import { ActionType } from "./ActionTypes"
 
 
@@ -8,6 +9,8 @@ const userStatusReducer = (state: UserState, action: USRAction | USCategoryActio
 	switch(action.type){
 		case ActionType.LOGIN_USER:{
 			const currentAction = action as USRAction
+			const userInfo: UserInfo = {email: currentAction.email!, tokens: currentAction.token!}
+			localStorage.setItem('userInfo', JSON.stringify(userInfo))
 			return {
 				...state,
 				loggedIn: true,
@@ -17,6 +20,7 @@ const userStatusReducer = (state: UserState, action: USRAction | USCategoryActio
 		}
 
 		case ActionType.LOGOUT_USER: 
+			localStorage.removeItem('userInfo')
 			return {
 				...state,
 				loggedIn: false,

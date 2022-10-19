@@ -21,6 +21,8 @@ const SignIn = () => {
 
 	const onSubmit = async (e: React.SyntheticEvent) => {
 		e.preventDefault()
+		if (!email || !password) return
+
 		const res: Tokens | RegisterAccountFailed = await signInApi(email, password)
 		if (Object.keys(res).length === 2){
 			const success = res as Tokens

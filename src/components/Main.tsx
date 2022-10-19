@@ -15,6 +15,7 @@ import { ActionType } from "../Redux/ActionTypes";
 import { fetchCategory } from "../Apis/categoryApi";
 import { CategoryAll } from "../Interface/Category";
 import { Tokens } from "../Interface/Token";
+import { UserInfo } from "../Interface/UserInfo";
 
 const Main = () => {
 	const { displayStatus, dispatchDisplayStatus, dispatchUserState, userStatus, dispatchTransactionStatus } = useContext(AppContext)
@@ -35,7 +36,14 @@ const Main = () => {
 		}
 
 		if (userStatus.loggedIn === false) {
-			nav('/login')
+			const localData = localStorage.getItem('userInfo')
+			if (!localData) {
+				nav('/login')
+			} else {
+				const userInfo: UserInfo = JSON.parse(localData)
+				dispatchUserState({type: ActionType.LOGIN_USER, token: userInfo.tokens, email: userInfo.email})
+				getCategory().catch(console.error)
+			}
 		} else {
 			getCategory().catch(console.error)
 		}

@@ -140,14 +140,14 @@ const Resister = () => {
 					<button 
 						type="button"
 						value="Income"
-						className={transactionType === "Income" ? preSetupStyles.selectedButtonStyle : preSetupStyles.selectedButtonStyle}
+						className={transactionType === "Income" ? preSetupStyles.selectedButtonStyle : preSetupStyles.unSelectedButtonStyle}
 						onClick={onClickType}
 					>
 					Income</button>
 					<button 
 						type="button"
 						value="Expense"
-						className={transactionType === "Expense" ? preSetupStyles.selectedButtonStyle : preSetupStyles.selectedButtonStyle}
+						className={transactionType === "Expense" ? preSetupStyles.selectedButtonStyle : preSetupStyles.unSelectedButtonStyle}
 						onClick={onClickType}
 					>
 					Expense</button>
