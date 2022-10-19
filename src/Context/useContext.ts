@@ -1,13 +1,13 @@
 import React, { createContext } from "react";
-import { displayState, DSRAction, userState, USRAction, transactionState, TransSRAction, USCategoryAction } from "../Interface/Reducers";
+import { DisplayState, DSRAction, UserState, USRAction, TransactionState, TransSRAction, USCategoryAction } from "../Interface/Reducers";
 
 
 const AppContext = createContext({} as {
-  displayStatus: displayState,
+  displayStatus: DisplayState,
   dispatchDisplayStatus: React.Dispatch<DSRAction >,
-	userStatus: userState,
+	userStatus: UserState,
 	dispatchUserState: React.Dispatch<USRAction | USCategoryAction>,
-	transactionStatus: transactionState,
+	transactionStatus: TransactionState,
 	dispatchTransactionStatus: React.Dispatch<TransSRAction>
 })
 

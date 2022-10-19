@@ -2,9 +2,9 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable dot-notation */
 import appApi from "./appApi";
-import { transactionStatsYear, transactionsStatsMonth } from '../Interface/Transaction'
-import { statusInMonthSuccess } from '../Interface/ApiReturns'
-import tokens from "../Interface/Token";
+import { TransactionStatsYear, TransactionsStatsMonth } from '../Interface/Transaction'
+import { StatusInMonthSuccess } from '../Interface/ApiReturns'
+import { Tokens } from "../Interface/Token";
 
 const nextYear = (year: number, month: number): number =>{
 	if (month === 12) {
@@ -20,30 +20,30 @@ const nextMonth = (month: number): number => {
 	return month + 1
 }
 
-const fetchStatsMonth = async (token: string, year: string, month: string): Promise<transactionsStatsMonth> => {
+const fetchStatsMonth = async (token: string, year: string, month: string): Promise<TransactionsStatsMonth> => {
 	appApi.defaults.headers.common['Authorization'] = `Bearer ${token}`
 	try{
 		const data = await appApi.post('/stats/', {
 			year, month
 		})
-		const res = data.data as statusInMonthSuccess
-		return res.result as transactionsStatsMonth
+		const res = data.data as StatusInMonthSuccess
+		return res.result as TransactionsStatsMonth
 	}catch{
 		console.log("failed")
 		return {Income: 0, Expense: 0, Balance: 0}
 	}
 }
 
-const fetchStatsYear = async (token: tokens, year: number, month: number): Promise<transactionStatsYear> => {
+const fetchStatsYear = async (token: Tokens, year: number, month: number): Promise<TransactionStatsYear> => {
 	const TOKEN = token.access!
-	const result: transactionStatsYear = {Income: [], Expense: []}
+	const result: TransactionStatsYear = {Income: [], Expense: []}
 	let yearNumber = year - 1
 	let monthNumber = month + 1
 
 	for(let i = 0; i < 12; i++){
 		yearNumber = nextYear(yearNumber, monthNumber)
 		monthNumber = nextMonth(monthNumber)
-		const res: transactionsStatsMonth = await fetchStatsMonth(TOKEN, yearNumber.toString(), monthNumber.toString())
+		const res: TransactionsStatsMonth = await fetchStatsMonth(TOKEN, yearNumber.toString(), monthNumber.toString())
 		result.Income.push(res.Income)
 		result.Expense.push(res.Expense)
 	}

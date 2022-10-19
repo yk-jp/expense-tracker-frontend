@@ -1,46 +1,47 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import appApi from "./appApi";
-import tokens from "../Interface/Token";
-import { loginFailed, registerAccountFailed, generateTokenFailed, generateTokenSuccess } from "../Interface/ApiReturns";
+import { Tokens } from "../Interface/Token";
+import { LoginFailed, RegisterAccountFailed, GenerateTokenFailed, GenerateTokenSuccess } from "../Interface/ApiReturns";
 
-const loginApi = async (email: string | null, password: string | null): Promise<tokens | loginFailed> => {
+const loginApi = async (email: string | null, password: string | null): Promise<Tokens | LoginFailed> => {
 	try{
 		const data = await appApi.post('/auth/token/', {
 			email, password
 		})
 		localStorage.setItem('expense-tracker-tokens', JSON.stringify(data.data))
-		const userToken: tokens = JSON.parse(localStorage.getItem('expense-tracker-tokens') || "") as tokens
+		const userToken: Tokens = JSON.parse(localStorage.getItem('expense-tracker-tokens') || "") as Tokens
 		return userToken
 	} catch (err) {
-		const errRes = err as loginFailed
+		const errRes = err as LoginFailed
 		return errRes
 	}
 }
 
-const signInApi = async (email: string | null, password: string | null): Promise<tokens | registerAccountFailed> => {
+const signInApi = async (email: string | null, password: string | null): Promise<Tokens | RegisterAccountFailed> => {
 	try {
 		const data = await appApi.post('/auth/register/', {
 			email, password
 		})
 		.then(async() => {
-			const loginData: tokens | loginFailed = await loginApi(email, password)
-			return loginData as tokens
+			const loginData: Tokens | LoginFailed = await loginApi(email, password)
+			return loginData as Tokens
 		})
 		return data
 	} catch (err) {
-		const errRes = err as registerAccountFailed
+		const errRes = err as RegisterAccountFailed
 		return errRes
 	}
 }
 
-const generateNewToken = async (refreshToken: string): Promise<tokens | generateTokenFailed> => {
+const generateNewToken = async (refreshToken: string): Promise<Tokens | GenerateTokenFailed> => {
 	try {
 		const data = await appApi.post('/auth/token/refresh/', {
 			"refresh": refreshToken
 		})
-		const accessToken = data.data as generateTokenSuccess
+		const accessToken = data.data as GenerateTokenSuccess
 		return {refresh: refreshToken, access: accessToken.access}
 	} catch (err) {
-		const errRes = err as generateTokenFailed
+		const errRes = err as GenerateTokenFailed
 		return errRes
 	}
 }

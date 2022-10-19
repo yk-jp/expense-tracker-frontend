@@ -1,10 +1,10 @@
-export default interface category {
+export interface Category {
 	id: number,
 	name: string,
 	category_type: string,
 }
 
-export interface categoryAll {
-	income: category[],
-	expense: category[]
+export interface CategoryAll {
+	income: Category[],
+	expense: Category[]
 }

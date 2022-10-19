@@ -2,7 +2,7 @@
 import React, { useEffect, useContext, useState } from 'react'
 import PropTypes from 'prop-types'
 import AppContext from '../Context/useContext'
-import category from '../Interface/Category'
+import { Category } from '../Interface/Category'
 
 
 type Props = {
@@ -11,10 +11,10 @@ type Props = {
 	setCatePickerOpened: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
-const Category = ({setCategory, setCatePickerOpened, transType}: Props) => {
+const CategoryButtons = ({setCategory, setCatePickerOpened, transType}: Props) => {
 
 	const {dispatchUserState, userStatus} = useContext(AppContext)
-	const [targetCate, setTargetCate] = useState<category[]>([])
+	const [targetCate, setTargetCate] = useState<Category[]>([])
 
 	const onClickCatePicked = (e: React.MouseEvent<HTMLButtonElement>) => {
 		const {value} = e.target as HTMLButtonElement
@@ -49,10 +49,10 @@ const Category = ({setCategory, setCatePickerOpened, transType}: Props) => {
 	)
 }
 
-Category.propTypes = {
+CategoryButtons.propTypes = {
 	transType: PropTypes.string.isRequired,
 	setCategory: PropTypes.func.isRequired,
 	setCatePickerOpened: PropTypes.func.isRequired
 }
 
-export default Category
+export default CategoryButtons

@@ -6,25 +6,25 @@ import Header from './components/Header';
 import Main from './components/Main';
 import Login from './components/Login';
 import SignIn from './components/SignIn';
-import { displayState, userState, transactionState } from './Interface/Reducers';
+import { DisplayState, UserState, TransactionState } from './Interface/Reducers';
 import AppContext from './Context/useContext';
 import userStatusReducer from './Redux/UserStatusReducer';
 import displayStatusReducer from './Redux/DisplayStatusReducer';
 import transactionStateReducer from './Redux/TransactionReducer';
 
-const displayInitialState: displayState = {
+const displayInitialState: DisplayState = {
   isRegisterShown: false,
   isMiniCalendarShown: false
 }
 
-const userInitialState: userState = {
+const userInitialState: UserState = {
   loggedIn: false,
   email: null,
   tokens: null,
   category: {expense: [], income: []}
 }
 
-const transactionInitialState: transactionState = {
+const transactionInitialState: TransactionState = {
   monthlyForCalendar: {target: {year: new Date().getFullYear(), month: new Date().getMonth() + 1}, transactions: []}, 
   monthlyForDetail: {target: {year: new Date().getFullYear(), month: new Date().getMonth() + 1}, transactions: []},
   yearly: {Income: [], Expense: []}

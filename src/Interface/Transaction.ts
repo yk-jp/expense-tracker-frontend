@@ -1,4 +1,4 @@
-export default interface transactionForFetch{
+export interface TransactionForFetch{
 	id: number,
 	category: string,
 	event: string,
@@ -7,7 +7,7 @@ export default interface transactionForFetch{
 	date: string,
 }
 
-export interface transactionForPost{
+export interface TransactionForPost{
 	category: number,
 	event: string,
 	amount: number,
@@ -15,19 +15,19 @@ export interface transactionForPost{
 	date: string,
 }
 
-export interface transactionsStatsMonth {
+export interface TransactionsStatsMonth {
 	Income: number,
 	Expense: number,
 	Balance: number
 }
 
-export interface transactionStatsYear {
+export interface TransactionStatsYear {
 	Income: number[],
 	Expense: number[]
 }
 
-export interface categorizedTransaction {
+export interface CategorizedTransactions {
 	name: string,
 	totalAmount: number,
-	transactions: transactionForFetch[]
+	transactions: TransactionForFetch[]
 }

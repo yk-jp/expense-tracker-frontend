@@ -1,29 +1,30 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable dot-notation */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import appApi from "./appApi";
 import { generateNewToken } from "./accountApi";
-import tokens from "../Interface/Token";
-import { categoryFetchSuccess } from "../Interface/ApiReturns";
-import category, { categoryAll} from '../Interface/Category'
+import { Tokens } from "../Interface/Token";
+import { CategoryFetchSuccess } from "../Interface/ApiReturns";
+import { Category, CategoryAll} from '../Interface/Category'
 
-const fetchCategory = async (token: tokens): Promise<categoryAll | tokens> => {
+const fetchCategory = async (token: Tokens): Promise<CategoryAll | Tokens> => {
 	appApi.defaults.headers.common['Authorization'] = `Bearer ${token.access!}`
 	try{
 		const dataIncome = await appApi.get('/category/Income')
-		const categoryIncome = dataIncome.data as categoryFetchSuccess
+		const categoryIncome = dataIncome.data as CategoryFetchSuccess
 		const dataExpense = await appApi.get('/category/Expense')
-		const categoryExpense = dataExpense.data as categoryFetchSuccess
+		const categoryExpense = dataExpense.data as CategoryFetchSuccess
 		return {income: categoryIncome.result.category_all, expense: categoryExpense.result.category_all}
 
 	} catch (err) {
 		const res = await generateNewToken(token.refresh!)
-		const newToken = res as tokens
+		const newToken = res as Tokens
 		return newToken
 	}
 
 }
 
-const createCategory = async (token: tokens, name: string, type: string): Promise<category | undefined> => {
+const createCategory = async (token: Tokens, name: string, type: string): Promise<Category | undefined> => {
 	appApi.defaults.headers.common['Authorization'] = `Bearer ${token.access!}`
 	try{
 		const data = await appApi.post('/category/save', {
@@ -31,7 +32,7 @@ const createCategory = async (token: tokens, name: string, type: string): Promis
 		}).then(async (res) => {
 			if (res.status === 200) {
 				const r = await appApi.get(`/category/${type}`)
-				const newGroup = r.data as categoryFetchSuccess
+				const newGroup = r.data as CategoryFetchSuccess
 				const createdCate = newGroup.result.category_all.filter(cate => cate.name === name)
 				return createdCate
 			}

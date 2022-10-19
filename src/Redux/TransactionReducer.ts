@@ -1,8 +1,8 @@
-import { TransSRAction, transactionState } from "../Interface/Reducers";
-import transactionFroFetch from '../Interface/Transaction'
+import { TransSRAction, TransactionState } from "../Interface/Reducers";
+import { TransactionForFetch } from '../Interface/Transaction'
 import { ActionType } from "./ActionTypes";
 
-const transactionStateReducer = (state: transactionState, action: TransSRAction): transactionState => {
+const transactionStateReducer = (state: TransactionState, action: TransSRAction): TransactionState => {
 	switch (action.type) {
 		case ActionType.ADD_TRANSACTION_MONTH_FOR_CALENDAR: {
 			return {

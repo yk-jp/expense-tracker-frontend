@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
@@ -12,8 +13,8 @@ import Resister from "./Resister";
 import AppContext from "../Context/useContext";
 import { ActionType } from "../Redux/ActionTypes";
 import { fetchCategory } from "../Apis/categoryApi";
-import { categoryAll } from "../Interface/Category";
-import tokens from "../Interface/Token";
+import { CategoryAll } from "../Interface/Category";
+import { Tokens } from "../Interface/Token";
 
 const Main = () => {
 	const { displayStatus, dispatchDisplayStatus, dispatchUserState, userStatus, dispatchTransactionStatus } = useContext(AppContext)
@@ -24,11 +25,11 @@ const Main = () => {
 		const getCategory = async () => {
 			const data = await fetchCategory(userStatus.tokens!)
 			if (Object.prototype.hasOwnProperty.call(data, 'income')) {
-				const allCate = data as categoryAll
+				const allCate = data as CategoryAll
 				dispatchUserState({type: ActionType.ADD_INCOME_CATEGORY, newCategory: allCate.income})
 				dispatchUserState({type: ActionType.ADD_EXPENSE_CATEGORY, newCategory: allCate.expense})
 			} else if (Object.prototype.hasOwnProperty.call(data, 'refresh')){
-				const token = data as tokens
+				const token = data as Tokens
 				dispatchUserState({type: ActionType.LOGIN_USER, token, email: userStatus.email})
 			}
 		}

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable jsx-a11y/no-noninteractive-element-to-interactive-role */
 /* eslint-disable jsx-a11y/label-has-associated-control */
@@ -7,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faX } from '@fortawesome/free-solid-svg-icons'
 import MiniCalendar from "./MiniCalendar";
-import Category from "./Category";
+import CategoryButtons from "./Category";
 
 import postTransaction from "../Apis/transactionApi";
 import { createCategory } from "../Apis/categoryApi";
@@ -15,11 +16,11 @@ import { generateNewToken } from "../Apis/accountApi";
 
 import AppContext from "../Context/useContext";
 import { ActionType } from "../Redux/ActionTypes";
-import tokens from "../Interface/Token";
-import category from "../Interface/Category";
+import { Tokens } from "../Interface/Token";
+import { Category } from "../Interface/Category";
 import { convertDayToString, checkTargetDateIsSame } from "../Utilities/date";
-import {inputRowStyle, labelBasicStyle, inputBasicStyle, selectedButtonStyle, unSelectedButtonStyle} from "../Utilities/specialStyledClassName"
-import transactionForFetch from "../Interface/Transaction";
+import preSetupStyles from "../Utilities/specialStyledClassName"
+import { TransactionForFetch } from "../Interface/Transaction";
 
 const Resister = () => {
 	const nav = useNavigate()
@@ -41,8 +42,8 @@ const Resister = () => {
 		setTransCate(e.currentTarget.value)
 	}
 
-	const isCategoryExist = async (): Promise<category| null> =>{
-		let cateForResister: category | undefined
+	const isCategoryExist = async (): Promise<Category| null> =>{
+		let cateForResister: Category | undefined
 		if (transactionType === "Expense") {
 			cateForResister = userStatus.category.expense.find(obj => obj.name === transCate)
 		} else {
@@ -55,7 +56,7 @@ const Resister = () => {
 		if (cateForResister === undefined ){
 			const res = await generateNewToken(userStatus.tokens!.refresh!)
 			if (Object.prototype.hasOwnProperty.call(res, 'refresh')){
-				const newToken = res as tokens
+				const newToken = res as Tokens
 				cateForResister = await createCategory(newToken, transCate, transactionType)
 				dispatchUserState({type: ActionType.LOGIN_USER, token: newToken, email: userStatus.email})
 			} else {
@@ -71,10 +72,10 @@ const Resister = () => {
 		return cateForResister!
 	}
 
-	const tryResister = async (token: tokens) => {
+	const tryResister = async (token: Tokens) => {
 		const amount = parseFloat(amountInputRef.current!.value)
 		const date = convertDayToString(transDay)
-		const cate: category | null = await isCategoryExist()
+		const cate: Category | null = await isCategoryExist()
 		if (cate === null) {return}
 
 		const res = await postTransaction(
@@ -87,7 +88,7 @@ const Resister = () => {
 			cate.name
 		)
 		if (Object.prototype.hasOwnProperty.call(res, 'refresh')) {
-			const newToken = res as tokens
+			const newToken = res as Tokens
 			if (newToken.access === null) {
 				// TODO: popup error message need to log in again
 				nav('/login')
@@ -96,7 +97,7 @@ const Resister = () => {
 				return
 			}
 		}
-		const newTrans = res as transactionForFetch
+		const newTrans = res as TransactionForFetch
 		const updateDetail = checkTargetDateIsSame(transactionStatus.monthlyForDetail.target.month, transactionStatus.monthlyForDetail.target.year, transDay)
 		const updateCalendar = checkTargetDateIsSame(transactionStatus.monthlyForCalendar.target.month, transactionStatus.monthlyForCalendar.target.year, transDay)
 		if (updateDetail){
@@ -139,46 +140,46 @@ const Resister = () => {
 					<button 
 						type="button"
 						value="Income"
-						className={transactionType === "Income" ? selectedButtonStyle : unSelectedButtonStyle}
+						className={transactionType === "Income" ? preSetupStyles.selectedButtonStyle : preSetupStyles.selectedButtonStyle}
 						onClick={onClickType}
 					>
 					Income</button>
 					<button 
 						type="button"
 						value="Expense"
-						className={transactionType === "Expense" ? selectedButtonStyle : unSelectedButtonStyle}
+						className={transactionType === "Expense" ? preSetupStyles.selectedButtonStyle : preSetupStyles.selectedButtonStyle}
 						onClick={onClickType}
 					>
 					Expense</button>
 				</div>
-				<div className={inputRowStyle}>
-					<label className={`${labelBasicStyle}`}>Date</label>
+				<div className={preSetupStyles.inputRowStyle}>
+					<label className={`${preSetupStyles.labelBasicStyle}`}>Date</label>
 					<input 
 						type="text"
 						value={convertDayToString(transDay)}
 						onClick={() => setDatePickerOpened(prev => !prev)}
 						required 
-						className={`${inputBasicStyle}`} 
+						className={`${preSetupStyles.inputBasicStyle}`} 
 					/>
 				</div>
 				{datePickerOpened && <MiniCalendar date={transDay} setDate={setTransDay} setDatePickerOpened={setDatePickerOpened} />}
-				<div className={inputRowStyle}>
-					<label className={`${labelBasicStyle}`}>Category</label>
+				<div className={preSetupStyles.inputRowStyle}>
+					<label className={`${preSetupStyles.labelBasicStyle}`}>Category</label>
 					<input 
 						type="text"
 						required 
 						onChange={(e) => {onChangeCategoryInput(e)}}
 						value={transCate}
 						onClick={() => setCatePickerOpened(prev => !prev)}
-						className={`${inputBasicStyle}`} />
+						className={`${preSetupStyles.inputBasicStyle}`} />
 				</div>
-				{catePickerOpened && <Category setCategory={setTransCate} setCatePickerOpened={setCatePickerOpened} transType={transactionType}/> }
-				<div className={inputRowStyle}>
-					<label className={`${labelBasicStyle}`}>Amount ( $ )</label>
-					<input type="number" ref={amountInputRef} required className={`${inputBasicStyle}`} />
+				{catePickerOpened && <CategoryButtons setCategory={setTransCate} setCatePickerOpened={setCatePickerOpened} transType={transactionType}/> }
+				<div className={preSetupStyles.inputRowStyle}>
+					<label className={`${preSetupStyles.labelBasicStyle}`}>Amount ( $ )</label>
+					<input type="number" ref={amountInputRef} required className={`${preSetupStyles.inputBasicStyle}`} />
 				</div>
-				<div className={inputRowStyle}>
-					<label className={`${labelBasicStyle}`}>Note</label>
+				<div className={preSetupStyles.inputRowStyle}>
+					<label className={`${preSetupStyles.labelBasicStyle}`}>Note</label>
 					<textarea 
 						rows={3}
 						ref={memoTextAreaRef}

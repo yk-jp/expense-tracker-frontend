@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable no-plusplus */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-restricted-syntax */
@@ -6,7 +7,7 @@ import React, {useEffect, useState, useContext} from "react";
 import AppContext from "../Context/useContext";
 import CalenderDay from './CalenderDay'
 import PickMonthHeader from "./PickMonthHeader";
-import transactionForFetch from "../Interface/Transaction";
+import { TransactionForFetch } from "../Interface/Transaction";
 import { getDays, getDayOfFirst, getDayName } from '../Utilities/date'
 import { fetchTransaction } from "../Apis/transactionApi";
 import { ActionType } from "../Redux/ActionTypes";
@@ -25,8 +26,8 @@ const Calender = () => {
 	const [targetMonth, setTargetMonth] = useState<Date>(new Date())
 	const [dailyTransactions, setDailyTransactions] = useState<dayDetail[]>([])
 
-	const reduceTransactionsByEachDay = (transactions: transactionForFetch[]): Map<number, transactionForFetch[]> => {
-		const map = new Map<number, transactionForFetch[]>()
+	const reduceTransactionsByEachDay = (transactions: TransactionForFetch[]): Map<number, TransactionForFetch[]> => {
+		const map = new Map<number, TransactionForFetch[]>()
 
 		for (const t of transactions) {
 			const fd = t.date.split("-")

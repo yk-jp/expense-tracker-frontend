@@ -1,10 +1,10 @@
 /* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { USRAction, USCategoryAction, userState } from "../Interface/Reducers"
+import { USRAction, USCategoryAction, UserState } from "../Interface/Reducers"
 import { ActionType } from "./ActionTypes"
 
 
-const userStatusReducer = (state: userState, action: USRAction | USCategoryAction): userState => {
+const userStatusReducer = (state: UserState, action: USRAction | USCategoryAction): UserState => {
 	switch(action.type){
 		case ActionType.LOGIN_USER:{
 			const currentAction = action as USRAction

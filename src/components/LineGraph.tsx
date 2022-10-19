@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable import/no-extraneous-dependencies */
@@ -8,7 +10,7 @@ import { Chart, registerables } from 'chart.js';
 import AppContext from "../Context/useContext";
 import fetchStatsYear from "../Apis/statsApi";
 import { getShortMonthNameForYear } from "../Utilities/date"; 
-import { lineGraph } from '../Interface/LineGraph'
+import { LineGraphData } from '../Interface/LineGraph'
 
 Chart.register(...registerables);
 
@@ -30,7 +32,7 @@ const LineGraph = () => {
 	const recentMonth = new Date()
 
 	const {transactionStatus, dispatchDisplayStatus, userStatus} = useContext(AppContext)
-	const [dataSets, setDataSets] = useState<lineGraph>({
+	const [dataSets, setDataSets] = useState<LineGraphData>({
 		labels: getShortMonthNameForYear(recentMonth.getMonth()),
 		datasets: [
 		{

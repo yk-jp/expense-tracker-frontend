@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-plusplus */
 import React, {useState, useContext, useEffect} from "react";
@@ -6,14 +8,14 @@ import PickMonthHeader from "./PickMonthHeader";
 import AppContext from "../Context/useContext";
 import { colorPicker } from "../Utilities/colorPallet";
 import { getOnlyDateNum } from "../Utilities/date";
-import transaction, {categorizedTransaction} from "../Interface/Transaction";
+import { TransactionForFetch, CategorizedTransactions } from "../Interface/Transaction";
 import { fetchTransaction } from "../Apis/transactionApi";
 import { ActionType } from "../Redux/ActionTypes";
-import { activeButtonClassName, inactiveButtonClassName, shownCategoryClassName, noShownCategoryClassName} from "../Utilities/specialStyledClassName"
+import preSetupStyles from "../Utilities/specialStyledClassName"
 
 const MonthlyDetail = () => {
 	const { transactionStatus, userStatus, dispatchTransactionStatus } = useContext(AppContext)
-	const [categorizedTransactions, setCategorizedTransactions] = useState<categorizedTransaction[]>([])
+	const [categorizedTransactions, setCategorizedTransactions] = useState<CategorizedTransactions[]>([])
 	const [transTypeIncome, setTransTypeIncome] = useState(true)
 	const [detailedCate, setDetailedCate] = useState<string>("")
 	const [targetMonth, setTargetMonth] = useState(new Date())
@@ -39,7 +41,7 @@ const MonthlyDetail = () => {
 	}
 
 	const organizeTransactionsByCategory = () => {
-		const categorized: categorizedTransaction[] = []
+		const categorized: CategorizedTransactions[] = []
 		const aimEvent = transTypeIncome ? "Income" : "Expense"
 		transactionStatus.monthlyForDetail.transactions.forEach(trans => {
 			if (trans.event === aimEvent) {
@@ -97,13 +99,13 @@ const MonthlyDetail = () => {
 			<div className="p-4">
 				<button 
 					type="button" 
-					className={transTypeIncome ? activeButtonClassName : inactiveButtonClassName}
+					className={transTypeIncome ? preSetupStyles.activeButtonStyle : preSetupStyles.unActiveButtonStyle}
 					value="Income"
 					onClick={onClickChangeTransType}
 				>Income</button>
 				<button 
 					type="button"
-					className={transTypeIncome ? inactiveButtonClassName : activeButtonClassName}
+					className={transTypeIncome ? preSetupStyles.unActiveButtonStyle : preSetupStyles.activeButtonStyle}
 					value="Expense"
 					onClick={onClickChangeTransType}
 				>Expense</button>
@@ -130,7 +132,7 @@ const MonthlyDetail = () => {
 							>${cate.totalAmount}</button>
 						</div>
 						{cate.transactions.map(trans => (
-							<div className={trans.category === detailedCate ? shownCategoryClassName : noShownCategoryClassName}>
+							<div className={trans.category === detailedCate ? preSetupStyles.shownCategoryStyle : preSetupStyles.noShownCategoryStyle}>
 								<p className="mr-3 text-xs">{getOnlyDateNum(trans.date)}</p>
 								<p className="w-4/5 text-sm">{trans.memo}</p>
 								<p className="w-1/5 text-right text-sm">${trans.amount}</p>

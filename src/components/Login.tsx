@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-floating-promises */
@@ -10,8 +11,8 @@ import ErrorPop from './ErrorPop';
 import AppContext from "../Context/useContext";
 import { loginApi } from '../Apis/accountApi';
 import { ActionType } from "../Redux/ActionTypes";
-import { loginFailed } from '../Interface/ApiReturns';
-import tokens from '../Interface/Token';
+import { LoginFailed } from '../Interface/ApiReturns';
+import { Tokens } from '../Interface/Token';
 
 
 const Login = () => {
@@ -23,13 +24,14 @@ const Login = () => {
 
 	const onSubmit = async (e: React.SyntheticEvent) => {
 		e.preventDefault()
-		const res: tokens | loginFailed = await loginApi(email, password)
+		const res: Tokens | LoginFailed = await loginApi(email, password)
 		if (Object.keys(res).length === 2) {
-			const success = res as tokens
+			const success = res as Tokens
 			dispatchUserState({type: ActionType.LOGIN_USER, token: success, email})
+			localStorage.setItem('userToken', JSON.stringify(success))
 			nav('/')
 		} else {
-			const failed = res as loginFailed
+			const failed = res as LoginFailed
 			setError(failed.response.data.detail)
 		}
 	}
