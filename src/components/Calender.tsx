@@ -11,6 +11,7 @@ import { TransactionForFetch } from "../Interface/Transaction";
 import { getDays, getDayOfFirst, getDayName } from '../Utilities/date'
 import { fetchTransaction } from "../Apis/transactionApi";
 import { ActionType } from "../Redux/ActionTypes";
+import Loading from "./Loading";
 
 interface dayDetail{
 	id: number,
@@ -25,6 +26,8 @@ const Calender = () => {
 	const { transactionStatus, userStatus, dispatchTransactionStatus } = useContext(AppContext)
 	const [targetMonth, setTargetMonth] = useState<Date>(new Date())
 	const [dailyTransactions, setDailyTransactions] = useState<dayDetail[]>([])
+
+	console.log('init', transactionStatus)
 
 	const reduceTransactionsByEachDay = (transactions: TransactionForFetch[]): Map<number, TransactionForFetch[]> => {
 		const map = new Map<number, TransactionForFetch[]>()
@@ -111,21 +114,21 @@ const Calender = () => {
 
 	return(
 		<section className="w-168">
-			<PickMonthHeader date={targetMonth} setDate={setTargetMonth} />
-			<div className="w-full flex mt-3">
-				{[...Array(7)].map((_, idx) => {
-					let className = "w-24 text-center text-white py-1"
-					className += ` ${daysColorPallet[idx]}`
-					return (
-						<h3 key={getDayName(idx)} className={className}>{getDayName(idx)}</h3>
-					)
-				})}
-			</div>
-			<div className=" box-border w-full flex flex-wrap">
-				{dailyTransactions.map( day => (
-					<CalenderDay key={day.id} day={day.day} income={day.income} expense={day.expense} />
-				))}
-			</div>
+				<PickMonthHeader date={targetMonth} setDate={setTargetMonth} />
+				<div className="w-full flex mt-3">
+					{[...Array(7)].map((_, idx) => {
+						let className = "w-24 text-center text-white py-1"
+						className += ` ${daysColorPallet[idx]}`
+						return (
+							<h3 key={getDayName(idx)} className={className}>{getDayName(idx)}</h3>
+						)
+					})}
+				</div>
+				<div className=" box-border w-full flex flex-wrap">
+					{dailyTransactions.map( day => (
+						<CalenderDay key={day.id} day={day.day} income={day.income} expense={day.expense} />
+					))}
+				</div>
 		</section>
 	)
 }

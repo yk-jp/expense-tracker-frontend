@@ -11,6 +11,7 @@ import AppContext from "../Context/useContext";
 import fetchStatsYear from "../Apis/statsApi";
 import { getShortMonthNameForYear } from "../Utilities/date"; 
 import { LineGraphData } from '../Interface/LineGraph'
+import Loading from "./Loading";
 
 Chart.register(...registerables);
 
@@ -37,13 +38,13 @@ const LineGraph = () => {
 		datasets: [
 		{
 			label: "Income",
-			data:  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			data: [],
 			borderColor: "rgb(8 145 178)",
 			backgroundColor: "rgb(8 145 178)"
 		},
 		{
 			label: "Expense",
-			data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			data: [],
 			borderColor: 'rgb(220 38 38)',
 			backgroundColor: 'rgb(220 38 38)'
 		}
@@ -66,11 +67,15 @@ const LineGraph = () => {
 			}))
 		}
 		res().catch(() => console.log("error"))
-	}, [transactionStatus.yearly])
+	}, [transactionStatus.yearly, userStatus.loggedIn])
 
 	return (
 		<section className="w-168">
 			<h3 className="text-center mt-3 text-lg">[ Income / Expense Changes in Recent 1 Year ]</h3>
+
+			{ dataSets.datasets[0].data.length === 0 || dataSets.datasets[1].data.length === 0 ?
+				<Loading height="300px" />
+			:
 			<Line
 				height={300}
 				width={680}
@@ -78,6 +83,7 @@ const LineGraph = () => {
 				options={options}
 				id='chart-key'
 			/>
+			}
 		</section>
 	)
 }

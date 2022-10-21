@@ -6,18 +6,21 @@ import { TransactionStatsYear, TransactionsStatsMonth } from '../Interface/Trans
 import { StatusInMonthSuccess } from '../Interface/ApiReturns'
 import { Tokens } from "../Interface/Token";
 
-const nextYear = (year: number, month: number): number =>{
-	if (month === 12) {
-		return year + 1
-	}
-	return year
-}
+const definePeriods = (year: number, month: number): {year: string, month: string}[] => {
+	const periods: {year: string, month: string}[] = []
+	let yearNum = year - 1
+	let monthNum = month + 1
 
-const nextMonth = (month: number): number => {
-	if (month === 12) {
-		return 1
+	for(let i = 0; i < 12; i++) {
+		if (monthNum === 12 ){
+			monthNum = 1
+			yearNum += 1
+		} else {
+			monthNum += 1
+		}
+		periods.push({year: yearNum.toString(), month: monthNum.toString()})
 	}
-	return month + 1
+	return periods
 }
 
 const fetchStatsMonth = async (token: string, year: string, month: string): Promise<TransactionsStatsMonth> => {
@@ -34,21 +37,21 @@ const fetchStatsMonth = async (token: string, year: string, month: string): Prom
 	}
 }
 
+// TODO: use promise all
 const fetchStatsYear = async (token: Tokens, year: number, month: number): Promise<TransactionStatsYear> => {
 	const TOKEN = token.access!
 	const result: TransactionStatsYear = {Income: [], Expense: []}
-	let yearNumber = year - 1
-	let monthNumber = month + 1
+	const periods = definePeriods(year, month)
 
-	for(let i = 0; i < 12; i++){
-		yearNumber = nextYear(yearNumber, monthNumber)
-		monthNumber = nextMonth(monthNumber)
-		const res: TransactionsStatsMonth = await fetchStatsMonth(TOKEN, yearNumber.toString(), monthNumber.toString())
-		result.Income.push(res.Income)
-		result.Expense.push(res.Expense)
-	}
+	const res = await Promise.all(periods.map( async (period, idx) => {
+		const response: TransactionsStatsMonth = await fetchStatsMonth(TOKEN, period.year, period.month)
+		result.Income[idx] = response.Income
+		result.Expense[idx] = response.Expense
+	}))
+
 	
-	return result
+
+	return res && result
 }
 
 

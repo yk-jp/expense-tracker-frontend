@@ -21,6 +21,8 @@ const Main = () => {
 	const { displayStatus, dispatchDisplayStatus, dispatchUserState, userStatus, dispatchTransactionStatus } = useContext(AppContext)
 	const nav = useNavigate()
 
+	if (!userStatus.loggedIn) { nav('/login') }
+
 	useEffect(()=>{
 		// TODO: exclude token expire pattern because it's right after login
 		const getCategory = async () => {
@@ -41,13 +43,13 @@ const Main = () => {
 				nav('/login')
 			} else {
 				const userInfo: UserInfo = JSON.parse(localData)
+				// TODO use refresh token to get new token
 				dispatchUserState({type: ActionType.LOGIN_USER, token: userInfo.tokens, email: userInfo.email})
-				getCategory().catch(console.error)
 			}
 		} else {
 			getCategory().catch(console.error)
 		}
-	}, [])
+	}, [userStatus.loggedIn])
 
 	return (
 		<main className="flex justify-center min-w-272" style={{marginTop: '60px'}}>

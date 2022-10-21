@@ -12,10 +12,14 @@ import { TransactionForFetch, CategorizedTransactions } from "../Interface/Trans
 import { fetchTransaction } from "../Apis/transactionApi";
 import { ActionType } from "../Redux/ActionTypes";
 import preSetupStyles from "../Utilities/specialStyledClassName"
+import Loading from "./Loading";
 
 const MonthlyDetail = () => {
 	const { transactionStatus, userStatus, dispatchTransactionStatus } = useContext(AppContext)
-	const [categorizedTransactions, setCategorizedTransactions] = useState<CategorizedTransactions[]>([])
+
+	// FIXME: this doesn't work
+	const [categorizedTransactions, setCategorizedTransactions] = useState<CategorizedTransactions[] | null>(null)
+	
 	const [transTypeIncome, setTransTypeIncome] = useState(true)
 	const [detailedCate, setDetailedCate] = useState<string>("")
 	const [targetMonth, setTargetMonth] = useState(new Date())
@@ -110,38 +114,43 @@ const MonthlyDetail = () => {
 					onClick={onClickChangeTransType}
 				>Expense</button>
 			</div>
-			<DoughnutChart 
-				data={categorizedTransactions}
-				transType={transTypeIncome ? "Income" : "Expense"}
-			/>
-			<div className="">
-				{categorizedTransactions.map((cate, idx) => (
-					<div className="px-10">
-						<div className="p-2 rounded-md" style={{backgroundColor: colorPicker(idx)}}>
-							<button 
-								type="button" 
-								className="w-1/2 text-left font-bold text-white"
-								onClick={onClickChangeDetailedCate} 
-								value={cate.name}
-							>{cate.name}</button>
-							<button 
-								type="button"
-								className="w-1/2 text-right font-bold text-white" 
-								onClick={onClickChangeDetailedCate} 
-								value={cate.name}
-							>${cate.totalAmount}</button>
-						</div>
-						{cate.transactions.map(trans => (
-							<div className={trans.category === detailedCate ? preSetupStyles.shownCategoryStyle : preSetupStyles.noShownCategoryStyle}>
-								<p className="mr-3 text-xs">{getOnlyDateNum(trans.date)}</p>
-								<p className="w-4/5 text-sm">{trans.memo}</p>
-								<p className="w-1/5 text-right text-sm">${trans.amount}</p>
+			{ categorizedTransactions ? 
+				<div>
+					<DoughnutChart 
+					data={categorizedTransactions}
+					transType={transTypeIncome ? "Income" : "Expense"}
+					/>
+					<div className="">
+						{categorizedTransactions.map((cate, idx) => (
+							<div className="px-10">
+								<div className="p-2 rounded-md" style={{backgroundColor: colorPicker(idx)}}>
+									<button 
+										type="button" 
+										className="w-1/2 text-left font-bold text-white"
+										onClick={onClickChangeDetailedCate} 
+										value={cate.name}
+									>{cate.name}</button>
+									<button 
+										type="button"
+										className="w-1/2 text-right font-bold text-white" 
+										onClick={onClickChangeDetailedCate} 
+										value={cate.name}
+									>${cate.totalAmount}</button>
+								</div>
+								{cate.transactions.map(trans => (
+									<div className={trans.category === detailedCate ? preSetupStyles.shownCategoryStyle : preSetupStyles.noShownCategoryStyle}>
+										<p className="mr-3 text-xs">{getOnlyDateNum(trans.date)}</p>
+										<p className="w-4/5 text-sm">{trans.memo}</p>
+										<p className="w-1/5 text-right text-sm">${trans.amount}</p>
+									</div>
+								))}
 							</div>
 						))}
-					</div>
-					
-				))}
+				</div>
 			</div>
+			:
+				<Loading height="75vh" />
+			}
 		</section>
 	)
 }
