@@ -27,8 +27,10 @@ const userInitialState: UserState = {
 const transactionInitialState: TransactionState = {
   monthlyForCalendar: {target: {year: new Date().getFullYear(), month: new Date().getMonth() + 1}, transactions: []}, 
   monthlyForDetail: {target: {year: new Date().getFullYear(), month: new Date().getMonth() + 1}, transactions: []},
-  yearly: {Income: [], Expense: []}
+  yearly: {Income: [], Expense: []},
+  fetchSuccess: false
 }
+
 
 
 const App = () => {

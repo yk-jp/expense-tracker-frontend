@@ -28,8 +28,7 @@ const Resister = () => {
 	const memoTextAreaRef = useRef<HTMLTextAreaElement>(null)
 	const { dispatchDisplayStatus, userStatus, dispatchUserState, dispatchTransactionStatus, transactionStatus } = useContext(AppContext)
 	const [transactionType, setTransactionType] = useState("Expense")
-	const [transDay, setTransDay] = useState(new Date())
-	const [datePickerOpened, setDatePickerOpened] = useState(false)
+	const [transDay, setTransDay] = useState(new Date().toISOString().slice(0, 10))
 	const [transCate, setTransCate] = useState('')
 	const [catePickerOpened, setCatePickerOpened] = useState(false)
 
@@ -40,6 +39,10 @@ const Resister = () => {
 
 	const onChangeCategoryInput = (e: React.FormEvent<HTMLInputElement>) => {
 		setTransCate(e.currentTarget.value)
+	}
+
+	const onChangeDateInput = (e: React.FormEvent<HTMLInputElement>) => {
+		setTransDay(e.currentTarget.value)
 	}
 
 	const isCategoryExist = async (): Promise<Category| null> =>{
@@ -74,7 +77,7 @@ const Resister = () => {
 
 	const tryResister = async (token: Tokens) => {
 		const amount = parseFloat(amountInputRef.current!.value)
-		const date = convertDayToString(transDay)
+		const date = transDay
 		const cate: Category | null = await isCategoryExist()
 		if (cate === null) {return}
 
@@ -98,23 +101,25 @@ const Resister = () => {
 			}
 		}
 		const newTrans = res as TransactionForFetch
-		const updateDetail = checkTargetDateIsSame(transactionStatus.monthlyForDetail.target.month, transactionStatus.monthlyForDetail.target.year, transDay)
-		const updateCalendar = checkTargetDateIsSame(transactionStatus.monthlyForCalendar.target.month, transactionStatus.monthlyForCalendar.target.year, transDay)
+		const updateDetail = checkTargetDateIsSame(transactionStatus.monthlyForDetail.target.month, transactionStatus.monthlyForDetail.target.year, new Date(transDay))
+		const updateCalendar = checkTargetDateIsSame(transactionStatus.monthlyForCalendar.target.month, transactionStatus.monthlyForCalendar.target.year, new Date(transDay))
+		const dateD = new Date(transDay)
 		if (updateDetail){
 			dispatchTransactionStatus({
 				type: ActionType.ADD_TRANSACTION_MONTH_FOR_DETAIL,
 				newTrans: [newTrans],
-				month: (transDay.getMonth() + 1).toString(),
-				year: transDay.getFullYear().toString()
+				month: (dateD.getMonth() + 1).toString(),
+				year: dateD.getFullYear().toString(),
+				fetchSuccess: true
 			})
 		}
 		if(updateCalendar){
 			dispatchTransactionStatus({
 				type: ActionType.ADD_TRANSACTION_MONTH_FOR_CALENDAR,
 				newTrans: [newTrans],
-				month: (transDay.getMonth() + 1).toString(),
-				year: transDay.getFullYear().toString()
-
+				month: (dateD.getMonth() + 1).toString(),
+				year: dateD.getFullYear().toString(),
+				fetchSuccess: true
 			})
 		}
 	}
@@ -155,14 +160,13 @@ const Resister = () => {
 				<div className={preSetupStyles.inputRowStyle}>
 					<label className={`${preSetupStyles.labelBasicStyle}`}>Date</label>
 					<input 
-						type="text"
-						value={convertDayToString(transDay)}
-						onClick={() => setDatePickerOpened(prev => !prev)}
+						type='date'
+						value={transDay}
+						onChange={onChangeDateInput}
 						required 
 						className={`${preSetupStyles.inputBasicStyle}`} 
 					/>
 				</div>
-				{datePickerOpened && <MiniCalendar date={transDay} setDate={setTransDay} setDatePickerOpened={setDatePickerOpened} />}
 				<div className={preSetupStyles.inputRowStyle}>
 					<label className={`${preSetupStyles.labelBasicStyle}`}>Category</label>
 					<input 

@@ -19,8 +19,9 @@ const transactionStateReducer = (state: TransactionState, action: TransSRAction)
 				...state,
 				monthlyForDetail: {
 					target: {year: parseInt(action.year, 10), month: parseInt(action.month, 10)},
-					transactions: action.newTrans
-				}
+					transactions: action.newTrans,
+				},
+				fetchSuccess: action.fetchSuccess
 			}
 		}
 		case ActionType.ADD_TRANSACTION_YEAR: {

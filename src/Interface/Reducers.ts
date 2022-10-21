@@ -17,7 +17,8 @@ export interface TransSRAction {
 	type: string,
 	newTrans: TransactionForFetch[],
 	month: string,
-	year: string
+	year: string,
+	fetchSuccess: boolean
 }
 // TODO: adjust property
 export interface USCategoryAction {
@@ -53,5 +54,6 @@ export interface TransactionState {
 		},
 		transactions: TransactionForFetch[]
 	},
-	yearly: TransactionStatsYear
+	yearly: TransactionStatsYear,
+	fetchSuccess: boolean
 }

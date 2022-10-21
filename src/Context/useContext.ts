@@ -7,7 +7,7 @@ const AppContext = createContext({} as {
   dispatchDisplayStatus: React.Dispatch<DSRAction >,
 	userStatus: UserState,
 	dispatchUserState: React.Dispatch<USRAction | USCategoryAction>,
-	transactionStatus: TransactionState,
+	transactionStatus: TransactionState ,
 	dispatchTransactionStatus: React.Dispatch<TransSRAction>
 })
 

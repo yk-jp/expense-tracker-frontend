@@ -18,7 +18,7 @@ const MonthlyDetail = () => {
 	const { transactionStatus, userStatus, dispatchTransactionStatus } = useContext(AppContext)
 
 	// FIXME: this doesn't work
-	const [categorizedTransactions, setCategorizedTransactions] = useState<CategorizedTransactions[] | null>(null)
+	const [categorizedTransactions, setCategorizedTransactions] = useState<CategorizedTransactions[]>([])
 	
 	const [transTypeIncome, setTransTypeIncome] = useState(true)
 	const [detailedCate, setDetailedCate] = useState<string>("")
@@ -82,7 +82,8 @@ const MonthlyDetail = () => {
 					type: ActionType.ADD_TRANSACTION_MONTH_FOR_DETAIL,
 					newTrans: data.result.all_transactions,
 					month,
-					year
+					year,
+					fetchSuccess: true
 				})
 			}
 		}
@@ -97,6 +98,9 @@ const MonthlyDetail = () => {
 		organizeTransactionsByCategory()
 	}, [transTypeIncome, transactionStatus.monthlyForDetail])
 
+	// FIXME: problem is it can't be null empty array where actually no data and still fetching
+	
+	console.log(categorizedTransactions)
 	return (
 		<section className="border-4 w-96 h-full overflow-scroll" >
 			<PickMonthHeader date={targetMonth} setDate={setTargetMonth} />
@@ -114,7 +118,7 @@ const MonthlyDetail = () => {
 					onClick={onClickChangeTransType}
 				>Expense</button>
 			</div>
-			{ categorizedTransactions ? 
+			{ transactionStatus.fetchSuccess ? 
 				<div>
 					<DoughnutChart 
 					data={categorizedTransactions}

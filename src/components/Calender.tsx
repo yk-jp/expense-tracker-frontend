@@ -98,7 +98,8 @@ const Calender = () => {
 				dispatchTransactionStatus({
 					type: ActionType.ADD_TRANSACTION_MONTH_FOR_CALENDAR,
 					newTrans: data.result.all_transactions,
-					month, year
+					month, year,
+					fetchSuccess: true
 				})
 			}
 		}
