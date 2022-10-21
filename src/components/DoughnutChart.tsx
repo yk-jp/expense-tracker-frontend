@@ -64,11 +64,10 @@ const DoughnutChart = ({data, transType}: Props) => {
 				options={options}
 				id='chart-key'
 			/>
-			<p className="text-center -mt-40 mb-36" >{`Total ${transType} is`}
+			<p className="text-center -mt-40 mb-28" >{`Total ${transType} is`}
 				<br />
 				<span className="font-bold">${total}</span>
 			</p>
-
 		</div>
 	)
 }

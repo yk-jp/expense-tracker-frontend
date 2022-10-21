@@ -57,15 +57,11 @@ const Main = () => {
 				<Calender />
 				<LineGraph />
 			</div>
-			<div className="py-4 sticky" style={{height: 'calc(100vh - 60px)', top: '60px'}}>
+			<div className="py-4">
 				<MonthlyDetail />
 			</div>
-			{displayStatus.isRegisterShown ?
+			{displayStatus.isRegisterShown &&
 				<Resister />
-				:
-				<button type="button" className=" block fixed bottom-[10%] right-[15%]" onClick={() => dispatchDisplayStatus({type: ActionType.OPEN_REGISTER})}>
-					<FontAwesomeIcon icon={faPlus} size='4x' className="bg-black rounded-full w-20 h-20 text-white opacity-50 hover:opacity-100 duration-300"/>
-				</button>
 			}
 		</main>
 	)

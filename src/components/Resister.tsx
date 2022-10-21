@@ -7,7 +7,6 @@ import React, {useState, useContext, useRef} from "react";
 import { useNavigate } from "react-router-dom";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faX } from '@fortawesome/free-solid-svg-icons'
-import MiniCalendar from "./MiniCalendar";
 import CategoryButtons from "./Category";
 
 import postTransaction from "../Apis/transactionApi";

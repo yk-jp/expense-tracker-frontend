@@ -3,6 +3,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-plusplus */
 import React, {useState, useContext, useEffect} from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+
 import DoughnutChart from "./DoughnutChart";
 import PickMonthHeader from "./PickMonthHeader";
 import AppContext from "../Context/useContext";
@@ -15,7 +18,7 @@ import preSetupStyles from "../Utilities/specialStyledClassName"
 import Loading from "./Loading";
 
 const MonthlyDetail = () => {
-	const { transactionStatus, userStatus, dispatchTransactionStatus } = useContext(AppContext)
+	const { transactionStatus, userStatus, dispatchTransactionStatus, dispatchDisplayStatus } = useContext(AppContext)
 
 	// FIXME: this doesn't work
 	const [categorizedTransactions, setCategorizedTransactions] = useState<CategorizedTransactions[]>([])
@@ -98,11 +101,9 @@ const MonthlyDetail = () => {
 		organizeTransactionsByCategory()
 	}, [transTypeIncome, transactionStatus.monthlyForDetail])
 
-	// FIXME: problem is it can't be null empty array where actually no data and still fetching
 	
-	console.log(categorizedTransactions)
 	return (
-		<section className="border-4 w-96 h-full overflow-scroll" >
+		<section className="border-4 w-96 min-h-full pb-5" >
 			<PickMonthHeader date={targetMonth} setDate={setTargetMonth} />
 			<div className="p-4">
 				<button 
@@ -125,6 +126,11 @@ const MonthlyDetail = () => {
 					transType={transTypeIncome ? "Income" : "Expense"}
 					/>
 					<div className="">
+						<div className="flex justify-end mx-10 mb-1">
+							<button type="button" onClick={() => dispatchDisplayStatus({type: ActionType.OPEN_REGISTER})}>
+								<FontAwesomeIcon icon={faPlus} size='2x' className="p-1 hover:text-white hover:bg-sky-400 rounded duration-300"/>
+							</button>
+						</div>
 						{categorizedTransactions.map((cate, idx) => (
 							<div className="px-10">
 								<div className="p-2 rounded-md" style={{backgroundColor: colorPicker(idx)}}>
@@ -144,7 +150,7 @@ const MonthlyDetail = () => {
 								{cate.transactions.map(trans => (
 									<div className={trans.category === detailedCate ? preSetupStyles.shownCategoryStyle : preSetupStyles.noShownCategoryStyle}>
 										<p className="mr-3 text-xs">{getOnlyDateNum(trans.date)}</p>
-										<p className="w-4/5 text-sm">{trans.memo}</p>
+										<p className="w-4/5 text-sm text-ellipsis overflow-hidden whitespace-nowrap">{trans.memo}</p>
 										<p className="w-1/5 text-right text-sm">${trans.amount}</p>
 									</div>
 								))}
