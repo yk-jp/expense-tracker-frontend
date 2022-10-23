@@ -9,7 +9,7 @@ import React, {useState, useContext, useRef, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import Categories from "./Categories";
 
-import postTransaction, { deleteTransaction } from "../../Apis/transactionApi";
+import postTransaction, { deleteTransaction, updateTransaction } from "../../Apis/transactionApi";
 import AppContext from "../../Context/useContext";
 
 import { ActionType } from "../../Redux/ActionTypes";
@@ -84,7 +84,21 @@ const Resister = ( { transaction }: Props) => {
 	const onSubmit = async (e: React.SyntheticEvent) => {
 		e.preventDefault()
 		if (isUpdate) {
-			nav('/')
+			const data = await updateTransaction(
+				userStatus.tokens!, 
+				transaction.id, 
+				transactionType, 
+				parseFloat(amountInputRef.current!.value), 
+				transDay, 
+				memoTextAreaRef.current!.value, 
+				transCate!.id, 
+				transaction.date
+			)
+			if (data) {
+				dispatchTransactionStatus({type: ActionType.UPDATE_TRANSACTION_MONTH})
+				nav('/')
+				return
+			}
 		}
 		await tryResister(userStatus.tokens!)
 		nav('/')
@@ -94,6 +108,7 @@ const Resister = ( { transaction }: Props) => {
 		if (transaction) {
 			const res: DeleteSuccess = await deleteTransaction(userStatus.tokens!, transaction.id, transDay)
 			if (res.is_success) {
+				dispatchTransactionStatus({type: ActionType.UPDATE_TRANSACTION_MONTH})
 				nav('/')
 			}
 		}

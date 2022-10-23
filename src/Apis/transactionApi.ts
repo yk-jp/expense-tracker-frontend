@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable dot-notation */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
@@ -31,6 +32,19 @@ const postTransaction = async(token: Tokens, event: string, amount: number, date
 		}
 		return {access: null, refresh: null}
 
+	}
+}
+
+export const updateTransaction = async (token: Tokens,id: number, event: string, amount: number, date: string, memo: string, category: number, prevDate: string) => {
+	appApi.defaults.headers.common['Authorization'] = `Bearer ${token.access!}`
+
+	try{
+		const data = await appApi.put(`/transaction/update/${id}`, {
+		'prev_date': prevDate, event, amount, date, memo, category
+		})
+		return data.data
+	} catch {
+		return null
 	}
 }
 
