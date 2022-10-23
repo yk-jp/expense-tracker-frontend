@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { fetchCategory } from "../../Apis/categoryApi";
 import AppContext from "../../Context/useContext";
 import { CategoryAll } from "../../Interface/Category";
 import { Tokens } from "../../Interface/Token";
+import { TransactionPassing } from "../../Interface/Transaction";
 import { ActionType } from "../../Redux/ActionTypes";
 import Resister from "./Resister";
 
@@ -15,6 +16,8 @@ const EditTransaction = () => {
 	
 	const { userStatus, dispatchUserState } = useContext(AppContext)
 	const nav = useNavigate()
+	const { state } = useLocation()
+	const { transaction } = state ? state as TransactionPassing : { transaction: null}
 	
 
 
@@ -22,7 +25,7 @@ const EditTransaction = () => {
 		<div className="flex justify-between max-w-272 mx-auto pt-10" style={{marginTop: '60px'}}>
 			<section className="w-1/2">
 				<h3 className="text-3xl">Edit Transaction</h3>
-				<Resister />
+				<Resister transaction={ transaction }/>
 				<button 
 					type="button" 
 					onClick={() => nav('/')}

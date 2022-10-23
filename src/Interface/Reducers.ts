@@ -19,6 +19,11 @@ export interface TransSRAction {
 	year: string,
 	fetchSuccess: boolean
 }
+
+export interface TransSRActionUpdate {
+	type: string
+}
+
 export interface USCategoryAction {
 	type: string,
 	newCategory: Category[]

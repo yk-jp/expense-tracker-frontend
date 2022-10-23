@@ -1,3 +1,4 @@
+
 export interface TransactionForFetch{
 	id: number,
 	category: string,
@@ -5,6 +6,10 @@ export interface TransactionForFetch{
 	amount: string,
 	memo: string,
 	date: string,
+}
+
+export interface TransactionPassing {
+	transaction: TransactionForFetch | null
 }
 
 export interface TransactionForPost{

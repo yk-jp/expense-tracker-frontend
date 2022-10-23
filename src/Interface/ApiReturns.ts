@@ -38,7 +38,7 @@ export interface CategoryFetchSuccess {
 	}
 }
 
-export interface CategoryDeleteSuccess {
+export interface DeleteSuccess {
 	message: string,
 	is_success: boolean
 }

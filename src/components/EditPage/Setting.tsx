@@ -47,10 +47,6 @@ const CategorySetting = () => {
 		}
 	}
 
-	useEffect(() => {
-		console.log(userStatus.category)
-	}, [userStatus.category])
-
 	return (
 		<div className='w-1/3'>
 			<h3 className='text-2xl'>Add New Category</h3>

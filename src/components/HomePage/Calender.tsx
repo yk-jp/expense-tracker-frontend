@@ -30,7 +30,6 @@ const Calender = () => {
 	const [targetMonth, setTargetMonth] = useState<Date>(new Date())
 	const [dailyTransactions, setDailyTransactions] = useState<dayDetail[]>([])
 
-	console.log('init', transactionStatus)
 
 	const reduceTransactionsByEachDay = (transactions: TransactionForFetch[]): Map<number, TransactionForFetch[]> => {
 		const map = new Map<number, TransactionForFetch[]>()

@@ -1,5 +1,5 @@
 import React, { createContext } from "react";
-import { DisplayState, DSRAction, UserState, USRAction, TransactionState, TransSRAction, USCategoryAction, USCategoryDeleteAction } from "../Interface/Reducers";
+import { DisplayState, DSRAction, UserState, USRAction, TransactionState, TransSRAction, USCategoryAction, USCategoryDeleteAction, TransSRActionUpdate } from "../Interface/Reducers";
 
 
 const AppContext = createContext({} as {
@@ -8,7 +8,7 @@ const AppContext = createContext({} as {
 	userStatus: UserState,
 	dispatchUserState: React.Dispatch<USRAction | USCategoryAction | USCategoryDeleteAction>,
 	transactionStatus: TransactionState ,
-	dispatchTransactionStatus: React.Dispatch<TransSRAction>
+	dispatchTransactionStatus: React.Dispatch<TransSRAction | TransSRActionUpdate>
 })
 
 export default AppContext

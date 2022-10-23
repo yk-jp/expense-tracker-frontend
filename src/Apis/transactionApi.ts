@@ -1,8 +1,10 @@
 /* eslint-disable dot-notation */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 import appApi from "./appApi";
 import {generateNewToken} from './accountApi'
 import { Tokens } from "../Interface/Token";
-import { AllTransactionsMonthSuccess} from '../Interface/ApiReturns'
+import { AllTransactionsMonthSuccess, DeleteSuccess} from '../Interface/ApiReturns'
 import { TransactionForFetch } from '../Interface/Transaction'
 
 const postTransaction = async(token: Tokens, event: string, amount: number, date: string, memo: string, category: number, categoryName: string): Promise<TransactionForFetch | Tokens> => {
@@ -29,6 +31,20 @@ const postTransaction = async(token: Tokens, event: string, amount: number, date
 		}
 		return {access: null, refresh: null}
 
+	}
+}
+
+export const deleteTransaction = async (token: Tokens, id: number, date: string) => {
+	appApi.defaults.headers.common['Authorization'] = `Bearer ${token.access!}`
+
+	try {
+		const data = await appApi.delete(`/transaction/delete/${id}`, {
+			data: { id, date }
+		})
+		return data.data as DeleteSuccess
+
+	} catch {
+		return { message: 'failed', is_success: false} as DeleteSuccess
 	}
 }
 

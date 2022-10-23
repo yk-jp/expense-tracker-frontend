@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 import Calender from "./Calender";
 import LineGraph from "./LineGraph";
 import MonthlyDetail from "./MonthlyDetail";
-import Resister from "../EditPage/Resister";
 
 import AppContext from "../../Context/useContext";
 
@@ -19,7 +18,7 @@ import { Tokens } from "../../Interface/Token";
 import { UserInfo } from "../../Interface/UserInfo";
 
 const Main = () => {
-	const { displayStatus, dispatchUserState, userStatus } = useContext(AppContext)
+	const {dispatchUserState, userStatus } = useContext(AppContext)
 	const nav = useNavigate()
 
 	if (!userStatus.loggedIn) { nav('/login') }
@@ -61,9 +60,6 @@ const Main = () => {
 			<div className="py-4">
 				<MonthlyDetail />
 			</div>
-			{displayStatus.isRegisterShown &&
-				<Resister />
-			}
 		</main>
 	)
 }

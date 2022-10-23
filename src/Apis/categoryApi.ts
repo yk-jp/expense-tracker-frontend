@@ -4,7 +4,7 @@
 import appApi from "./appApi";
 import { generateNewToken } from "./accountApi";
 import { Tokens } from "../Interface/Token";
-import { CategoryFetchSuccess, CategoryDeleteSuccess } from "../Interface/ApiReturns";
+import { CategoryFetchSuccess, DeleteSuccess } from "../Interface/ApiReturns";
 import { Category, CategoryAll} from '../Interface/Category'
 
 const fetchCategory = async (token: Tokens): Promise<CategoryAll | Tokens> => {
@@ -52,7 +52,7 @@ const deleteCategory = async (token: Tokens, id: number, name: string, type: str
 		const data = await appApi.delete(`/category/delete/${type}/${id}/`, {
 			data: { name }
 		})
-		return data.data as CategoryDeleteSuccess
+		return data.data as DeleteSuccess
 	} catch (err) {
 		return false
 	}

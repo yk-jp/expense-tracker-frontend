@@ -7,7 +7,7 @@ import { Category } from '../../Interface/Category'
 
 type Props = {
 	transType: string,
-	setCategory: React.Dispatch<React.SetStateAction<string>>,
+	setCategory: React.Dispatch<React.SetStateAction<Category | null>>,
 	setCatePickerOpened: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
@@ -16,9 +16,8 @@ const CategoryButtons = ({setCategory, setCatePickerOpened, transType}: Props) =
 	const {userStatus} = useContext(AppContext)
 	const [targetCate, setTargetCate] = useState<Category[]>([])
 
-	const onClickCatePicked = (e: React.MouseEvent<HTMLButtonElement>) => {
-		const {value} = e.target as HTMLButtonElement
-		setCategory(value)
+	const onClickCatePicked = (category: Category) => {
+		setCategory(category)
 		setCatePickerOpened(false)
 	}
 	
@@ -39,7 +38,7 @@ const CategoryButtons = ({setCategory, setCatePickerOpened, transType}: Props) =
 					key={cate.id}
 					value={cate.name}
 					type='button'
-					onClick={onClickCatePicked}
+					onClick={() => onClickCatePicked(cate)}
 					className='px-4 py-1 border-2 border-slate-300 m-1 rounded-lg hover:bg-teal-400'
 				>
 					{cate.name}

@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable react-hooks/exhaustive-deps */
@@ -17,13 +19,12 @@ import { colorPicker } from "../../Utilities/colorPallet";
 import { getOnlyDateNum } from "../../Utilities/date";
 import preSetupStyles from "../../Utilities/specialStyledClassName"
 
-import { CategorizedTransactions } from "../../Interface/Transaction";
+import { CategorizedTransactions, TransactionForFetch } from "../../Interface/Transaction";
 import { fetchTransaction } from "../../Apis/transactionApi";
 import { ActionType } from "../../Redux/ActionTypes";
-import Resister from "../EditPage/Resister";
 
 const MonthlyDetail = () => {
-	const { transactionStatus, userStatus, dispatchTransactionStatus, dispatchDisplayStatus } = useContext(AppContext)
+	const { transactionStatus, userStatus, dispatchTransactionStatus } = useContext(AppContext)
 
 	const [categorizedTransactions, setCategorizedTransactions] = useState<CategorizedTransactions[]>([])
 	
@@ -53,8 +54,15 @@ const MonthlyDetail = () => {
 		}
 	}
 
+	const handleTranClick = (transaction: TransactionForFetch) => {
+		nav('/edit', {
+			state: {
+				transaction
+			}
+		})
+	}
+
 	const onClickTransEdit = () => {
-		// dispatchDisplayStatus({type: ActionType.OPEN_REGISTER})
 		nav('/edit')
 	}
 
@@ -159,7 +167,10 @@ const MonthlyDetail = () => {
 									>${cate.totalAmount}</button>
 								</div>
 								{cate.transactions.map(trans => (
-									<div className={trans.category === detailedCate ? preSetupStyles.shownCategoryStyle : preSetupStyles.noShownCategoryStyle}>
+									<div 
+										onClick={() => handleTranClick(trans)} 
+										className={trans.category === detailedCate ? preSetupStyles.shownCategoryStyle : preSetupStyles.noShownCategoryStyle}
+									>
 										<p className="mr-3 text-xs">{getOnlyDateNum(trans.date)}</p>
 										<p className="w-4/5 text-sm text-ellipsis overflow-hidden whitespace-nowrap">{trans.memo}</p>
 										<p className="w-1/5 text-right text-sm">${trans.amount}</p>
