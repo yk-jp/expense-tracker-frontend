@@ -2,8 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-plusplus */
 import React, { useEffect, useState } from "react";
-import PropTypes from 'prop-types'
-import { getDays, getDayOfFirst, getMonthName, getDayName } from '../Utilities/date'
+import { getDays, getDayOfFirst, getMonthName, getDayName } from '../../Utilities/date'
 
 type Props = {
 	date: Date,
@@ -72,12 +71,6 @@ const MiniCalendar = ({date, setDate, setDatePickerOpened}: Props) => {
 			</div>
 		</div>
 	)
-}
-
-MiniCalendar.propTypes = {
-	date: PropTypes.instanceOf(Date).isRequired,
-	setDate: PropTypes.func.isRequired,
-	setDatePickerOpened: PropTypes.func.isRequired
 }
 
 

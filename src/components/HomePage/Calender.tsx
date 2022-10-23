@@ -4,14 +4,17 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React, {useEffect, useState, useContext} from "react";
-import AppContext from "../Context/useContext";
+
 import CalenderDay from './CalenderDay'
 import PickMonthHeader from "./PickMonthHeader";
-import { TransactionForFetch } from "../Interface/Transaction";
-import { getDays, getDayOfFirst, getDayName } from '../Utilities/date'
-import { fetchTransaction } from "../Apis/transactionApi";
-import { ActionType } from "../Redux/ActionTypes";
-import Loading from "./Loading";
+
+import AppContext from "../../Context/useContext";
+import { getDays, getDayOfFirst, getDayName } from '../../Utilities/date'
+
+import { TransactionForFetch } from "../../Interface/Transaction";
+
+import { fetchTransaction } from "../../Apis/transactionApi";
+import { ActionType } from "../../Redux/ActionTypes";
 
 interface dayDetail{
 	id: number,

@@ -38,6 +38,11 @@ export interface CategoryFetchSuccess {
 	}
 }
 
+export interface CategoryDeleteSuccess {
+	message: string,
+	is_success: boolean
+}
+
 export interface StatusInMonthSuccess {
 	is_success: boolean,
 	result: {

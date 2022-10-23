@@ -61,7 +61,8 @@ module.exports = {
       {
         "namedComponents": "arrow-function"
       }
-    ]
+    ],
+
   },
   overrides: [ 
     {

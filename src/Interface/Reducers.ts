@@ -12,7 +12,6 @@ export interface USRAction {
 	email: string | null,
 }
 
-// TODO: adjust property
 export interface TransSRAction {
 	type: string,
 	newTrans: TransactionForFetch[],
@@ -20,10 +19,15 @@ export interface TransSRAction {
 	year: string,
 	fetchSuccess: boolean
 }
-// TODO: adjust property
 export interface USCategoryAction {
 	type: string,
 	newCategory: Category[]
+}
+
+export interface USCategoryDeleteAction {
+	type: string,
+	categoryId: number,
+	categoryType: string
 }
 
 export interface DisplayState{

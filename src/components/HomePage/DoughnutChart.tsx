@@ -2,9 +2,9 @@
 import React from "react";
 import { Doughnut } from 'react-chartjs-2'
 import { Chart, registerables } from 'chart.js';
-import PropTypes from 'prop-types'
-import {colorsPicker} from '../Utilities/colorPallet'
-import { DoughnutChartData } from '../Interface/DoughnutChart'
+
+import {colorsPicker} from '../../Utilities/colorPallet'
+import { DoughnutChartData } from '../../Interface/DoughnutChart'
 
 Chart.register(...registerables);
 
@@ -70,14 +70,6 @@ const DoughnutChart = ({data, transType}: Props) => {
 			</p>
 		</div>
 	)
-}
-
-DoughnutChart.propTypes = {
-	data: PropTypes.arrayOf(PropTypes.shape({
-		name: PropTypes.string,
-		totalAmount: PropTypes.number
-	})).isRequired,
-	transType: PropTypes.string.isRequired
 }
 
 export default DoughnutChart

@@ -2,8 +2,7 @@
 import React from "react";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faCaretRight, faCaretLeft } from '@fortawesome/free-solid-svg-icons'
-import PropTypes from 'prop-types'
-import { getMonthName } from "../Utilities/date";
+import { getMonthName } from "../../Utilities/date";
 
 type Props = {
 	date: Date,
@@ -42,11 +41,6 @@ const PickMonthHeader = ({ date, setDate }: Props) => {
 			</button>
 		</div>
 	)
-}
-
-PickMonthHeader.propTypes = {
-	date: PropTypes.instanceOf(Date).isRequired,
-	setDate: PropTypes.func.isRequired
 }
 
 export default PickMonthHeader

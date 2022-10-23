@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useContext, useState } from 'react'
-import PropTypes from 'prop-types'
-import AppContext from '../Context/useContext'
-import { Category } from '../Interface/Category'
+
+import AppContext from '../../Context/useContext'
+import { Category } from '../../Interface/Category'
 
 
 type Props = {
@@ -13,7 +13,7 @@ type Props = {
 
 const CategoryButtons = ({setCategory, setCatePickerOpened, transType}: Props) => {
 
-	const {dispatchUserState, userStatus} = useContext(AppContext)
+	const {userStatus} = useContext(AppContext)
 	const [targetCate, setTargetCate] = useState<Category[]>([])
 
 	const onClickCatePicked = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -40,19 +40,13 @@ const CategoryButtons = ({setCategory, setCatePickerOpened, transType}: Props) =
 					value={cate.name}
 					type='button'
 					onClick={onClickCatePicked}
-					className='px-4 text-sm border-2 border-slate-300 m-1 rounded-lg hover:bg-teal-400'
+					className='px-4 py-1 border-2 border-slate-300 m-1 rounded-lg hover:bg-teal-400'
 				>
 					{cate.name}
 				</button>
 			))}
 		</div>
 	)
-}
-
-CategoryButtons.propTypes = {
-	transType: PropTypes.string.isRequired,
-	setCategory: PropTypes.func.isRequired,
-	setCatePickerOpened: PropTypes.func.isRequired
 }
 
 export default CategoryButtons

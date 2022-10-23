@@ -1,11 +1,12 @@
 /* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { USRAction, USCategoryAction, UserState } from "../Interface/Reducers"
+import { Category } from "../Interface/Category"
+import { USRAction, USCategoryAction, UserState, USCategoryDeleteAction } from "../Interface/Reducers"
 import { UserInfo } from "../Interface/UserInfo"
 import { ActionType } from "./ActionTypes"
 
 
-const userStatusReducer = (state: UserState, action: USRAction | USCategoryAction): UserState => {
+const userStatusReducer = (state: UserState, action: USRAction | USCategoryAction | USCategoryDeleteAction): UserState => {
 	switch(action.type){
 		case ActionType.LOGIN_USER:{
 			const currentAction = action as USRAction
@@ -54,6 +55,32 @@ const userStatusReducer = (state: UserState, action: USRAction | USCategoryActio
 				}
 			}
 			return {...state}
+		}
+
+		// FIXME: adjust set state
+		case ActionType.DELETE_CATEGORY: {
+			const currentAction = action as USCategoryDeleteAction
+			let categories: Category[]
+			if (currentAction.categoryType === 'Income') {
+				categories = [...state.category.income]
+				categories = categories.filter(cate => cate.id !== currentAction.categoryId)
+				return {
+					...state,
+					category: {
+						income: categories,
+						expense: [...state.category.expense]
+					}
+				}
+			}
+			categories = [...state.category.expense]
+			categories = categories.filter(cate => cate.id !== currentAction.categoryId)
+			return {
+				...state,
+				category: {
+					expense: categories,
+					income: [...state.category.income]
+				}
+			}
 		}
 		
 		case ActionType.ADD_EXPENSE_CATEGORY: {

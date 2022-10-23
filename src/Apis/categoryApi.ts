@@ -4,7 +4,7 @@
 import appApi from "./appApi";
 import { generateNewToken } from "./accountApi";
 import { Tokens } from "../Interface/Token";
-import { CategoryFetchSuccess } from "../Interface/ApiReturns";
+import { CategoryFetchSuccess, CategoryDeleteSuccess } from "../Interface/ApiReturns";
 import { Category, CategoryAll} from '../Interface/Category'
 
 const fetchCategory = async (token: Tokens): Promise<CategoryAll | Tokens> => {
@@ -46,4 +46,16 @@ const createCategory = async (token: Tokens, name: string, type: string): Promis
 	}
 }
 
-export {fetchCategory, createCategory}
+const deleteCategory = async (token: Tokens, id: number, name: string, type: string) => {
+	appApi.defaults.headers.common['Authorization'] = `Bearer ${token.access!}`
+	try{
+		const data = await appApi.delete(`/category/delete/${type}/${id}/`, {
+			data: { name }
+		})
+		return data.data as CategoryDeleteSuccess
+	} catch (err) {
+		return false
+	}
+}
+
+export {fetchCategory, createCategory, deleteCategory}

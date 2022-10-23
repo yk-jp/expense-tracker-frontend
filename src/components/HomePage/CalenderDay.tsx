@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from 'prop-types'
 
 type Props = {
 	day: number,
@@ -31,10 +30,5 @@ const CalenderDay = ({day, income, expense}: Props) => {
 	)
 }
 
-CalenderDay.propTypes = {
-	day: PropTypes.number.isRequired,
-	income: PropTypes.number.isRequired,
-	expense: PropTypes.number.isRequired
-}
 
 export default CalenderDay

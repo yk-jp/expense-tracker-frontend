@@ -5,21 +5,21 @@
 
 import React, {useState, useContext, useRef} from "react";
 import { useNavigate } from "react-router-dom";
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import { faX } from '@fortawesome/free-solid-svg-icons'
-import CategoryButtons from "./Category";
+import Categories from "./Categories";
 
-import postTransaction from "../Apis/transactionApi";
-import { createCategory } from "../Apis/categoryApi";
-import { generateNewToken } from "../Apis/accountApi";
+import postTransaction from "../../Apis/transactionApi";
+import { createCategory } from "../../Apis/categoryApi";
+import { generateNewToken } from "../../Apis/accountApi";
 
-import AppContext from "../Context/useContext";
-import { ActionType } from "../Redux/ActionTypes";
-import { Tokens } from "../Interface/Token";
-import { Category } from "../Interface/Category";
-import { convertDayToString, checkTargetDateIsSame } from "../Utilities/date";
-import preSetupStyles from "../Utilities/specialStyledClassName"
-import { TransactionForFetch } from "../Interface/Transaction";
+import AppContext from "../../Context/useContext";
+
+import { ActionType } from "../../Redux/ActionTypes";
+import { Tokens } from "../../Interface/Token";
+import { Category } from "../../Interface/Category";
+import { TransactionForFetch } from "../../Interface/Transaction";
+
+import { checkTargetDateIsSame } from "../../Utilities/date";
+import preSetupStyles from "../../Utilities/specialStyledClassName"
 
 const Resister = () => {
 	const nav = useNavigate()
@@ -131,15 +131,7 @@ const Resister = () => {
 	}
 	
 	return (
-		<section className=" absolute w-112 border-2 border-teal-600 rounded-2xl mx-auto bg-white z-40 top-10">
-			<button 
-				type="button"
-				onClick={() => dispatchDisplayStatus({type: ActionType.HIDE_REGISTER})} 
-				className="absolute -right-6 -top-6">
-				<FontAwesomeIcon icon={faX} className='w-12 h-12 rounded-full bg-white p-2'/>
-			</button>
-			<h2 className="py-4 text-center rounded-t-xl text-white bg-teal-600">Resister New Transaction</h2>
-			<form className="p-4 px-10" onSubmit={(e) => {onSubmit(e)}}>
+			<form className="py-10 pb-0" onSubmit={(e) => {onSubmit(e)}}>
 				<div className="flex justify-between mb-4">
 					<button 
 						type="button"
@@ -157,8 +149,9 @@ const Resister = () => {
 					Expense</button>
 				</div>
 				<div className={preSetupStyles.inputRowStyle}>
-					<label className={`${preSetupStyles.labelBasicStyle}`}>Date</label>
+					<label htmlFor="date" className={`${preSetupStyles.labelBasicStyle}`}>Date</label>
 					<input 
+						id="date"
 						type='date'
 						value={transDay}
 						onChange={onChangeDateInput}
@@ -167,8 +160,9 @@ const Resister = () => {
 					/>
 				</div>
 				<div className={preSetupStyles.inputRowStyle}>
-					<label className={`${preSetupStyles.labelBasicStyle}`}>Category</label>
+					<label htmlFor="category" className={`${preSetupStyles.labelBasicStyle}`}>Category</label>
 					<input 
+						id="category"
 						type="text"
 						required 
 						onChange={(e) => {onChangeCategoryInput(e)}}
@@ -176,26 +170,32 @@ const Resister = () => {
 						onClick={() => setCatePickerOpened(prev => !prev)}
 						className={`${preSetupStyles.inputBasicStyle}`} />
 				</div>
-				{catePickerOpened && <CategoryButtons setCategory={setTransCate} setCatePickerOpened={setCatePickerOpened} transType={transactionType}/> }
+				{ catePickerOpened && 
+					<Categories setCategory={setTransCate} setCatePickerOpened={setCatePickerOpened} transType={transactionType} />
+				}
 				<div className={preSetupStyles.inputRowStyle}>
-					<label className={`${preSetupStyles.labelBasicStyle}`}>Amount ( $ )</label>
-					<input type="number" ref={amountInputRef} required className={`${preSetupStyles.inputBasicStyle}`} />
+					<label htmlFor="amount" className={`${preSetupStyles.labelBasicStyle}`}>Amount ( $ )</label>
+					<input id="amount" type="number" ref={amountInputRef} required className={`${preSetupStyles.inputBasicStyle}`} />
 				</div>
 				<div className={preSetupStyles.inputRowStyle}>
-					<label className={`${preSetupStyles.labelBasicStyle}`}>Note</label>
+					<label htmlFor="note" className={`${preSetupStyles.labelBasicStyle}`}>Note</label>
 					<textarea 
+						id="note"
 						rows={3}
 						ref={memoTextAreaRef}
-						className="grow p-2 border-2 rounded-md border-gray-300 resize-none" 
+						className="grow p-2 mb-5 border-2 rounded-md border-gray-300 resize-none" 
 					/>
 				</div>
 				<input 
 					type="submit" 
 					value="Save"
-					className='block w-36 mx-auto p-2 bg-white border-2 border-teal-600 text-teal-700 rounded-full hover:bg-teal-600 hover:text-white duration-200 active:translate-y-1'
+					className='block w-36 mx-auto mb-5 p-2 bg-white border-2 border-teal-600 text-teal-700 rounded-full hover:bg-teal-600 hover:text-white duration-200 active:translate-y-1'
 				/>
+				<button 
+					type="button"
+					className='block w-36 mx-auto mb-5 p-2 bg-white border-2 border-red-400 text-red-500 rounded-full hover:bg-red-400 hover:text-white duration-200 active:translate-y-1'
+				>Delete</button>
 			</form>
-		</section>
 	)
 }
 

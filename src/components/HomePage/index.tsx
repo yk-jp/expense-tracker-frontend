@@ -4,21 +4,22 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
+
 import Calender from "./Calender";
 import LineGraph from "./LineGraph";
 import MonthlyDetail from "./MonthlyDetail";
-import Resister from "./Resister";
-import AppContext from "../Context/useContext";
-import { ActionType } from "../Redux/ActionTypes";
-import { fetchCategory } from "../Apis/categoryApi";
-import { CategoryAll } from "../Interface/Category";
-import { Tokens } from "../Interface/Token";
-import { UserInfo } from "../Interface/UserInfo";
+import Resister from "../EditPage/Resister";
+
+import AppContext from "../../Context/useContext";
+
+import { ActionType } from "../../Redux/ActionTypes";
+import { fetchCategory } from "../../Apis/categoryApi";
+import { CategoryAll } from "../../Interface/Category";
+import { Tokens } from "../../Interface/Token";
+import { UserInfo } from "../../Interface/UserInfo";
 
 const Main = () => {
-	const { displayStatus, dispatchDisplayStatus, dispatchUserState, userStatus, dispatchTransactionStatus } = useContext(AppContext)
+	const { displayStatus, dispatchUserState, userStatus } = useContext(AppContext)
 	const nav = useNavigate()
 
 	if (!userStatus.loggedIn) { nav('/login') }

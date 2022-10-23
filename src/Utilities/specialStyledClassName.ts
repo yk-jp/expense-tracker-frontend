@@ -1,6 +1,6 @@
 const inputRowStyle = "flex mb-4"
 const labelBasicStyle = " w-1/3 block "
-const inputBasicStyle = "grow block text-right bg-white border-b-2 border-b-gray-300 hover:border-b-gray-500 focus:border-b-gray-500"
+const inputBasicStyle = "grow block text-lg py-2 mb-2 text-right bg-white border-b-2 border-b-gray-300 hover:border-b-gray-500 focus:border-b-gray-500"
 const selectedButtonStyle = "w-2/5 text-center py-1 border-2 border-orange-500 text-orange-500 rounded-md"
 const unSelectedButtonStyle = "w-2/5 text-center py-1 border-2 border-gray-300 text-gray-400 rounded-md hover:text-gray-600 hover:border-gray-500"
 

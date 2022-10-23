@@ -6,12 +6,15 @@ import React, { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faUser, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons'
-import ErrorPop from './ErrorPop';
-import AppContext from "../Context/useContext";
-import { loginApi } from '../Apis/accountApi';
-import { ActionType } from "../Redux/ActionTypes";
-import { LoginFailed } from '../Interface/ApiReturns';
-import { Tokens } from '../Interface/Token';
+
+import ErrorPop from '../ErrorPop';
+
+import AppContext from "../../Context/useContext";
+import { loginApi } from '../../Apis/accountApi';
+
+import { ActionType } from "../../Redux/ActionTypes";
+import { LoginFailed } from '../../Interface/ApiReturns';
+import { Tokens } from '../../Interface/Token';
 
 
 const Login = () => {

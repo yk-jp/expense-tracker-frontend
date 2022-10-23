@@ -7,11 +7,13 @@ import React, {useContext, useEffect, useState} from "react";
 import { Line } from 'react-chartjs-2'
 import { Chart, registerables } from 'chart.js';
 
-import AppContext from "../Context/useContext";
-import fetchStatsYear from "../Apis/statsApi";
-import { getShortMonthNameForYear } from "../Utilities/date"; 
-import { LineGraphData } from '../Interface/LineGraph'
-import Loading from "./Loading";
+import Loading from "../Loading";
+
+import AppContext from "../../Context/useContext";
+import fetchStatsYear from "../../Apis/statsApi";
+import { getShortMonthNameForYear } from "../../Utilities/date"; 
+
+import { LineGraphData } from '../../Interface/LineGraph'
 
 Chart.register(...registerables);
 

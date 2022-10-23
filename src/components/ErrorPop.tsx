@@ -1,5 +1,4 @@
 import React from "react"
-import PropTypes from 'prop-types'
 
 type Props = {
 	message: string
@@ -18,13 +17,6 @@ const ErrorPop = ({ message, setError }: Props) => {
 		</div>
 	)
 }
-
-// TODO: jadjflaksdjfa;
-
-ErrorPop.propTypes = {
-  message: PropTypes.string.isRequired,
-	setError: PropTypes.func.isRequired
-};
 
 
 export default ErrorPop
