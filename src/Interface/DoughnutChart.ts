@@ -1,10 +1,10 @@
-export interface doughnutChartDataSets{
+export interface DoughnutChartDataSets{
 	label: string,
 	data: number[],
 	backgroundColor: string[],
 }
 
-export interface doughnutChart {
+export interface DoughnutChartData {
 	labels: string[],
-	datasets: doughnutChartDataSets[]
+	datasets: DoughnutChartDataSets[]
 }

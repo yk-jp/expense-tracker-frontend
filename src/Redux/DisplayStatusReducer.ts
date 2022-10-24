@@ -1,14 +1,14 @@
 /* eslint-disable default-param-last */
-import { DSRAction, displayState } from "../Interface/Reducers"
+import { DSRAction, DisplayState } from "../Interface/Reducers"
 import { ActionType } from "./ActionTypes"
 
-export const initialState: displayState = {
+export const initialState: DisplayState = {
 	isRegisterShown: false,
 	isMiniCalendarShown: false
 }
 
 
-const displayStatusReducer = (state: displayState, action: DSRAction) => {
+const displayStatusReducer = (state: DisplayState, action: DSRAction) => {
 	switch(action.type){
 		case ActionType.OPEN_REGISTER:
 			return {

@@ -1,11 +1,11 @@
-export interface lineGraphDatasets{
+export interface LineGraphDatasets{
 	label: string,
 	data: number[],
 	borderColor: string,
 	backgroundColor: string
 }
 
-export interface lineGraph {
+export interface LineGraphData {
 	labels: string[],
-	datasets: lineGraphDatasets[]
+	datasets: LineGraphDatasets[]
 }

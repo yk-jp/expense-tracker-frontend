@@ -1,6 +1,6 @@
-import tokens from "./Token"
-import transactionForFetch, { transactionStatsYear } from './Transaction'
-import category, {categoryAll} from "./Category"
+import { Tokens } from "./Token"
+import { TransactionForFetch, TransactionStatsYear } from './Transaction'
+import {Category, CategoryAll } from "./Category"
 
 export interface DSRAction {
 	type: string,
@@ -8,50 +8,61 @@ export interface DSRAction {
 
 export interface USRAction {
 	type: string,
-	token?: tokens | null,
+	token?: Tokens | null,
 	email: string | null,
 }
 
-// TODO: adjust property
 export interface TransSRAction {
 	type: string,
-	newTrans: transactionForFetch[],
+	newTrans: TransactionForFetch[],
 	month: string,
-	year: string
-}
-// TODO: adjust property
-export interface USCategoryAction {
-	type: string,
-	newCategory: category[]
+	year: string,
+	fetchSuccess: boolean
 }
 
-export interface displayState{
+export interface TransSRActionUpdate {
+	type: string
+}
+
+export interface USCategoryAction {
+	type: string,
+	newCategory: Category[]
+}
+
+export interface USCategoryDeleteAction {
+	type: string,
+	categoryId: number,
+	categoryType: string
+}
+
+export interface DisplayState{
 	isRegisterShown: boolean,
 	isMiniCalendarShown: boolean
 }
 
-export interface userState {
+export interface UserState {
 	loggedIn: boolean,
-	tokens: tokens | null,
+	tokens: Tokens | null,
 	email: string | null,
-	category: categoryAll
+	category: CategoryAll
 }
 
 // TODO: adjust interface for transaction
-export interface transactionState {
+export interface TransactionState {
 	monthlyForCalendar: {
 		target: {
 			year: number,
 			month: number
 		},
-		transactions: transactionForFetch[]
+		transactions: TransactionForFetch[]
 	},
 	monthlyForDetail: {
 		target: {
 			year: number,
 			month: number
 		},
-		transactions: transactionForFetch[]
+		transactions: TransactionForFetch[]
 	},
-	yearly: transactionStatsYear
+	yearly: TransactionStatsYear,
+	fetchSuccess: boolean
 }

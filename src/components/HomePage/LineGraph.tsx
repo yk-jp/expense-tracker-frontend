@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable import/no-extraneous-dependencies */
@@ -5,10 +7,13 @@ import React, {useContext, useEffect, useState} from "react";
 import { Line } from 'react-chartjs-2'
 import { Chart, registerables } from 'chart.js';
 
-import AppContext from "../Context/useContext";
-import fetchStatsYear from "../Apis/statsApi";
-import { getShortMonthNameForYear } from "../Utilities/date"; 
-import { lineGraph } from '../Interface/LineGraph'
+import Loading from "../Loading";
+
+import AppContext from "../../Context/useContext";
+import fetchStatsYear from "../../Apis/statsApi";
+import { getShortMonthNameForYear } from "../../Utilities/date"; 
+
+import { LineGraphData } from '../../Interface/LineGraph'
 
 Chart.register(...registerables);
 
@@ -30,18 +35,18 @@ const LineGraph = () => {
 	const recentMonth = new Date()
 
 	const {transactionStatus, dispatchDisplayStatus, userStatus} = useContext(AppContext)
-	const [dataSets, setDataSets] = useState<lineGraph>({
+	const [dataSets, setDataSets] = useState<LineGraphData>({
 		labels: getShortMonthNameForYear(recentMonth.getMonth()),
 		datasets: [
 		{
 			label: "Income",
-			data:  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			data: [],
 			borderColor: "rgb(8 145 178)",
 			backgroundColor: "rgb(8 145 178)"
 		},
 		{
 			label: "Expense",
-			data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			data: [],
 			borderColor: 'rgb(220 38 38)',
 			backgroundColor: 'rgb(220 38 38)'
 		}
@@ -64,11 +69,15 @@ const LineGraph = () => {
 			}))
 		}
 		res().catch(() => console.log("error"))
-	}, [transactionStatus.yearly])
+	}, [transactionStatus.yearly, userStatus.loggedIn])
 
 	return (
 		<section className="w-168">
 			<h3 className="text-center mt-3 text-lg">[ Income / Expense Changes in Recent 1 Year ]</h3>
+
+			{ dataSets.datasets[0].data.length === 0 || dataSets.datasets[1].data.length === 0 ?
+				<Loading height="300px" />
+			:
 			<Line
 				height={300}
 				width={680}
@@ -76,6 +85,7 @@ const LineGraph = () => {
 				options={options}
 				id='chart-key'
 			/>
+			}
 		</section>
 	)
 }

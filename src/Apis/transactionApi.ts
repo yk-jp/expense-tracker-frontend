@@ -1,11 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable dot-notation */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 import appApi from "./appApi";
 import {generateNewToken} from './accountApi'
-import tokens from "../Interface/Token";
-import {allTransactionsMonthSuccess} from '../Interface/ApiReturns'
-import transactionForFetch from '../Interface/Transaction'
+import { Tokens } from "../Interface/Token";
+import { AllTransactionsMonthSuccess, DeleteSuccess} from '../Interface/ApiReturns'
+import { TransactionForFetch } from '../Interface/Transaction'
 
-const postTransaction = async(token: tokens, event: string, amount: number, date: string, memo: string, category: number, categoryName: string): Promise<transactionForFetch | tokens> => {
+const postTransaction = async(token: Tokens, event: string, amount: number, date: string, memo: string, category: number, categoryName: string): Promise<TransactionForFetch | Tokens> => {
 	appApi.defaults.headers.common['Authorization'] = `Bearer ${token.access!}`
 
 	try{
@@ -24,7 +27,7 @@ const postTransaction = async(token: tokens, event: string, amount: number, date
 	} catch(err) {
 		if (token.refresh !== null){
 			const res = await generateNewToken(token.refresh)
-			const newToken = res as tokens
+			const newToken = res as Tokens
 			return newToken
 		}
 		return {access: null, refresh: null}
@@ -32,14 +35,41 @@ const postTransaction = async(token: tokens, event: string, amount: number, date
 	}
 }
 
-export const fetchTransaction = async (token: tokens, year: string, month: string): Promise<allTransactionsMonthSuccess | null> => {
+export const updateTransaction = async (token: Tokens,id: number, event: string, amount: number, date: string, memo: string, category: number, prevDate: string) => {
+	appApi.defaults.headers.common['Authorization'] = `Bearer ${token.access!}`
+
+	try{
+		const data = await appApi.put(`/transaction/update/${id}`, {
+		'prev_date': prevDate, event, amount, date, memo, category
+		})
+		return data.data
+	} catch {
+		return null
+	}
+}
+
+export const deleteTransaction = async (token: Tokens, id: number, date: string) => {
+	appApi.defaults.headers.common['Authorization'] = `Bearer ${token.access!}`
+
+	try {
+		const data = await appApi.delete(`/transaction/delete/${id}`, {
+			data: { id, date }
+		})
+		return data.data as DeleteSuccess
+
+	} catch {
+		return { message: 'failed', is_success: false} as DeleteSuccess
+	}
+}
+
+export const fetchTransaction = async (token: Tokens, year: string, month: string): Promise<AllTransactionsMonthSuccess | null> => {
 	appApi.defaults.headers.common['Authorization'] = `Bearer ${token.access!}`
 
 	try{
 		const data = await appApi.post('/transaction/', {
 			year, month
 		})
-		return data.data as allTransactionsMonthSuccess
+		return data.data as AllTransactionsMonthSuccess
 	
 	} catch(err) {
 		// TODO: token expire pattern

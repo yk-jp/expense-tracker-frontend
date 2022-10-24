@@ -6,12 +6,15 @@ import React, { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faUser, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons'
-import ErrorPop from './ErrorPop';
-import AppContext from "../Context/useContext";
-import { loginApi } from '../Apis/accountApi';
-import { ActionType } from "../Redux/ActionTypes";
-import { loginFailed } from '../Interface/ApiReturns';
-import tokens from '../Interface/Token';
+
+import ErrorPop from '../ErrorPop';
+
+import AppContext from "../../Context/useContext";
+import { loginApi } from '../../Apis/accountApi';
+
+import { ActionType } from "../../Redux/ActionTypes";
+import { LoginFailed } from '../../Interface/ApiReturns';
+import { Tokens } from '../../Interface/Token';
 
 
 const Login = () => {
@@ -23,13 +26,15 @@ const Login = () => {
 
 	const onSubmit = async (e: React.SyntheticEvent) => {
 		e.preventDefault()
-		const res: tokens | loginFailed = await loginApi(email, password)
+		if(!email || !password) return
+
+		const res: Tokens | LoginFailed = await loginApi(email, password)
 		if (Object.keys(res).length === 2) {
-			const success = res as tokens
+			const success = res as Tokens
 			dispatchUserState({type: ActionType.LOGIN_USER, token: success, email})
 			nav('/')
 		} else {
-			const failed = res as loginFailed
+			const failed = res as LoginFailed
 			setError(failed.response.data.detail)
 		}
 	}
@@ -64,13 +69,7 @@ const Login = () => {
 						className='block flex-1 pl-6 bg-zinc-600 text-white focus:bg-white focus:text-zinc-900'
 				/>
 				</div>
-				<div className='flex justify-between'>
-					<label className='text-white'>
-						<input type="checkbox" />
-						Remember me?
-					</label>
-					<p className='text-white hover:cursor-pointer'>Forgot password?</p>
-				</div>
+				<p className='text-white text-right hover:cursor-pointer'>Forgot password?</p>
 				<Link to='/signIn' className='text-white text-right hover:cursor-pointer block'>Create new account?</Link>
 				<button 
 					type='submit' 

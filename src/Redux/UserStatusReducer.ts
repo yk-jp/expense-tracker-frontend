@@ -1,13 +1,17 @@
 /* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { USRAction, USCategoryAction, userState } from "../Interface/Reducers"
+import { Category } from "../Interface/Category"
+import { USRAction, USCategoryAction, UserState, USCategoryDeleteAction } from "../Interface/Reducers"
+import { UserInfo } from "../Interface/UserInfo"
 import { ActionType } from "./ActionTypes"
 
 
-const userStatusReducer = (state: userState, action: USRAction | USCategoryAction): userState => {
+const userStatusReducer = (state: UserState, action: USRAction | USCategoryAction | USCategoryDeleteAction): UserState => {
 	switch(action.type){
 		case ActionType.LOGIN_USER:{
 			const currentAction = action as USRAction
+			const userInfo: UserInfo = {email: currentAction.email!, tokens: currentAction.token!}
+			localStorage.setItem('userInfo', JSON.stringify(userInfo))
 			return {
 				...state,
 				loggedIn: true,
@@ -17,6 +21,7 @@ const userStatusReducer = (state: userState, action: USRAction | USCategoryActio
 		}
 
 		case ActionType.LOGOUT_USER: 
+			localStorage.removeItem('userInfo')
 			return {
 				...state,
 				loggedIn: false,
@@ -50,6 +55,32 @@ const userStatusReducer = (state: userState, action: USRAction | USCategoryActio
 				}
 			}
 			return {...state}
+		}
+
+		// FIXME: adjust set state
+		case ActionType.DELETE_CATEGORY: {
+			const currentAction = action as USCategoryDeleteAction
+			let categories: Category[]
+			if (currentAction.categoryType === 'Income') {
+				categories = [...state.category.income]
+				categories = categories.filter(cate => cate.id !== currentAction.categoryId)
+				return {
+					...state,
+					category: {
+						income: categories,
+						expense: [...state.category.expense]
+					}
+				}
+			}
+			categories = [...state.category.expense]
+			categories = categories.filter(cate => cate.id !== currentAction.categoryId)
+			return {
+				...state,
+				category: {
+					expense: categories,
+					income: [...state.category.income]
+				}
+			}
 		}
 		
 		case ActionType.ADD_EXPENSE_CATEGORY: {

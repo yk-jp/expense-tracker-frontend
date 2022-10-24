@@ -1,35 +1,38 @@
-import { TransSRAction, transactionState } from "../Interface/Reducers";
-import transactionFroFetch from '../Interface/Transaction'
+import { TransSRAction, TransactionState, TransSRActionUpdate } from "../Interface/Reducers";
 import { ActionType } from "./ActionTypes";
 
-const transactionStateReducer = (state: transactionState, action: TransSRAction): transactionState => {
+const transactionStateReducer = (state: TransactionState, action: TransSRAction | TransSRActionUpdate ): TransactionState => {
 	switch (action.type) {
 		case ActionType.ADD_TRANSACTION_MONTH_FOR_CALENDAR: {
+			const currentAction = action as TransSRAction
 			return {
 				...state,
 				monthlyForCalendar: {
-					target: {year: parseInt(action.year, 10), month: parseInt(action.month, 10)},
-					transactions: action.newTrans
+					target: {year: parseInt(currentAction.year, 10), month: parseInt(currentAction.month, 10)},
+					transactions: currentAction.newTrans
 				}
 			}
 		}
 
 		case ActionType.ADD_TRANSACTION_MONTH_FOR_DETAIL: {
+			const currentAction = action as TransSRAction
 			return {
 				...state,
 				monthlyForDetail: {
-					target: {year: parseInt(action.year, 10), month: parseInt(action.month, 10)},
-					transactions: action.newTrans
-				}
+					target: {year: parseInt(currentAction.year, 10), month: parseInt(currentAction.month, 10)},
+					transactions: currentAction.newTrans,
+				},
+				fetchSuccess: currentAction.fetchSuccess
 			}
 		}
-		case ActionType.ADD_TRANSACTION_YEAR: {
-			// TODO: develop transaction_yearly for status
-			const i = 0
+
+		case ActionType.UPDATE_TRANSACTION_MONTH : {
 			return {
-				...state
+				...state,
+				fetchSuccess: false
 			}
 		}
+
 		default:
 			return state
 	}

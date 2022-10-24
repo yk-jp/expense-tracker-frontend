@@ -1,15 +1,19 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import React, { useState, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faUser, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons'
-import AppContext from "../Context/useContext";
-import ErrorPop from './ErrorPop';
-import { signInApi } from '../Apis/accountApi';
-import { ActionType } from '../Redux/ActionTypes';
-import { registerAccountFailed } from '../Interface/ApiReturns';
-import tokens from '../Interface/Token';
+
+import ErrorPop from '../ErrorPop';
+
+import AppContext from "../../Context/useContext";
+
+import { signInApi } from '../../Apis/accountApi';
+import { ActionType } from '../../Redux/ActionTypes';
+import { RegisterAccountFailed } from '../../Interface/ApiReturns';
+import { Tokens } from '../../Interface/Token';
 
 const SignIn = () => {
 	const nav = useNavigate()
@@ -20,13 +24,15 @@ const SignIn = () => {
 
 	const onSubmit = async (e: React.SyntheticEvent) => {
 		e.preventDefault()
-		const res: tokens | registerAccountFailed = await signInApi(email, password)
+		if (!email || !password) return
+
+		const res: Tokens | RegisterAccountFailed = await signInApi(email, password)
 		if (Object.keys(res).length === 2){
-			const success = res as tokens
+			const success = res as Tokens
 			dispatchUserState({type: ActionType.LOGIN_USER, token: success, email})
 			nav('/')
 		} else {
-			const failed = res as registerAccountFailed
+			const failed = res as RegisterAccountFailed
 			setError(failed.response.data.message)
 		}
 	}

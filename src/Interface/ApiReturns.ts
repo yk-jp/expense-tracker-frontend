@@ -1,8 +1,7 @@
-import tokens from "./Token"
-import transactionForFetch, {transactionsStatsMonth} from "./Transaction"
-import category from "./Category"
+import { TransactionForFetch, TransactionsStatsMonth} from "./Transaction"
+import { Category } from "./Category"
 
-export interface registerAccountFailed {
+export interface RegisterAccountFailed {
 	response: {
 		data: {
 			message: string,
@@ -11,7 +10,7 @@ export interface registerAccountFailed {
 	}
 }
 
-export interface loginFailed {
+export interface LoginFailed {
 	response: {
 		data: {
 			detail: string
@@ -19,7 +18,7 @@ export interface loginFailed {
 	}
 }
 
-export interface generateTokenFailed {
+export interface GenerateTokenFailed {
 	response: {
 		data: {
 			detail: string,
@@ -28,18 +27,23 @@ export interface generateTokenFailed {
 	}
 }
 
-export interface generateTokenSuccess {
+export interface GenerateTokenSuccess {
 	access: string
 }
 
-export interface categoryFetchSuccess {
+export interface CategoryFetchSuccess {
 	is_success: boolean,
 	result: {
-		category_all: category[]
+		category_all: Category[]
 	}
 }
 
-export interface statusInMonthSuccess {
+export interface DeleteSuccess {
+	message: string,
+	is_success: boolean
+}
+
+export interface StatusInMonthSuccess {
 	is_success: boolean,
 	result: {
 		Income: number,
@@ -47,9 +51,9 @@ export interface statusInMonthSuccess {
 	}
 }
 
-export interface allTransactionsMonthSuccess {
+export interface AllTransactionsMonthSuccess {
 	result: {
-		all_transactions: transactionForFetch[],
-		stats: transactionsStatsMonth
+		all_transactions: TransactionForFetch[],
+		stats: TransactionsStatsMonth
 	}
 }

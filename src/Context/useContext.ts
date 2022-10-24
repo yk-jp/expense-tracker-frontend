@@ -1,14 +1,14 @@
 import React, { createContext } from "react";
-import { displayState, DSRAction, userState, USRAction, transactionState, TransSRAction, USCategoryAction } from "../Interface/Reducers";
+import { DisplayState, DSRAction, UserState, USRAction, TransactionState, TransSRAction, USCategoryAction, USCategoryDeleteAction, TransSRActionUpdate } from "../Interface/Reducers";
 
 
 const AppContext = createContext({} as {
-  displayStatus: displayState,
+  displayStatus: DisplayState,
   dispatchDisplayStatus: React.Dispatch<DSRAction >,
-	userStatus: userState,
-	dispatchUserState: React.Dispatch<USRAction | USCategoryAction>,
-	transactionStatus: transactionState,
-	dispatchTransactionStatus: React.Dispatch<TransSRAction>
+	userStatus: UserState,
+	dispatchUserState: React.Dispatch<USRAction | USCategoryAction | USCategoryDeleteAction>,
+	transactionStatus: TransactionState ,
+	dispatchTransactionStatus: React.Dispatch<TransSRAction | TransSRActionUpdate>
 })
 
 export default AppContext
