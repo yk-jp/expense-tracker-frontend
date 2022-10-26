@@ -44,6 +44,8 @@ const CategorySetting = () => {
 			dispatchUserState({type: ActionType.DELETE_CATEGORY, categoryId: id,
 				categoryType: type
 			})
+		} else {
+			alert(`We can't delete ${name} category because some transaction still categorized in.`)
 		}
 	}
 
