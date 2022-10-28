@@ -10,4 +10,3 @@ services:
       - ./src:/app/src
     # env_file:
     #   - ./.env
-    command: npm run start 

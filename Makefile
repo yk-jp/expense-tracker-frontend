@@ -1,8 +1,14 @@
 build:
-	docker-coompose build -f docker-compose.yml .
+	docker-compose build
+
+build-prod:
+	docker build -t expense-tracker-frontend-prod -f Dockerfile.prod .
 
 run:
 	docker-compose -f docker-compose.yml up
+
+run-prod:
+	docker-compose -f docker-compose.prod.yml up
 
 stop:
 	docker-compose -f docker-compose.yml down
