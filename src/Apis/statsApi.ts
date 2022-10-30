@@ -2,8 +2,8 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable dot-notation */
 import appApi from "./appApi";
-import { TransactionStatsYear, TransactionsStatsMonth } from '../Interface/Transaction'
-import { StatusInMonthSuccess } from '../Interface/ApiReturns'
+import { TransactionStatsYear,TransactionStatsYearResponse, TransactionsStatsMonth } from '../Interface/Transaction'
+import { StatusInMonthSuccess, StatusInYearSuccess } from '../Interface/ApiReturns'
 import { Tokens } from "../Interface/Token";
 
 const definePeriods = (year: number, month: number): {year: string, month: string}[] => {
@@ -32,27 +32,30 @@ const fetchStatsMonth = async (token: string, year: string, month: string): Prom
 		const res = data.data as StatusInMonthSuccess
 		return res.result as TransactionsStatsMonth
 	}catch{
-		console.log("failed")
 		return {Income: 0, Expense: 0, Balance: 0}
 	}
 }
 
-// TODO: use promise all
 const fetchStatsYear = async (token: Tokens, year: number, month: number): Promise<TransactionStatsYear> => {
-	const TOKEN = token.access!
+	const TOKEN = token.access as string
+	appApi.defaults.headers.common['Authorization'] = `Bearer ${TOKEN}`
+
 	const result: TransactionStatsYear = {Income: [], Expense: []}
+
 	const periods = definePeriods(year, month)
-
-	const res = await Promise.all(periods.map( async (period, idx) => {
-		const response: TransactionsStatsMonth = await fetchStatsMonth(TOKEN, period.year, period.month)
-		result.Income[idx] = response.Income
-		result.Expense[idx] = response.Expense
-	}))
-
 	
+	const data = await appApi.get('/stats/year/')
+	const res: StatusInYearSuccess = data.data as StatusInYearSuccess
+	const resResult = res.result as TransactionStatsYearResponse
 
-	return res && result
+	for(let idx = 0; idx < periods.length; idx++) {
+		const period = periods[idx]
+		const keyDate = `${period.year}-${period.month}`
+		result.Income[idx] = resResult[keyDate] ? resResult[keyDate].Income : 0 
+		result.Expense[idx] = resResult[keyDate] ? resResult[keyDate].Expense : 0 
+	}
+
+		return result
 }
-
 
 export default fetchStatsYear

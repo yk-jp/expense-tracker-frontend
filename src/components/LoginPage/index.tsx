@@ -39,7 +39,6 @@ const Login = () => {
 		}
 	}
 
-
 	return (
 		<section className="w-2/5 min-w-mobile mx-auto mt-20">
 			{error && <ErrorPop message={error} setError={setError}/>}
