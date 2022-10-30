@@ -18,7 +18,7 @@ import { Category } from "../../Interface/Category";
 import { TransactionForFetch } from "../../Interface/Transaction";
 
 import preSetupStyles from "../../Utilities/specialStyledClassName"
-import { DeleteSuccess } from "../../Interface/ApiReturns";
+import { DeleteSuccess,RegisterTransactionFailed } from "../../Interface/ApiReturns";
 
 type Props = {
 	transaction: TransactionForFetch | null,
@@ -49,13 +49,12 @@ const Resister = ( { transaction, setError }: Props) => {
 		setTransDay(e.currentTarget.value)
 	}
 
-	const tryResister = async (token: Tokens) => {
+	const tryResister = async (token: Tokens) =>  {
 		if(!transCate) return
 
 		const amount = parseFloat(amountInputRef.current!.value)
 		const date = transDay
 		const cate = transCate
-
 
 		const res = await postTransaction(
 			token,
@@ -67,18 +66,13 @@ const Resister = ( { transaction, setError }: Props) => {
 			cate.name
 		)
 
-		if (Object.prototype.hasOwnProperty.call(res, 'refresh')) {
-			const newToken = res as Tokens
-			if (newToken.access === null) {
-				// TODO: popup error message need to log in again
-				nav('/login')
-			} else {
-				await tryResister(newToken)
-				return
-			}
+		if('is_success' in res) { 
+			setError("Registoration failed. You might have entered no more than 4 digits before the decimal point or your session is exipred.")
+			return
 		}
 
 		dispatchTransactionStatus({type: ActionType.UPDATE_TRANSACTION_MONTH})
+		nav('/')
 	}
 
 	const onSubmit = async (e: React.SyntheticEvent) => {
@@ -102,7 +96,6 @@ const Resister = ( { transaction, setError }: Props) => {
 			}
 		}
 		await tryResister(userStatus.tokens!)
-		nav('/')
 	}
 
 	const onDelete = async () => {
