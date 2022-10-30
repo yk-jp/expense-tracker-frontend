@@ -9,12 +9,13 @@ import { AllTransactionsMonthSuccess, DeleteSuccess} from '../Interface/ApiRetur
 import { TransactionForFetch } from '../Interface/Transaction'
 
 const postTransaction = async(token: Tokens, event: string, amount: number, date: string, memo: string, category: number, categoryName: string): Promise<TransactionForFetch | Tokens> => {
-	appApi.defaults.headers.common['Authorization'] = `Bearer ${token.access!}`
+	appApi.defaults.headers.common['Authorization'] = `Bearer ${token.access as string}`
 
 	try{
 		await appApi.post('/transaction/save', {
 			event, amount, date, memo, category
 		})
+		
 		const stringAmount = amount.toString()
 		return {
 			id: 0,
@@ -31,12 +32,11 @@ const postTransaction = async(token: Tokens, event: string, amount: number, date
 			return newToken
 		}
 		return {access: null, refresh: null}
-
 	}
 }
 
 export const updateTransaction = async (token: Tokens,id: number, event: string, amount: number, date: string, memo: string, category: number, prevDate: string) => {
-	appApi.defaults.headers.common['Authorization'] = `Bearer ${token.access!}`
+	appApi.defaults.headers.common['Authorization'] = `Bearer ${token.access as string}`
 
 	try{
 		const data = await appApi.put(`/transaction/update/${id}`, {
@@ -49,7 +49,7 @@ export const updateTransaction = async (token: Tokens,id: number, event: string,
 }
 
 export const deleteTransaction = async (token: Tokens, id: number, date: string) => {
-	appApi.defaults.headers.common['Authorization'] = `Bearer ${token.access!}`
+	appApi.defaults.headers.common['Authorization'] = `Bearer ${token.access as string}`
 
 	try {
 		const data = await appApi.delete(`/transaction/delete/${id}`, {
@@ -63,7 +63,7 @@ export const deleteTransaction = async (token: Tokens, id: number, date: string)
 }
 
 export const fetchTransaction = async (token: Tokens, year: string, month: string): Promise<AllTransactionsMonthSuccess | null> => {
-	appApi.defaults.headers.common['Authorization'] = `Bearer ${token.access!}`
+	appApi.defaults.headers.common['Authorization'] = `Bearer ${token.access as string}`
 
 	try{
 		const data = await appApi.post('/transaction/', {

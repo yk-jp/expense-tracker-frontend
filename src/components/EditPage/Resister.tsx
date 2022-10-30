@@ -5,7 +5,7 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-to-interactive-role */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 
-import React, {useState, useContext, useRef, useEffect} from "react";
+import React, {useState, useContext, useRef, useEffect, Dispatch} from "react";
 import { useNavigate } from "react-router-dom";
 import Categories from "./Categories";
 
@@ -21,10 +21,11 @@ import preSetupStyles from "../../Utilities/specialStyledClassName"
 import { DeleteSuccess } from "../../Interface/ApiReturns";
 
 type Props = {
-	transaction: TransactionForFetch | null
+	transaction: TransactionForFetch | null,
+	setError: Dispatch<string | null>
 }
 
-const Resister = ( { transaction }: Props) => {
+const Resister = ( { transaction, setError }: Props) => {
 
 	const isUpdate = transaction !== null
 
@@ -38,8 +39,6 @@ const Resister = ( { transaction }: Props) => {
 	const [transDay, setTransDay] = useState(transaction?.date || new Date().toISOString().slice(0, 10))
 	const [transCate, setTransCate] = useState<Category | null>(null)
 	const [catePickerOpened, setCatePickerOpened] = useState(false)
-
-	
 
 	const onClickType = (e: React.MouseEvent<HTMLButtonElement>) => {
 		const {value} = e.target as HTMLButtonElement
@@ -67,6 +66,7 @@ const Resister = ( { transaction }: Props) => {
 			cate.id,
 			cate.name
 		)
+
 		if (Object.prototype.hasOwnProperty.call(res, 'refresh')) {
 			const newToken = res as Tokens
 			if (newToken.access === null) {
@@ -97,6 +97,7 @@ const Resister = ( { transaction }: Props) => {
 			if (data) {
 				dispatchTransactionStatus({type: ActionType.UPDATE_TRANSACTION_MONTH})
 				nav('/')
+				setError("error")
 				return
 			}
 		}

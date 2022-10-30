@@ -51,6 +51,19 @@ export interface StatusInMonthSuccess {
 	}
 }
 
+export interface StatusInYearSuccess {
+	is_success: boolean,
+	result: {
+		[date:string]
+		: 
+		{ 
+			Income: number,
+			Expense: number,
+			Balance: number
+		}
+	}
+}
+
 export interface AllTransactionsMonthSuccess {
 	result: {
 		all_transactions: TransactionForFetch[],
