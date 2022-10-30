@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useContext, useEffect, useState, useRef } from 'react'
+import React, { useContext, useState, useRef, Dispatch } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 
@@ -13,7 +13,11 @@ import preSetupStyles from '../../Utilities/specialStyledClassName'
 import { ActionType } from '../../Redux/ActionTypes'
 import { Category } from '../../Interface/Category'
 
-const CategorySetting = () => {
+type Props = {
+	setError: Dispatch<string | null>
+}
+
+const CategorySetting = ( { setError } : Props) => {
 
 	const { userStatus, dispatchUserState } = useContext(AppContext)
 	const cateNameRef = useRef<HTMLInputElement>(null)
@@ -28,7 +32,10 @@ const CategorySetting = () => {
 	const handleCreateCategory = async (e: React.SyntheticEvent) => {
 		e.preventDefault()
 		const newCategory: Category | undefined = await createCategory(userStatus.tokens!, cateNameRef.current!.value, transactionType)
-		if (!newCategory) return 
+		if (!newCategory) {
+			setError(`A category is not created. The name might already exist.`)
+			return 
+		}
 
 		if(newCategory.category_type === 'Expense') {
 			dispatchUserState({type: ActionType.ADD_EXPENSE_CATEGORY, newCategory: [newCategory]})
@@ -45,7 +52,7 @@ const CategorySetting = () => {
 				categoryType: type
 			})
 		} else {
-			alert(`We can't delete ${name} category because some transaction still categorized in.`)
+			setError(`We can't delete ${name} category because some transaction still categorized in.`)
 		}
 	}
 

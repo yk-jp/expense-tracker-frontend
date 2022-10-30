@@ -1,72 +1,75 @@
-import { TransactionForFetch, TransactionsStatsMonth} from "./Transaction"
-import { Category } from "./Category"
+import { TransactionForFetch, TransactionsStatsMonth } from './Transaction';
+import { Category } from './Category';
 
 export interface RegisterAccountFailed {
-	response: {
-		data: {
-			message: string,
-			is_success: boolean
-		}
-	}
+  response: {
+    data: {
+      message: string;
+      is_success: boolean;
+    };
+  };
+}
+
+export interface RegisterTransactionFailed {
+  message: string;
+  is_success: boolean;
 }
 
 export interface LoginFailed {
-	response: {
-		data: {
-			detail: string
-		}
-	}
+  response: {
+    data: {
+      detail: string;
+    };
+  };
 }
 
 export interface GenerateTokenFailed {
-	response: {
-		data: {
-			detail: string,
-			code: string
-		}
-	}
+  response: {
+    data: {
+      detail: string;
+      code: string;
+    };
+  };
 }
 
 export interface GenerateTokenSuccess {
-	access: string
+  access: string;
 }
 
 export interface CategoryFetchSuccess {
-	is_success: boolean,
-	result: {
-		category_all: Category[]
-	}
+  is_success: boolean;
+  result: {
+    category_all: Category[];
+  };
 }
 
 export interface DeleteSuccess {
-	message: string,
-	is_success: boolean
+  message: string;
+  is_success: boolean;
 }
 
 export interface StatusInMonthSuccess {
-	is_success: boolean,
-	result: {
-		Income: number,
-		Expense: number
-	}
+  is_success: boolean;
+  result: {
+    Income: number;
+    Expense: number;
+  };
 }
 
 export interface StatusInYearSuccess {
-	is_success: boolean,
-	result: {
-		[date:string]
-		: 
-		{ 
-			Income: number,
-			Expense: number,
-			Balance: number
-		}
-	}
+  is_success: boolean;
+  result: {
+    [date: string]: {
+      Income: number;
+      Expense: number;
+      Balance: number;
+    };
+  };
 }
 
 export interface AllTransactionsMonthSuccess {
-	result: {
-		all_transactions: TransactionForFetch[],
-		stats: TransactionsStatsMonth
-	}
+  result: {
+    all_transactions: TransactionForFetch[];
+    stats: TransactionsStatsMonth;
+  };
 }

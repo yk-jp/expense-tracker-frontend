@@ -21,7 +21,6 @@ const fetchCategory = async (token: Tokens): Promise<CategoryAll | Tokens> => {
 		const newToken = res as Tokens
 		return newToken
 	}
-
 }
 
 const createCategory = async (token: Tokens, name: string, type: string): Promise<Category | undefined> => {
